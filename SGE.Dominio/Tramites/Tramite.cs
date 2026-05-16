@@ -7,16 +7,7 @@ public class Tramite
     public DateTime FechaUltimaModificacion{ get;private set; }//cuando se modifico la ultima vez la entidad
     public Guid UsuarioUltimoCambio {get;private set; }//quien fue la ultima persona que lo modifico
 
-    private Tramite (Guid id, Guid expedienteId, Etiqueta etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio) // Constructor privado para la reconstrucción desde la base de datos
-    {
-        Id = id;
-        ExpedienteId=expedienteId;
-        Etiqueta=etiqueta;
-        Contenido = contenido;
-        FechaCreacion=fechaCreacion;
-        FechaUltimaModificacion = fechaUltimaModificacion;
-        UsuarioUltimoCambio=usuarioUltimoCambio;
-    } 
+    private Tramite() { } // Constructor privado para la reconstrucción desde la base de datos
     public Tramite(Guid expedienteId,ContenidoTramite contenido)
     {
         //creo el tramite
@@ -30,7 +21,17 @@ public class Tramite
     }
     public static Tramite Reconstruir(Guid id, Guid expedienteId, Etiqueta etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio)
     {
-        return new Tramite(id, expedienteId, etiqueta, contenido, fechaCreacion, fechaUltimaModificacion, usuarioUltimoCambio);
+        //me mandan los datos desde la BD y yo reconstruyo el objeto
+        return new Tramite
+        {
+            Id = id,
+            ExpedienteId=expedienteId,
+            Etiqueta=etiqueta,
+            Contenido = contenido,
+            FechaCreacion=fechaCreacion,
+            FechaUltimaModificacion = fechaUltimaModificacion,
+            UsuarioUltimoCambio=usuarioUltimoCambio,
+        };
     }
 
 }
