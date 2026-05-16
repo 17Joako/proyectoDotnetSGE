@@ -1,0 +1,22 @@
+## Visual Studio - Archivos de caché y usuario
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Carpetas de compilación (Output)
+bin/
+obj/
+
+## Herramientas de .NET (Archivos de diagnóstico)
+*.DotSettings.user
+_ReSharper.*/
+
+## Secretos de usuario (Por seguridad)
+secrets.json
+
+## Paquetes NuGet (Se restauran automáticamente)
+packages/
+# Excluir explícitamente las herramientas que sí se necesitan si usas el formato antiguo
+!packages/repositories.config
