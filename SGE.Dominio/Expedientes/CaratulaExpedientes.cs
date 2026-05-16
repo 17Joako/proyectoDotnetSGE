@@ -1,4 +1,4 @@
-public class CaratulExpedientes
+public class CaratulaExpedientes
 {
     private string texto { get; set; }
 
