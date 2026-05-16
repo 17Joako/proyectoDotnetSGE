@@ -9,6 +9,9 @@
 bin/
 obj/
 
+# Caché del C# Dev Kit (VS Code)
+*.lscache
+
 ## Herramientas de .NET (Archivos de diagnóstico)
 *.DotSettings.user
 _ReSharper.*/
