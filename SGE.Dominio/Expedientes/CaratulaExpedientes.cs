@@ -1,4 +1,4 @@
-public class CaratulaExpedientes
+public record class CaratulaExpedientes
 {
     private string texto { get; set; }
 
