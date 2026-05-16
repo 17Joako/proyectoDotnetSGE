@@ -1,5 +1,5 @@
 public class Expediente
-// Si querés tmb ponete a ver que onda los errores que saltan acá y en CaratulaExpedientes
+// Si querés tmb ponete a ver que onda los errores que saltan acá y en caratulaE
 {
     private Guid Id { get; set; }
     private CaratulaExpedientes Caratula { get; set; }
@@ -7,39 +7,52 @@ public class Expediente
     private DateTime FechaUltimaModificacion { get; set; }
     private Guid UsuarioUltimoCambio { get; set; }
     
-    private EstadoExpediente Estado  { get; set; }
+    private EstadoExpedientes Estado  { get; set; }
     // Hay que implementar lo que nos explicó iann hoy sobre como se recorren los tramites y demás cosas, si tenés duda preguntame que te explico mas facil en llamada
 
     public Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio)
     {
-        this.Id = new Guid();
-        this.Caratula = new CaratulaExpedientes(caratula);
+        this.Id = Guid.NewGuid();
+        this.Caratula = caratula;
         this.FechaCreacion = fechaCreacion;
         this.FechaUltimaModificacion = fechaUltimaModificacion;
-        this.UsuarioUltimoCambio = new Guid();
-        this.Estado = EstadoExpediente.RecienIniciado;
+        this.UsuarioUltimoCambio = Guid.NewGuid();
+        this.Estado = EstadoExpedientes.RecienIniciado;
     }
-    public bool ActualizarEstado (EtiquetaTramite? ultimaEtiqueta, Guid idUsuario)
+    public void ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
         if (ultimaEtiqueta == null)
         {
-            this.setEstado(EstadoExpediente.RecienIniciado);
+            this.Estado = EstadoExpedientes.RecienIniciado;
         }
-        else if (ultimaEtiqueta == EtiquetaTramite.Resolucion)
+        else if (ultimaEtiqueta == Etiqueta.Resolucion)
         {
-            this.setEstado(EstadoExpediente.ConResolucion);
+            this.Estado = EstadoExpedientes.ConResolucion;
         }
-        else if (ultimaEtiqueta == EtiquetaTramite.PaseAEstudio)
+        else if (ultimaEtiqueta == Etiqueta.PaseAEstudio)
         {
-            this.setEstado(EstadoExpediente.ParaResolver);
+            this.Estado = EstadoExpedientes.ParaResolver;
         }
-        else if (ultimaEtiqueta == EstadoExpediente.PaseAlArchivo)
+        else if (ultimaEtiqueta == Etiqueta.PaseAlArchivo)
         {
-            this.setEstado(EstadoExpediente.Finalizado);
+            this.Estado = EstadoExpedientes.Finalizado;
         }
-        else
+    }
+    // todavía por terminar: cambiar estado del expediente
+    public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
+    {
+        bool encontreUsuario = false;
+        using (StreamReader reader = new StreamReader("ruta_del_archivo_de_estados.txt"))
         {
-            return false;
+            //preguntar como saber cual es el id
+            while ((!reader.EndOfStream) && (!encontreUsuario))
+            {
+                if(reader.ReadLine()==idUsuario.ToString())
+                {
+                    //deberia modificar los archivos
+                    encontreUsuario=true;
+                }
+            }
         }
     }
 }
