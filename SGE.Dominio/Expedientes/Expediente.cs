@@ -1,5 +1,5 @@
-using Expedientes;
 public class Expediente
+// Si querés tmb ponete a ver que onda los errores que saltan acá y en CaratulaExpedientes
 {
     private Guid Id { get; set; }
     private CaratulaExpedientes Caratula { get; set; }
@@ -8,6 +8,7 @@ public class Expediente
     private Guid UsuarioUltimoCambio { get; set; }
     
     private EstadoExpediente Estado  { get; set; }
+    // Hay que implementar lo que nos explicó iann hoy sobre como se recorren los tramites y demás cosas, si tenés duda preguntame que te explico mas facil en llamada
 
     public Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio)
     {
@@ -18,7 +19,6 @@ public class Expediente
         this.UsuarioUltimoCambio = new Guid();
         this.Estado = EstadoExpediente.RecienIniciado;
     }
-
     public bool ActualizarEstado (EtiquetaTramite? ultimaEtiqueta, Guid idUsuario)
     {
         if (ultimaEtiqueta == null)
