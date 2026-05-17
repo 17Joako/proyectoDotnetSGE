@@ -1,11 +1,11 @@
 public class Expediente
 {
-    private Guid Id { get; set; }
-    private CaratulaExpedientes Caratula { get; set; }
-    private DateTime FechaCreacion { get; set; }
-    private DateTime FechaUltimaModificacion { get; set; }
-    private Guid UsuarioUltimoCambio { get; set; }
-    private EstadoExpedientes Estado  { get; set; }
+    public Guid Id { get;private set; }
+    public CaratulaExpedientes Caratula { get; private set; }
+    public DateTime FechaCreacion { get;private set; }
+    public DateTime FechaUltimaModificacion { get;private set; }
+    public Guid UsuarioUltimoCambio { get;private set; }
+    public EstadoExpedientes Estado  { get;private set; }
     public Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, Guid usuarioUltimoCambio)
     {
         this.Id = Guid.NewGuid();
@@ -16,11 +16,11 @@ public class Expediente
         this.Estado = EstadoExpedientes.RecienIniciado;
     }
     // Modificar caratula de expediente en caso de error al momento de la creación
-    public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario)
+    public void ModificarCaratula(String nuevaCaratula, Guid idUsuario,DateTime fechaCambio)
     {
-        this.Caratula = nuevaCaratula;
+        this.Caratula = new CaratulaExpedientes(nuevaCaratula);//esto lo modifico, despues charlar lo de init
         this.UsuarioUltimoCambio = idUsuario;
-        this.FechaUltimaModificacion = DateTime.Now;
+        this.FechaUltimaModificacion = fechaCambio;//Esto lo cambie..Bauti
     }
     public void ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
@@ -40,10 +40,17 @@ public class Expediente
         {
             this.Estado = EstadoExpedientes.Finalizado;
         }
-        this.UsuarioUltimoCambio = idUsuario;
+        this.UsuarioUltimoCambio = idUsuario;//Desconozco cuando llamar esto,
         this.FechaUltimaModificacion = DateTime.Now;
     }
-    public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
+        
+    public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario, DateTime fechaCambio,ContenidoTramite? contenidoTramite)
+    {
+        this.Estado = nuevoEstado;
+        this.UsuarioUltimoCambio = idUsuario;
+        this.FechaUltimaModificacion = fechaCambio;
+    }
+    /*public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
     {
         bool encontreUsuario = false;
         using (StreamReader reader = new StreamReader("ruta_del_archivo_de_estados.txt"))
@@ -58,5 +65,5 @@ public class Expediente
                 }
             }
         }
-    }
+    }*/
 }
