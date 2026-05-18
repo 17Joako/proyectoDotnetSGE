@@ -6,7 +6,18 @@ public class Expediente
     public DateTime FechaUltimaModificacion { get;private set; }
     public Guid UsuarioUltimoCambio { get;private set; }
     public EstadoExpedientes Estado  { get;private set; }
-    public Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, Guid usuarioUltimoCambio)
+
+    private Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio, EstadoExpedientes estado)
+    {
+        this.Id = id;
+        this.Caratula = caratula;
+        this.FechaCreacion = fechaCreacion;
+        this.FechaUltimaModificacion = fechaUltimaModificacion;
+        this.UsuarioUltimoCambio = usuarioUltimoCambio;
+        this.Estado = estado;
+    }   
+    //constructor privado para la reconstrucción desde la base de datos
+    public Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio)
     {
         this.Id = Guid.NewGuid();
         this.Caratula = caratula;
@@ -43,13 +54,7 @@ public class Expediente
         this.UsuarioUltimoCambio = idUsuario;//Desconozco cuando llamar esto,
         this.FechaUltimaModificacion = DateTime.Now;
     }
-        
-    public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario, DateTime fechaCambio,ContenidoTramite? contenidoTramite)
-    {
-        this.Estado = nuevoEstado;
-        this.UsuarioUltimoCambio = idUsuario;
-        this.FechaUltimaModificacion = fechaCambio;
-    }
+    // todavía por terminar: cambiar estado del expediente
     /*public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
     {
         bool encontreUsuario = false;
@@ -66,4 +71,17 @@ public class Expediente
             }
         }
     }*/
+    //el cambiar estado se supone que modifica el estado del expediente de manera directa independientemente de la etiqueta del tramite
+
+    public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
+    {
+        this.Estado = nuevoEstado;
+        this.FechaUltimaModificacion = DateTime.Now;
+        this.UsuarioUltimoCambio = idUsuario;
+    }
+ //hice el recostructor del expediente
+    public static Expediente Reconstruir(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio, EstadoExpedientes estado)
+    {
+        return new Expediente(id, caratula, fechaCreacion, fechaUltimaModificacion, usuarioUltimoCambio, estado);
+    }
 }
