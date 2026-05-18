@@ -4,11 +4,11 @@ public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo, Gu
     {
         var expediente = repo.ObtenerPorId(ID);
         //aca hay que hacer el recorrido de los tramites para obtener el ultimo pero no se como sacar la data del txt, probe con un split porq me lo dijo google, npi si esta bien
-        string ultimaLinea=null;
+        string? ultimaLinea=null;
         Etiqueta? ultimaEtiqueta;
         using (StreamReader reader = new StreamReader("ruta_del_archivo_de_estados.txt"))
         {
-            string linea;
+            string? linea;
             while ((linea=reader.ReadLine()) != null)
             {
                 ultimaLinea = linea;
