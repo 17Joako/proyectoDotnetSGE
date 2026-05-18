@@ -27,7 +27,14 @@ public class Expediente
         this.UsuarioUltimoCambio = this.Id;
         this.Estado = EstadoExpedientes.RecienIniciado;
     }
-    public bool ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
+    // Modificar caratula de expediente en caso de error al momento de la creación
+    public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario)
+    {
+        this.Caratula = nuevaCaratula;
+        this.UsuarioUltimoCambio = idUsuario;
+        this.FechaUltimaModificacion = DateTime.Now;
+    }
+    public void ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
         if (ultimaEtiqueta == null)
         {
@@ -49,7 +56,8 @@ public class Expediente
             this.Estado = EstadoExpedientes.Finalizado;
             return true;
         }
-        return false;
+        this.UsuarioUltimoCambio = idUsuario;
+        this.FechaUltimaModificacion = DateTime.Now;
     }
     // todavía por terminar: cambiar estado del expediente
     /*public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
