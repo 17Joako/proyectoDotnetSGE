@@ -27,33 +27,29 @@ public class Expediente
         this.UsuarioUltimoCambio = this.Id;
         this.Estado = EstadoExpedientes.RecienIniciado;
     }
-    // Modificar caratula de expediente en caso de error al momento de la creación
-    public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario)
-    {
-        this.Caratula = nuevaCaratula;
-        this.UsuarioUltimoCambio = idUsuario;
-        this.FechaUltimaModificacion = DateTime.Now;
-    }
-    public void ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
+    public bool ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
         if (ultimaEtiqueta == null)
         {
             this.Estado = EstadoExpedientes.RecienIniciado;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.Resolucion)
         {
             this.Estado = EstadoExpedientes.ConResolucion;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.PaseAEstudio)
         {
             this.Estado = EstadoExpedientes.ParaResolver;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.PaseAlArchivo)
         {
             this.Estado = EstadoExpedientes.Finalizado;
+            return true;
         }
-        this.UsuarioUltimoCambio = idUsuario;
-        this.FechaUltimaModificacion = DateTime.Now;
+        return false;
     }
     // todavía por terminar: cambiar estado del expediente
     /*public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)

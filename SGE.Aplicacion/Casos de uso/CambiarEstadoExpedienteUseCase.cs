@@ -1,0 +1,11 @@
+public class CambiarEstadoExpedienteUseCase(IExpedienteRepository repo, IAutorizacionService autorizacon)
+{
+    public void Ejecutar(CambiarEstadoRequest request)
+    {
+        if (!autorizacon.TienePermiso(request.UsuarioId, Permiso.ExpedienteModificacion))
+        {
+            throw new AutorizacionException("El usuario no tiene permiso para modificar expedientes.");
+        }
+        repo.CambiarEstado(request.Id, request.NuevoEstado);
+    }
+}
