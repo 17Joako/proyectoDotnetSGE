@@ -23,17 +23,16 @@ public class TramiteTxtRepository
 
     public void Eliminar(Guid id)
     {//Tengo que chequear despues si esto es correcto, o deberia hacer uno diferente si la persona desea eliminar solo 1 Tramite
-        List<Tramite> tramites =new List<Tramite>();
-        tramites=BuscarTodos();//transformo el txt en una lista de tramites, luego elimino el tramite que quiero eliminar y luego vuelvo a guardar la lista de tramites en el txt
-        tramites.RemoveAll(t => t.Id == id);
-        GuardarTodos(tramites);
+        IEnumerable<Tramite> tramites =BuscarTodos();//transformo el txt en una lista de tramites, luego elimino el tramite que quiero eliminar y luego vuelvo a guardar la lista de tramites en el txt
+        List<Tramite> tramitesList = tramites.ToList();
+        tramitesList.RemoveAll(t => t.Id == id);
+        GuardarTodos(tramitesList);
     }
 
     public Tramite Buscar(Guid id)
     {//esto deberia retornar el id con fecha mas reciente
         Tramite? tramiteEncontrado = null;
-        List<Tramite> tramites =new List<Tramite>();
-        tramites = BuscarTodos();
+        var tramites = BuscarTodos();
         foreach (Tramite tramite in tramites)
         {
             if (tramite.Id == id)
@@ -52,7 +51,7 @@ public class TramiteTxtRepository
     }
     
 
-    private List<Tramite> BuscarTodos()
+    private IEnumerable<Tramite> BuscarTodos()
     {
         List<Tramite> tramites = new List<Tramite>();
         if (File.Exists(rutaArchivo))
