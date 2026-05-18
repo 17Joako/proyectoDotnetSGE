@@ -33,7 +33,7 @@ public class Expediente
         this.UsuarioUltimoCambio = idUsuario;
         this.FechaUltimaModificacion = fechaCambio;//Esto lo cambie..Bauti
     }
-    public void ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
+    public bool ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
         if (ultimaEtiqueta == null)
         {
@@ -57,6 +57,7 @@ public class Expediente
         }
         this.UsuarioUltimoCambio = idUsuario;//Desconozco cuando llamar esto,
         this.FechaUltimaModificacion = DateTime.Now;
+        return false;
     }
     // todavía por terminar: cambiar estado del expediente
     /*public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
