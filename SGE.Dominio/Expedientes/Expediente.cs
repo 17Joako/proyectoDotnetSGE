@@ -1,12 +1,11 @@
 public class Expediente
 {
-    private Guid Id { get; set; }
-    private CaratulaExpedientes Caratula { get; set; }
-    private DateTime FechaCreacion { get; set; }
-    private DateTime FechaUltimaModificacion { get; set; }
-    private Guid UsuarioUltimoCambio { get; set; }
-    private EstadoExpedientes Estado  { get; set; }
-    // Hay que implementar lo que nos explicó iann hoy sobre como se recorren los tramites y demás cosas, si tenés duda preguntame que te explico mas facil en llamada
+    public Guid Id { get;private set; }
+    public CaratulaExpedientes Caratula { get; private set; }
+    public DateTime FechaCreacion { get;private set; }
+    public DateTime FechaUltimaModificacion { get;private set; }
+    public Guid UsuarioUltimoCambio { get;private set; }
+    public EstadoExpedientes Estado  { get;private set; }
 
     private Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio, EstadoExpedientes estado)
     {
@@ -28,11 +27,11 @@ public class Expediente
         this.Estado = EstadoExpedientes.RecienIniciado;
     }
     // Modificar caratula de expediente en caso de error al momento de la creación
-    public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario)
+    public void ModificarCaratula(String nuevaCaratula, Guid idUsuario,DateTime fechaCambio)
     {
-        this.Caratula = nuevaCaratula;
+        this.Caratula = new CaratulaExpedientes(nuevaCaratula);//esto lo modifico, despues charlar lo de init
         this.UsuarioUltimoCambio = idUsuario;
-        this.FechaUltimaModificacion = DateTime.Now;
+        this.FechaUltimaModificacion = fechaCambio;//Esto lo cambie..Bauti
     }
     public void ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
@@ -56,7 +55,7 @@ public class Expediente
             this.Estado = EstadoExpedientes.Finalizado;
             return true;
         }
-        this.UsuarioUltimoCambio = idUsuario;
+        this.UsuarioUltimoCambio = idUsuario;//Desconozco cuando llamar esto,
         this.FechaUltimaModificacion = DateTime.Now;
     }
     // todavía por terminar: cambiar estado del expediente
