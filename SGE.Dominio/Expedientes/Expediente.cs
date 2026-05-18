@@ -29,24 +29,29 @@ public class Expediente
         this.UsuarioUltimoCambio = Guid.NewGuid();
         this.Estado = EstadoExpedientes.RecienIniciado;
     }
-    public void ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
+    public bool ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
         if (ultimaEtiqueta == null)
         {
             this.Estado = EstadoExpedientes.RecienIniciado;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.Resolucion)
         {
             this.Estado = EstadoExpedientes.ConResolucion;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.PaseAEstudio)
         {
             this.Estado = EstadoExpedientes.ParaResolver;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.PaseAlArchivo)
         {
             this.Estado = EstadoExpedientes.Finalizado;
+            return true;
         }
+        return false;
     }
     // todavía por terminar: cambiar estado del expediente
     /*public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)

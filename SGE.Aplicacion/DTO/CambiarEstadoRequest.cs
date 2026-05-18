@@ -1,0 +1,1 @@
+public record class CambiarEstadoRequest(Guid UsuarioId,Guid Id, EstadoExpedientes NuevoEstado);
