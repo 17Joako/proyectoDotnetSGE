@@ -1,12 +1,10 @@
 public class Expediente
-// Si querés tmb ponete a ver que onda los errores que saltan acá y en caratulaE
 {
     private Guid Id { get; set; }
     private CaratulaExpedientes Caratula { get; set; }
     private DateTime FechaCreacion { get; set; }
     private DateTime FechaUltimaModificacion { get; set; }
     private Guid UsuarioUltimoCambio { get; set; }
-    
     private EstadoExpedientes Estado  { get; set; }
     // Hay que implementar lo que nos explicó iann hoy sobre como se recorren los tramites y demás cosas, si tenés duda preguntame que te explico mas facil en llamada
 
@@ -25,8 +23,8 @@ public class Expediente
         this.Id = Guid.NewGuid();
         this.Caratula = caratula;
         this.FechaCreacion = fechaCreacion;
-        this.FechaUltimaModificacion = fechaUltimaModificacion;
-        this.UsuarioUltimoCambio = Guid.NewGuid();
+        this.FechaUltimaModificacion = this.FechaCreacion;
+        this.UsuarioUltimoCambio = this.Id;
         this.Estado = EstadoExpedientes.RecienIniciado;
     }
     public bool ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
