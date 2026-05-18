@@ -39,18 +39,22 @@ public class Expediente
         if (ultimaEtiqueta == null)
         {
             this.Estado = EstadoExpedientes.RecienIniciado;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.Resolucion)
         {
             this.Estado = EstadoExpedientes.ConResolucion;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.PaseAEstudio)
         {
             this.Estado = EstadoExpedientes.ParaResolver;
+            return true;
         }
         else if (ultimaEtiqueta == Etiqueta.PaseAlArchivo)
         {
             this.Estado = EstadoExpedientes.Finalizado;
+            return true;
         }
         this.UsuarioUltimoCambio = idUsuario;
         this.FechaUltimaModificacion = DateTime.Now;
