@@ -1,3 +1,3 @@
 public record class ModificarCaratulaRequest(
-   Guid UsuarioId, Guid Id,CaratulaExpedientes Caratula, DateTime FechaDeCambio
+   Guid UsuarioId, Guid Id, CaratulaExpedientes Caratula, DateTime FechaDeCambio
 );
