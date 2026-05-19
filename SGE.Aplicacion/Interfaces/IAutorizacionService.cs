@@ -1,4 +1,4 @@
 public interface IAutorizacionService
 {
-    bool TienePermiso(Guid usuarioId, Permiso permiso);
+    bool PoseeElPermiso(Guid usuarioId, Permiso permiso);
 }

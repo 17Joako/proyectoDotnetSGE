@@ -2,7 +2,8 @@ public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo, Gu
 {
     public void ActualizarEstadoExpediente(Guid ID, Guid idUsuario)
     {
-        var expediente = repo.ObtenerPorId(ID);
+        var expediente = repo.ObtenerPorId(ID);//aca tenes dos formas de hacerlo 1 pidiendo el ultimo expediente a la "BD"
+        //2 pidiendo la lista a la "BD" e iterandola para encontrar el mas nuevo
         //aca hay que hacer el recorrido de los tramites para obtener el ultimo pero no se como sacar la data del txt, probe con un split porq me lo dijo google, npi si esta bien
         string ultimaLinea=null;
         Etiqueta? ultimaEtiqueta;
