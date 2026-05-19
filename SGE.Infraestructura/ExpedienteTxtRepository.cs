@@ -1,6 +1,6 @@
 public class ExpedienteTxtRepository: IExpedienteRepository
 {   //debo hacer 4 cosas principalmente escribir el txt, modificar el txt, eliminar el txt y buscar en el txt,  luego debo hacer los metodos correspondientes para cada una de esas acciones 
-    readonly string rutaArchivo = @"..\SGE.Repositorios\Expediente.txt";
+    readonly string rutaArchivo = @"Expediente.txt";
     
     /*
     Se podria hacer asi para que el repositorio sea reutilizable y no dependa de una ruta fija, 
