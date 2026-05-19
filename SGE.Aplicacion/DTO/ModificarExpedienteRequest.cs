@@ -1,3 +1,3 @@
 public record class ModificarExpedienteRequest(
-    Guid Id, DateTime FechaUltimaModificacion, Guid UsuarioUltimoCambio, DateTime FechaCreacion
+Expediente expediente, Guid UsuarioUltimoCambio
 );

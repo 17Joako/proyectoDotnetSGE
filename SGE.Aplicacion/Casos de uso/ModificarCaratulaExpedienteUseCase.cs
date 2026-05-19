@@ -5,11 +5,11 @@ public class ModificarCaratulaExpedienteUseCase(
 {
     public void Ejecutar(Caratularequest request)
     {
-        if (!autorizacionService.TienePermiso(request.UsuarioId, Permiso.ExpedienteModificacion))
+        if (!autorizacionService.PoseeElPermiso(request.UsuarioId, Permiso.ExpedienteModificacion))
         {
             throw new AutorizacionException("El usuario no tiene permiso para modificar expedientes.");
         }
-
-        expedienteRepository.ModificarCaratula(request.Id, request.Caratula);
+        var expediente = expedienteRepository.ObtenerPorId(request.Id);
+        expediente.ModificarCaratula(request.Caratula, request.UsuarioId, request.FechaDeCambio);
     }
 }

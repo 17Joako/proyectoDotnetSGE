@@ -2,7 +2,7 @@ public class ModificarTramiteUseCase(ITramiteRepository repo, IAutorizacionServi
 {
     public void Ejecutar(TramiteRequest request)
     {
-        if (!autorizacion.TienePermiso(request.UsuarioID, Permiso.TramiteModificacion))
+        if (!autorizacion.PoseeElPermiso(request.UsuarioID, Permiso.TramiteModificacion))
         {
             throw new AutorizacionException("El usuario no tiene permiso para modificar trámites.");
         }

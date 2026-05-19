@@ -2,7 +2,7 @@ public class TramiteBajaUseCase(ITramiteRepository repo, IAutorizacionService au
 {
     public void Ejecutar(TramiteRequest request)
     {
-        if (!autorizacion.TienePermiso(request.UsuarioID, Permiso.TramiteBaja))
+        if (!autorizacion.PoseeElPermiso(request.UsuarioID, Permiso.TramiteBaja))
         {
             throw new AutorizacionException("El usuario no tiene permiso para eliminar trámites.");
         }
