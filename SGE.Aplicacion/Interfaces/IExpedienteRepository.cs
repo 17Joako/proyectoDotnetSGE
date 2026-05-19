@@ -3,9 +3,11 @@ public interface IExpedienteRepository
     void AgregarExpediente(Expediente expediente);
     void EliminarExpediente(Guid id);
     void ModificarExpediente(Expediente expediente);
-    void ModificarCaratula(Guid id, CaratulaExpedientes caratula);
+    // Charlar con finn en un rato
+    //void ModificarCaratula(Guid id, CaratulaExpedientes caratula);
 
-    void CambiarEstado(Guid id, EstadoExpedientes estado);
+    //FINNISIMO DESPUES EXPLICA MAINTOOOOOOOO
+    //void CambiarEstado(Guid id, EstadoExpedientes estado);
     Expediente ObtenerPorId(Guid id);
     IEnumerable<Expediente> BuscarTodos();
 }

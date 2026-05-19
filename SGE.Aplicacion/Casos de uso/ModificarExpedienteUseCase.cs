@@ -1,4 +1,4 @@
-public class ModificarExpedinteUseCase(IExpedienteRepository repo, IAutorizacionService autorizacon)
+public class ModificarExpedienteUseCase(IExpedienteRepository repo, IAutorizacionService autorizacon)
 {
     public void Ejecutar(ModificarExpedienteRequest request)
     {
