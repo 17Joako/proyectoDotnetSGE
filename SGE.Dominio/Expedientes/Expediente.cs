@@ -29,9 +29,9 @@ public class Expediente
     // Modificar caratula de expediente en caso de error al momento de la creación
     public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario,DateTime fechaCambio)
     {
-        this.Caratula = nuevaCaratula;//esto lo modifico, despues charlar lo de init
+        this.Caratula = nuevaCaratula;
         this.UsuarioUltimoCambio = idUsuario;
-        this.FechaUltimaModificacion = fechaCambio;//Esto lo cambie..Bauti
+        this.FechaUltimaModificacion = fechaCambio;
     }
     public bool ActualizarEstado (Etiqueta? ultimaEtiqueta, Guid idUsuario)
     {
@@ -55,36 +55,16 @@ public class Expediente
             this.Estado = EstadoExpedientes.Finalizado;
             return true;
         }
-        this.UsuarioUltimoCambio = idUsuario;//Desconozco cuando llamar esto,
+        this.UsuarioUltimoCambio = idUsuario;
         this.FechaUltimaModificacion = DateTime.Now;
         return false;
     }
-    // todavía por terminar: cambiar estado del expediente
-    /*public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
-    {
-        bool encontreUsuario = false;
-        using (StreamReader reader = new StreamReader("ruta_del_archivo_de_estados.txt"))
-        {
-            //preguntar como saber cual es el id
-            while ((!reader.EndOfStream) && (!encontreUsuario))
-            {
-                if(reader.ReadLine()==idUsuario.ToString())
-                {
-                    //deberia modificar los archivos
-                    encontreUsuario=true;
-                }
-            }
-        }
-    }*/
-    //el cambiar estado se supone que modifica el estado del expediente de manera directa independientemente de la etiqueta del tramite
-
     public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
     {
         this.Estado = nuevoEstado;
         this.FechaUltimaModificacion = DateTime.Now;
         this.UsuarioUltimoCambio = idUsuario;
     }
- //hice el recostructor del expediente
     public static Expediente Reconstruir(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio, EstadoExpedientes estado)
     {
         return new Expediente(id, caratula, fechaCreacion, fechaUltimaModificacion, usuarioUltimoCambio, estado);
