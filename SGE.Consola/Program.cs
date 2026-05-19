@@ -32,11 +32,12 @@ public class Program
                 CaratulaExpedientes nuevaCaratula = new CaratulaExpedientes("Expediente de demostración"); // caratula genérica para probar la funcionalidad del programa
                 ContenidoTramite nuevoContenido = new ContenidoTramite("Contenido de demostración"); // Simula un nuevo contenido para el trámite
                 Expediente expediente = new Expediente(nuevaCaratula, DateTime.Now); // expediente genérico para probar la funcionalidad del programa
-                TramiteRequest tramite = new TramiteRequest(idUsuarioActual, Guid.NewGuid(), Guid.NewGuid(), Etiqueta.EscritoPresentado, nuevoContenido, DateTime.Now,DateTime.Now, idUsuarioActual);
+                Tramite tramite = new Tramite(Guid.NewGuid(), nuevoContenido);
+                TramiteRequest tramiteRequest = new TramiteRequest(idUsuarioActual, Guid.NewGuid(), Guid.NewGuid(), Etiqueta.EscritoPresentado, nuevoContenido, DateTime.Now,DateTime.Now, idUsuarioActual);
+                ModificarTramiteRequest modificarTramiteRequest = new ModificarTramiteRequest(tramite, idUsuarioActual);
                 AgregarExpedienteRequest agregarExpedienteRequest = new AgregarExpedienteRequest(idUsuarioActual, nuevaCaratula, DateTime.Now, DateTime.Now, idUsuarioActual);
                 ActualizacionEstadoExpedienteService actualizacion_estado_expediente_service = new ActualizacionEstadoExpedienteService(expedienteTxtRepository, tramiteTxtRepository);
                 // fin de cosas para simular algunos casos
-
                 switch (opcion)
                 {
                     case 0:
@@ -68,17 +69,17 @@ public class Program
                     case 5:
                         Console.WriteLine("Ingresó 5: Dar de alta un tramite");
                         TramiteAltaUseCase tramiteAltaUseCase = new TramiteAltaUseCase(tramiteTxtRepository, autorizacionService, actualizacion_estado_expediente_service);
-                        tramiteAltaUseCase.Ejecutar(tramite);
+                        tramiteAltaUseCase.Ejecutar(tramiteRequest);
                         break;
                     case 6:
                         Console.WriteLine("Ingresó 6: Dar de baja un tramite");
                         TramiteBajaUseCase tramiteBajaUseCase = new TramiteBajaUseCase(tramiteTxtRepository, autorizacionService, actualizacion_estado_expediente_service);
-                        tramiteBajaUseCase.Ejecutar(tramite);
+                        tramiteBajaUseCase.Ejecutar(tramiteRequest);
                         break;
                     case 7:
                         Console.WriteLine("Ingresó 7: Modificar un tramite");
                         ModificarTramiteUseCase tramiteModificarUseCase = new ModificarTramiteUseCase(tramiteTxtRepository, autorizacionService, actualizacion_estado_expediente_service);
-                        tramiteModificarUseCase.Ejecutar(tramite);
+                        tramiteModificarUseCase.Ejecutar(modificarTramiteRequest);
                         break;
                     case 8:
                         Console.WriteLine("Ingresó 8: Cambiar de usuario");
