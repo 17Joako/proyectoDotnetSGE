@@ -17,7 +17,7 @@ public class Expediente
         this.Estado = estado;
     }   
     //constructor privado para la reconstrucción desde la base de datos
-    public Expediente(Guid id, CaratulaExpedientes caratula, DateTime fechaCreacion, DateTime fechaUltimaModificacion, Guid usuarioUltimoCambio)
+    public Expediente(CaratulaExpedientes caratula, DateTime fechaCreacion)
     {
         this.Id = Guid.NewGuid();
         this.Caratula = caratula;
