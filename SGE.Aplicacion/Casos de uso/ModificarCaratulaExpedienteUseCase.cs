@@ -3,7 +3,7 @@ public class ModificarCaratulaExpedienteUseCase(
     IAutorizacionService autorizacionService
 )
 {
-    public void Ejecutar(Caratularequest request)
+    public void Ejecutar(ModificarCaratulaRequest request)
     {
         if (!autorizacionService.PoseeElPermiso(request.UsuarioId, Permiso.ExpedienteModificacion))
         {
