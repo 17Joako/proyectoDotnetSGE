@@ -11,15 +11,15 @@ public class ExpedienteTxtRepository
         this.rutaArchivo = rutaArchivo;
     }*/
     // primero agrego el id, y luego agrego el resto de datos
-    public void Agregar(Expediente expediente)
+    public void AgregarExpediente(Expediente expediente)
     {
         using (StreamWriter sw = new StreamWriter(rutaArchivo, true))
         {
-            sw.WriteLine($"{expediente.Id};{expediente.Caratula};{expediente.FechaCreacion};{expediente.FechaUltimaModificacion};{expediente.UsuarioUltimoCambio};{expediente.Estado};{expediente.Estado}");
+            sw.WriteLine($"{expediente.Id};{expediente.Caratula};{expediente.FechaCreacion};{expediente.FechaUltimaModificacion};{expediente.UsuarioUltimoCambio};{expediente.Estado}");
          }
     }
 
-    public void Eliminar(Guid id)
+    public void EliminarExpediente(Guid id)
     {//Tengo que chequear despues si esto es correcto, o deberia hacer uno diferente si la persona desea eliminar solo 1 expediente
 
         IEnumerable<Expediente> datosProtegidos = BuscarTodos();//recibo un IEnumerable
@@ -31,7 +31,7 @@ public class ExpedienteTxtRepository
         GuardarTodos(expedientes);//reescribo la lista solo con los expedientes que sirven
     }
 
-    public Expediente Buscar(Guid id)
+    public Expediente ObtenerPorId(Guid id)
     {//esto deberia retornar el expediente con fecha mas reciente
         Expediente? expedienteEncontrado = null;
         var expedientes = BuscarTodos();
@@ -64,15 +64,14 @@ public class ExpedienteTxtRepository
                 var partes = linea.Split(';');
                 if (partes.Length == 7)
                 {   
-                    expedientes.Add(Expediente.
+                    expedientes.Add(Expediente.Reconstruir
                     (
                         Guid.Parse(partes[0]),
-                        Guid.Parse(partes[1]),
-                        Enum.Parse<Etiqueta>(partes[2]),
-                        new ContenidoTramite(partes[3]),
-                        DateTime.Parse(partes[4]),
-                        DateTime.Parse(partes[5]),
-                        Guid.Parse(partes[6])
+                        new CaratulaExpedientes(partes[1]),
+                        DateTime.Parse(partes[2]),
+                        DateTime.Parse(partes[3]),
+                        Guid.Parse(partes[4]),
+                        Enum.Parse<EstadoExpedientes>(partes[5])
                     ));};
                 }
             }
