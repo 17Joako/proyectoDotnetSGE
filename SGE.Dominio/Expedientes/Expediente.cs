@@ -27,9 +27,9 @@ public class Expediente
         this.Estado = EstadoExpedientes.RecienIniciado;
     }
     // Modificar caratula de expediente en caso de error al momento de la creación
-    public void ModificarCaratula(String nuevaCaratula, Guid idUsuario,DateTime fechaCambio)
+    public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario,DateTime fechaCambio)
     {
-        this.Caratula = new CaratulaExpedientes(nuevaCaratula);//esto lo modifico, despues charlar lo de init
+        this.Caratula = nuevaCaratula;//esto lo modifico, despues charlar lo de init
         this.UsuarioUltimoCambio = idUsuario;
         this.FechaUltimaModificacion = fechaCambio;//Esto lo cambie..Bauti
     }

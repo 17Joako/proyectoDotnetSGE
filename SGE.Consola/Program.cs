@@ -7,57 +7,74 @@ public class Program
         Console.WriteLine("Bienvenido al Sistema de Gestión de Expedientes (SGE)");
         Console.WriteLine($"ID de Usuario actual: {idUsuarioActual}");
         int opcion = -1;
-        while (opcion != 10)
+        while (opcion != 9)
         {
             Console.WriteLine("Seleccione el numero de la opcion que desea realizar");
             Console.WriteLine("Ingrese 0 si desea dar de alta un expediente"); // CdU 1: dar de alta de un expediente
             Console.WriteLine("Ingrese 1 si desea dar de baja un expediente"); // CdU 2: dar de baja de un expediente
-            Console.WriteLine("Ingrese 2 si desea cambiar el estado del expediente"); // CdU 3: cambiar el estado de un expediente
-            Console.WriteLine("Ingrese 3 si desea modificar un expediente"); // CdU 4: modificar un expediente
-            Console.WriteLine("Ingrese 4 si desea modificar el estado de un expediente"); // CdU 5: modificar el estado de un expediente
-            Console.WriteLine("Ingrese 5 si desea modificar la caratula de un expediente"); // CdU 6: modificar la caratula de un expediente
-            Console.WriteLine("Ingrese 6 si desea dar de alta un tramite"); // CdU 7: dar de alta de un tramite
-            Console.WriteLine("Ingrese 7 si desea dar de baja un tramite"); // CdU 8: dar de baja de un tramite
-            Console.WriteLine("Ingrese 8 si desea modificar un tramite"); // CdU 9: modificar un tramite
-            Console.WriteLine("Ingrese 9 si desea cambiar el usuario actual"); // CdU 10: cambiar de usuario
-            Console.WriteLine("Ingrese 10 si desea salir del programa"); // CdU 11: salir del programa
+            Console.WriteLine("Ingrese 2 si desea modificar un expediente"); // CdU 3: modificar un expediente
+            Console.WriteLine("Ingrese 3 si desea modificar el estado de un expediente"); // CdU 4: modificar el estado de un expediente
+            Console.WriteLine("Ingrese 4 si desea modificar la caratula de un expediente"); // CdU 5: modificar la caratula de un expediente
+            Console.WriteLine("Ingrese 5 si desea dar de alta un tramite"); // CdU 6: dar de alta de un tramite
+            Console.WriteLine("Ingrese 6 si desea dar de baja un tramite"); // CdU 7: dar de baja de un tramite
+            Console.WriteLine("Ingrese 7 si desea modificar un tramite"); // CdU 8: modificar un tramite
+            Console.WriteLine("Ingrese 8 si desea cambiar el usuario actual"); // CdU 9: cambiar de usuario
+            Console.WriteLine("Ingrese 9 si desea salir del programa"); // CdU 10: salir del programa
             string? opcionst = Console.ReadLine();
             if (opcionst != null && int.TryParse(opcionst, out opcion))
             {
+                ExpedienteTxtRepository expedienteTxtRepository = new ExpedienteTxtRepository();
+                TramiteTxtRepository tramiteTxtRepository = new TramiteTxtRepository();
+                AutorizacionProvisionalService autorizacionService = new AutorizacionProvisionalService();
                 switch (opcion)
                 {
                     case 0:
                         Console.WriteLine("Ingresó 0: Dar de alta un expediente");
+                        ExpedienteAltaUseCase expedienteAltaUseCase = new ExpedienteAltaUseCase(expedienteTxtRepository, autorizacionService);
                         break;
                     case 1:
                         Console.WriteLine("Ingresó 1: Dar de baja un expediente");
+                        ExpedienteBajaUseCase expedienteBajaUseCase = new ExpedienteBajaUseCase(expedienteTxtRepository, tramiteTxtRepository, autorizacionService);
                         break;
                     case 2:
-                        Console.WriteLine("Ingresó 2: Cambiar el estado de un expediente");
+                        Console.WriteLine("Ingresó 2: Modificar un expediente");
+                        ModificarExpedienteUseCase modificarExpedienteUseCase = new ModificarExpedienteUseCase(expedienteTxtRepository, autorizacionService);
                         break;
                     case 3:
-                        Console.WriteLine("Ingresó 3: Modificar un expediente");
+                        Console.WriteLine("Ingresó 3: Modificar el estado de un expediente");
+                        CambiarEstadoExpedienteUseCase modificarEstadoExpedienteUseCase = new CambiarEstadoExpedienteUseCase(expedienteTxtRepository, autorizacionService);
                         break;
                     case 4:
-                        Console.WriteLine("Ingresó 4: Modificar el estado de un expediente");
+                        Console.WriteLine("Ingresó 4: Modificar la caratula de un expediente");
+                        ModificarCaratulaExpedienteUseCase modificarCaratulaExpedienteUseCase = new ModificarCaratulaExpedienteUseCase(expedienteTxtRepository, autorizacionService);
                         break;
                     case 5:
-                        Console.WriteLine("Ingresó 5: Modificar la caratula de un expediente");
+                        Console.WriteLine("Ingresó 5: Dar de alta un tramite");
+                        TramiteAltaUseCase tramiteAltaUseCase = new TramiteAltaUseCase(tramiteTxtRepository, autorizacionService, new ActualizacionEstadoExpedienteService(expedienteTxtRepository, idUsuarioActual));
                         break;
                     case 6:
-                        Console.WriteLine("Ingresó 6: Dar de alta un tramite");
+                        Console.WriteLine("Ingresó 6: Dar de baja un tramite");
+                        TramiteBajaUseCase tramiteBajaUseCase = new TramiteBajaUseCase(tramiteTxtRepository, autorizacionService, new ActualizacionEstadoExpedienteService(expedienteTxtRepository, idUsuarioActual));
                         break;
                     case 7:
-                        Console.WriteLine("Ingresó 7: Dar de baja un tramite");
+                        Console.WriteLine("Ingresó 7: Modificar un tramite");
+                        ModificarTramiteUseCase tramiteModificarUseCase = new ModificarTramiteUseCase(tramiteTxtRepository, autorizacionService, new ActualizacionEstadoExpedienteService(expedienteTxtRepository, idUsuarioActual));
                         break;
                     case 8:
-                        Console.WriteLine("Ingresó 8: Modificar un tramite");
+                        Console.WriteLine("Ingresó 8: Cambiar de usuario");
+                        Console.WriteLine("Ingrese el nuevo ID de usuario (GUID):");
+                        string? nuevoUsuarioIdStr = Console.ReadLine();
+                        if (Guid.TryParse(nuevoUsuarioIdStr, out Guid nuevoUsuarioId))
+                        {
+                            idUsuarioActual = nuevoUsuarioId;
+                        }
+                        else
+                        {
+                            Console.WriteLine("ID de usuario no válido.");
+                        }
                         break;
                     case 9:
-                        Console.WriteLine("Ingresó 9: Cambiar de usuario");
-                        break;
-                    case 10:
-                        Console.WriteLine("Ingresó 10: Salir del programa");
+                        Console.WriteLine("Ingresó 9: Salir del programa");
                         break;
                 }
             }
