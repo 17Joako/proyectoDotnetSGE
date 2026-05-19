@@ -86,4 +86,16 @@ public class TramiteTxtRepository
             }
         }
     }
+    public void Modificar(Tramite tramite)
+    {
+        IEnumerable<Tramite> tramites = BuscarTodos();
+        List<Tramite> tramitesList = tramites.ToList();
+        int index = tramitesList.FindIndex(t => t.Id == tramite.Id);
+        if (index != -1)
+        {
+            tramitesList[index] = tramite;
+            GuardarTodos(tramitesList);
+        }
+        throw new DominioException("Trámite no encontrado para modificar.");//esto deberia ser una repositoryException
+    }
 }
