@@ -88,4 +88,17 @@ public class ExpedienteTxtRepository
             }
         }
     }
+    public void Modificar(Expediente expediente)
+    {
+        IEnumerable<Expediente> datosProtegidos = BuscarTodos();
+        
+        List<Expediente> expedientes = datosProtegidos.ToList();
+        
+        int indice = expedientes.FindIndex(t => t.Id == expediente.Id);
+        if (indice != -1)
+        {
+            expedientes[indice] = expediente;
+        }
+        throw new DominioException("Expediente no encontrado para modificar.");
+    }
 }
