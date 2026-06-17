@@ -1,4 +1,4 @@
-public enum Etiqueta{
+public enum EtiquetaTramites{
         EscritoPresentado, 
         PaseAEstudio, 
         Despacho, 

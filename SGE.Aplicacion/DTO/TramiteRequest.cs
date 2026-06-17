@@ -1,2 +1,2 @@
 public record class TramiteRequest(
-    Guid UsuarioID, Guid Id, Guid ExpedienteID, Etiqueta Etiqueta, ContenidoTramite Contenido, DateTime FechaCreacion, DateTime FechaUltimaModificacion, Guid UsuarioUltimoCambio);
+    Guid UsuarioID, Guid Id, Guid ExpedienteID, EtiquetaTramites Etiqueta, ContenidoTramite Contenido, DateTime FechaCreacion, DateTime FechaUltimaModificacion, Guid UsuarioUltimoCambio);
