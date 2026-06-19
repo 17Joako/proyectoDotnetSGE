@@ -2,7 +2,7 @@ public class TramiteAltaUseCase(ITramiteRepository repo, IAutorizacionService au
 {
     public void Ejecutar(TramiteRequest request)
     {
-        if (!autorizacion.TienePermiso(request.UsuarioID, Permiso.TramiteAlta))
+        if (!autorizacion.PoseeElPermiso(request.UsuarioID, Permiso.TramiteAlta))
         {
             throw new AutorizacionException("El usuario no tiene permiso para agregar trámites.");
         }

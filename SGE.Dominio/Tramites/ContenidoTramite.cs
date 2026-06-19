@@ -2,7 +2,7 @@ public record class ContenidoTramite {
     public String contenido{ get; init; }
     public ContenidoTramite(String contenido)
     {
-        if (!contenido.IsWhiteSpace())
+        if (!string.IsNullOrEmpty(contenido))
         {
             this.contenido = contenido;
         }
