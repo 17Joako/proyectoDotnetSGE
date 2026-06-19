@@ -10,7 +10,8 @@ public class Tramite
     // constructor para altas de tramites
     public Tramite(Guid expedienteId,ContenidoTramite contenido) 
     {
-        new Tramite(Guid.NewGuid(), expedienteId, 0, contenido, DateTime.Now, DateTime.Now, expedienteId);
+        DateTime FechaCreacion = DateTime.Now;
+        new Tramite(Guid.NewGuid(), expedienteId, 0, contenido, FechaCreacion, FechaCreacion, expedienteId);
     }
    // Constructor privado para la reconstrucción desde la base de datos
    private Tramite (Guid id, Guid expedienteId, EtiquetaTramites etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio) 

@@ -9,7 +9,8 @@ public class Expediente
     
     public Expediente(CaratulaExpedientes caratula, DateTime fechaCreacion)
     {
-        new Expediente(Guid.NewGuid(), caratula, fechaCreacion, fechaCreacion, this.Id, EstadoExpedientes.RecienIniciado);
+        Guid Id = Guid.NewGuid();
+        new Expediente(Id, caratula, fechaCreacion, fechaCreacion, Id, EstadoExpedientes.RecienIniciado);
     }
     // Modificar caratula de expediente en caso de error al momento de la creación
     public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario,DateTime fechaCambio)
