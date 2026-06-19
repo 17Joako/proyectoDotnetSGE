@@ -10,6 +10,7 @@ git pull
 
 # ¿Como stageo los cambio que hice?.
 git add . // Para stagear todos los cambios realizados en todo el proyecto
+
 git add [path al archivo] // Para stagear cambios de una clase o carpeta específicas
 
 # ¿Como commiteo los cambios?.
