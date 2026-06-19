@@ -1,33 +1,23 @@
-public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo, Guid IDUsuario)
+public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo,ITramiteRepository repo2)
 {
-    public void ActualizarEstadoExpediente(Guid ID, Guid idUsuario)
+    public void ActualizarEstadoExpediente(Guid ID, Guid IDUsuario)
     {
-        var expediente = repo.ObtenerPorId(ID);//aca tenes dos formas de hacerlo 1 pidiendo el ultimo expediente a la "BD"
-        //2 pidiendo la lista a la "BD" e iterandola para encontrar el mas nuevo
-        //aca hay que hacer el recorrido de los tramites para obtener el ultimo pero no se como sacar la data del txt, probe con un split porq me lo dijo google, npi si esta bien
-        string ultimaLinea=null;
-        Etiqueta? ultimaEtiqueta;
-        using (StreamReader reader = new StreamReader("ruta_del_archivo_de_estados.txt"))
+        var expediente = repo.ObtenerPorId(ID);
+        var tramites = repo2.ObtenerPorExpedienteId(ID);
+        Etiqueta? ultimaEtiqueta = null;
+        Tramite? ultimoTramite = tramites.FirstOrDefault();
+        foreach (var tramite in tramites)
         {
-            string linea;
-            while ((linea=reader.ReadLine()) != null)
-            {
-                ultimaLinea = linea;
-            }
+            if(tramite.FechaUltimaModificacion > ultimoTramite.FechaUltimaModificacion)
+                {
+                    ultimoTramite = tramite;
+                    ultimaEtiqueta = tramite.Etiqueta;
+                }
         }
-        if (ultimaLinea == null)
-        {
-            ultimaEtiqueta = null;
-        }
-        else
-        {
-            string[] partes = ultimaLinea.Split(',');
-            ultimaEtiqueta = Enum.Parse<Etiqueta>(partes[3]);
-        }
-        bool cambio= expediente.ActualizarEstado(ultimaEtiqueta, idUsuario);
+           bool cambio= expediente.ActualizarEstado(ultimaEtiqueta, IDUsuario);
         if (cambio)
         {
             repo.ModificarExpediente(expediente);
         }
     }
-}
+} // me está tirando un erro que nose que es, pero solo me sale a mi, no a mis dos compañeros

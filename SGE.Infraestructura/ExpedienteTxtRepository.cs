@@ -1,4 +1,4 @@
-public class ExpedienteTxtRepository
+public class ExpedienteTxtRepository: IExpedienteRepository
 {   //debo hacer 4 cosas principalmente escribir el txt, modificar el txt, eliminar el txt y buscar en el txt,  luego debo hacer los metodos correspondientes para cada una de esas acciones 
     readonly string rutaArchivo = @"..\SGE.Repositorios\Expediente.txt";
     
@@ -26,9 +26,16 @@ public class ExpedienteTxtRepository
         
         List<Expediente> expedientes = datosProtegidos.ToList();//convierto el numerable en lista 
         
+        int cont=expedientes.Count;
+        
         expedientes.RemoveAll(t => t.Id == id);//deberia ver si es removeAll o first, el programa luego debe eliminar todos los tramites asociados
         
         GuardarTodos(expedientes);//reescribo la lista solo con los expedientes que sirven
+
+        if(cont == expedientes.Count)
+        {
+            throw new RepositoryException("Expediente no encontrado para eliminar.");
+        }
     }
 
     public Expediente ObtenerPorId(Guid id)
@@ -49,11 +56,9 @@ public class ExpedienteTxtRepository
         {
             return expedienteEncontrado;
         }
-        throw new DominioException("Expediente no encontrado.");
+        throw new RepositoryException("Expediente no encontrado.");
     }
-    
-
-    private IEnumerable<Expediente> BuscarTodos()
+    public IEnumerable<Expediente> BuscarTodos()
     {
         List<Expediente> expedientes = new List<Expediente>();
         if (File.Exists(rutaArchivo))
@@ -87,7 +92,7 @@ public class ExpedienteTxtRepository
             }
         }
     }
-    public void Modificar(Expediente expediente)
+    public void ModificarExpediente(Expediente expediente)
     {
         IEnumerable<Expediente> datosProtegidos = BuscarTodos();
         
@@ -98,6 +103,6 @@ public class ExpedienteTxtRepository
         {
             expedientes[indice] = expediente;
         }
-        throw new DominioException("Expediente no encontrado para modificar.");
+        throw new RepositoryException("Expediente no encontrado para modificar.");
     }
 }
