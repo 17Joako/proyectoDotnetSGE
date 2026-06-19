@@ -4,7 +4,7 @@ public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo,ITr
     {
         var expediente = repo.ObtenerPorId(ID);
         var tramites = repo2.ObtenerPorExpedienteId(ID);
-        Etiqueta? ultimaEtiqueta = null;
+        EtiquetaTramites? ultimaEtiqueta = null;
         Tramite? ultimoTramite = tramites.FirstOrDefault();
         foreach (var tramite in tramites)
         {

@@ -2,7 +2,7 @@ public class Tramite
 {   public Guid Id { get;private set;} //guid del Tramite
     public Guid ExpedienteId { get; private set;}//recibe guid del Expediente 
     public EtiquetaTramites Etiqueta { get; private set;}//esto es el tipo enumerativo
-    public ContenidoTramite Contenido { get; init; }//aca se almacenan los datos de texto o string
+    public ContenidoTramite Contenido { get; private set; }//aca se almacenan los datos de texto o string
     public DateTime FechaCreacion { get;private set;}//cuando se creo
     public DateTime FechaUltimaModificacion{ get;private set; }//cuando se modifico la ultima vez la entidad
     public Guid UsuarioUltimoCambio {get;private set; }//quien fue la ultima persona que lo modifico
@@ -28,6 +28,16 @@ public class Tramite
     {
          //me mandan los datos desde la BD y yo reconstruyo el objeto
         return new Tramite(id, expedienteId, etiqueta, contenido, fechaCreacion, fechaUltimaModificacion, usuarioUltimoCambio);
+    }
+
+    //metodo para modificar el tramite, se modifica el contenido, la etiqueta, el expediente id, la fecha de ultima modificacion y el usuario que hizo el ultimo cambio
+    public void ModificarTramite(ContenidoTramite nuevoContenido, EtiquetaTramites nuevaEtiqueta, Guid nuevoExpedienteId, Guid usuarioId)
+    {
+        this.Contenido = nuevoContenido;
+        this.Etiqueta = nuevaEtiqueta;
+        this.ExpedienteId = nuevoExpedienteId;
+        FechaUltimaModificacion = DateTime.Now;
+        UsuarioUltimoCambio = usuarioId;
     }
 
 }
