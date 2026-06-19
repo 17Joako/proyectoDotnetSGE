@@ -10,6 +10,7 @@ git pull
 
 # ¿Como stageo los cambio que hice?.
 git add . // Para stagear todos los cambios realizados en todo el proyecto
+
 git add [path al archivo] // Para stagear cambios de una clase o carpeta específicas
 
 # ¿Como commiteo los cambios?.
@@ -17,12 +18,14 @@ git commit -m "Agregue Program.cs para sge.consola"
 
 # ¿Como hacer push?.
 git push //solamente si la rama (branch) en la que estoy trabajando ya existe en el repositorio en github
+
 git push -u origin[nombre de la rama a la que se conecta] miBranch[nombre de la rama en la que estoy trabajando] //para cuando la rama en la que trabajo no existe en el repositorio
 
 # ¿Como hacer una nueva branch y como cambiar de branch?.
 git branch //muestra todas las ramas y marca la rama en la que se está trabajando
 
 git branch [nombre de nueva rama] //crea una nueva rama con ese nombre
+
 git switch [nombre de rama] //cambia a la rama específicada
 
 git checkout -b [nombre de nueva rama] // Hace git branch [nombre de nueva rama] y git switch [nombre de rama] pero en una única línea

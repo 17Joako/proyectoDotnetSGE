@@ -20,6 +20,8 @@ public class Expediente
     }
     public bool ActualizarEstado (EtiquetaTramites? ultimaEtiqueta, Guid idUsuario)
     {
+        this.UsuarioUltimoCambio = idUsuario;//Desconozco cuando llamar esto,
+        this.FechaUltimaModificacion = DateTime.Now;
         if (ultimaEtiqueta == null)
         {
             this.Estado = EstadoExpedientes.RecienIniciado;
