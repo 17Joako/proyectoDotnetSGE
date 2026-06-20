@@ -38,6 +38,11 @@ git switch miBranch -> git pull origin main // Se debe hacer luego de haber push
 Cada uno va a usar su rama y cuando desee guardará los cambios hechos en github
 (recordar hacer cada intervalos de tiempo razonables, no a cada minimo cambio pero tampoco una vez al día)
 y desde la página hace la pull request y merge de la rama propia con la main
+
+
+
+
+# Tutorial de Linq y sql
 # Como usar linq
     Consultas y Transformaciones
         Select()
@@ -83,18 +88,23 @@ y desde la página hace la pull request y merge de la rama propia con la main
             2.Joaquin|Morales|La Plata
             3.Bautista|Recalt|Ayacucho
 # Como usar sqlite 
-0- Para crear la base de datos:
-    context.Database.EnsureCreated()
-    Este comando lee nuestras clases y crea una base de datos sqlite automaticamente con todas las tablas y relaciones
-1- Para realizar consultas a la base de datos se utiliza:
-    Todo lo de linq, por ej:
-    context.Alumnos.Where(...)
-    Aca tenemos que usar linq que vimos en clase
-2- Para agregar algo a la base de datos se utiliza:
-    context.Add(objeto)
-3- Para eliminar algo de la base de datos:
-    context.Remove(objeto)
-4-Para persistir los datos:
-    context.SaveChanges()
 
-Al usar el paso 2 y 3, realizamos cambios locales en la base de datos que se persisten cuando usamos el paso 4, mientras tanto el archivo solo se modifica en memoria ram.
+    0- Para crear la base de datos:
+        context.Database.EnsureCreated()
+        Este comando lee nuestras clases y crea una base de datos sqlite automaticamente con todas las tablas y relaciones
+
+    1- Para realizar consultas a la base de datos se utiliza:
+        Todo lo de linq, por ej:
+        context.Alumnos.Where(...)
+        Aca tenemos que usar linq que vimos en clase
+ 
+    2- Para agregar algo a la base de datos se utiliza:
+        context.Add(objeto)
+ 
+    3- Para eliminar algo de la base de datos:
+        context.Remove(objeto)
+ 
+    4-Para persistir los datos:
+        context.SaveChanges()
+
+    Al usar el paso 2 y 3, realizamos cambios locales en la base de datos que se persisten cuando usamos el paso 4, mientras tanto el archivo solo se modifica en memoria ram.
