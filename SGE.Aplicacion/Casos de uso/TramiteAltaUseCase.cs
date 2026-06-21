@@ -1,6 +1,6 @@
 public class TramiteAltaUseCase(ITramiteRepository repo, IAutorizacionService autorizacion, ActualizacionEstadoExpedienteService servicio)
 {
-    public void Ejecutar(TramiteRequest request)
+    public void Ejecutar(AgregarTramiteRequest request)
     {
         if (!autorizacion.PoseeElPermiso(request.UsuarioID, Permiso.TramiteAlta))
         {
