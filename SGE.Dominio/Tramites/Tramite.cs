@@ -20,6 +20,10 @@ public class Tramite
     public Tramite(Guid expedienteId,ContenidoTramite contenido)
     {
         //creo el tramite
+        if (expedienteId == Guid.Empty)
+        {
+            throw new DominioException("El ID del expediente no puede estar vacío.");
+        }
         Id = Guid.NewGuid();
         ExpedienteId=expedienteId ;
         Etiqueta = 0;
