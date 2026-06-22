@@ -47,11 +47,9 @@ public class TramiteTxtRepository : ITramiteRepository
                 }
             }
         }
-        if(tramiteEncontrado != null)
-        {
-            return tramiteEncontrado;
-        }
-        throw new RepositoryException("Trámite no encontrado.");//esto deberia ser una repositoryException
+
+        return tramiteEncontrado;//si devuelve null, da error en caso de uso
+        //esto deberia ser una repositoryException
     }
     
     //devuelve un IEnumerable de tramites, esto se hace para poder mostrar todos los tramites disponibles
@@ -102,7 +100,7 @@ public class TramiteTxtRepository : ITramiteRepository
             tramitesList[index] = tramite;
             GuardarTodos(tramitesList);
         }
-        throw new RepositoryException("Trámite no encontrado para modificar.");
+        else{throw new RepositoryException("Trámite no encontrado para modificar.");}
     }
     //este metodo es para eliminar todos los tramites que tengan el mismo expedienteId, esto se hace porque si se elimina un expediente, se deben eliminar todos los tramites asociados a ese expediente
     public void EliminarTramitesPorExpedienteId(Guid idExpediente)

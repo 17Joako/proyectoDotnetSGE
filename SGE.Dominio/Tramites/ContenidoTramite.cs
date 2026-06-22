@@ -2,9 +2,10 @@ public record class ContenidoTramite {
     public String contenido{ get; init; }
     public ContenidoTramite(String contenido)
     {
-        if (!contenido.IsWhiteSpace())
+        if (string.IsNullOrEmpty(contenido))
         {
-            this.contenido = contenido;
+            throw new DominioException("El contenido no puede estar en blanco.");
         }
-        else throw new DominioException("El contenido no puede estar en blanco.");}
+        this.contenido = contenido;
+    }
 }
