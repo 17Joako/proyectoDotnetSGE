@@ -68,7 +68,7 @@ public class TramiteTxtRepository : ITramiteRepository
                     (
                         Guid.Parse(partes[0]),
                         Guid.Parse(partes[1]),
-                        Enum.Parse<Etiqueta>(partes[2]),
+                        Enum.Parse<EtiquetaTramites>(partes[2]),
                         new ContenidoTramite(partes[3]),
                         DateTime.Parse(partes[4]),
                         DateTime.Parse(partes[5]),

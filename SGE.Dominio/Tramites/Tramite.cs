@@ -1,13 +1,20 @@
 public class Tramite
 {   public Guid Id { get;private set;} //guid del Tramite
     public Guid ExpedienteId { get; private set;}//recibe guid del Expediente 
-    public Etiqueta Etiqueta { get; private set;}//esto es el tipo enumerativo
-    public ContenidoTramite Contenido { get; init; }//aca se almacenan los datos de texto o string
+    public EtiquetaTramites Etiqueta { get; private set;}//esto es el tipo enumerativo
+    public ContenidoTramite Contenido { get; private set; }//aca se almacenan los datos de texto o string
     public DateTime FechaCreacion { get;private set;}//cuando se creo
     public DateTime FechaUltimaModificacion{ get;private set; }//cuando se modifico la ultima vez la entidad
     public Guid UsuarioUltimoCambio {get;private set; }//quien fue la ultima persona que lo modifico
 
-   private Tramite (Guid id, Guid expedienteId, Etiqueta etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio) // Constructor privado para la reconstrucción desde la base de datos
+    // constructor para altas de tramites
+    public Tramite(Guid expedienteId,ContenidoTramite contenido) 
+    {
+        DateTime FechaCreacion = DateTime.Now;
+        new Tramite(Guid.NewGuid(), expedienteId, 0, contenido, FechaCreacion, FechaCreacion, expedienteId);
+    }
+   // Constructor privado para la reconstrucción desde la base de datos
+   private Tramite (Guid id, Guid expedienteId, EtiquetaTramites etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio) 
     {
         Id = id;
         ExpedienteId=expedienteId;
@@ -17,21 +24,20 @@ public class Tramite
         FechaUltimaModificacion = fechaUltimaModificacion;
         UsuarioUltimoCambio=usuarioUltimoCambio;
     } 
-    public Tramite(Guid expedienteId,ContenidoTramite contenido)
-    {
-        //creo el tramite
-        Id = Guid.NewGuid();
-        ExpedienteId=expedienteId ;
-        Etiqueta = 0;
-        Contenido = contenido;
-        FechaCreacion = DateTime.Now;
-        FechaUltimaModificacion = this.FechaCreacion;
-        UsuarioUltimoCambio = this.ExpedienteId;
-    }
-    public static Tramite Reconstruir(Guid id, Guid expedienteId, Etiqueta etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio)
+    public static Tramite Reconstruir(Guid id, Guid expedienteId, EtiquetaTramites etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio)
     {
          //me mandan los datos desde la BD y yo reconstruyo el objeto
         return new Tramite(id, expedienteId, etiqueta, contenido, fechaCreacion, fechaUltimaModificacion, usuarioUltimoCambio);
+    }
+
+    //metodo para modificar el tramite, se modifica el contenido, la etiqueta, el expediente id, la fecha de ultima modificacion y el usuario que hizo el ultimo cambio
+    public void ModificarTramite(ContenidoTramite nuevoContenido, EtiquetaTramites nuevaEtiqueta, Guid nuevoExpedienteId, Guid usuarioId)
+    {
+        this.Contenido = nuevoContenido;
+        this.Etiqueta = nuevaEtiqueta;
+        this.ExpedienteId = nuevoExpedienteId;
+        FechaUltimaModificacion = DateTime.Now;
+        UsuarioUltimoCambio = usuarioId;
     }
 
 }

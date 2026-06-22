@@ -1,6 +1,6 @@
 public class ExpedienteBajaUseCase(IExpedienteRepository repoExpediente, ITramiteRepository repoTramite, IAutorizacionService autorizacion)
 {
-    public void Ejecutar(AgregarExpedienteRequest request, Guid usuarioId)
+    public void Ejecutar(EliminarExpedienteRequest request, Guid usuarioId)
     {
         if (!autorizacion.PoseeElPermiso(usuarioId, Permiso.ExpedienteBaja))
         {
