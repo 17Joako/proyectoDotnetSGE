@@ -1,4 +1,4 @@
-public class ExpedienteAltaUseCase(IExpedienteRepository repositorio, IAutorizacionService autorizacion)
+public class ExpedienteAltaUseCase(IExpedienteRepository repositorio, IAutorizacionService autorizacion, IUnidadDeTrabajo unidadDeTrabajo)
 {
     public void Ejecutar(AgregarExpedienteRequest request, Guid usuarioId)
     {
@@ -8,5 +8,6 @@ public class ExpedienteAltaUseCase(IExpedienteRepository repositorio, IAutorizac
         }
         var expediente = new Expediente(request.Caratula, request.FechaCracion);
         repositorio.AgregarExpediente(expediente);
+        unidadDeTrabajo.Guardar();
     }
 }

@@ -1,4 +1,25 @@
+using SGE.Infraestructura;
+using SGE.WebApi;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ManejadorDeExceptionsGlobales>();
+
+var connectionString = builder.Configuration.GetConnectionString("SGEDb");
+builder.Services.AddDbContext<SgeContext>(options =>
+    options.UseSqlite(connectionString));
+
+//repositorios
+    builder.Services.AddScoped<ITramiteRepository, TramiteRepository>();
+    builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajoRepository>();
+
+//casos de uso
+    builder.Services.AddScoped<TramiteAltaUseCase>();
+    builder.Services.AddScoped<TramiteBajaUseCase>();
+    builder.Services.AddScoped<ModificarTramiteUseCase>();
+    builder.Services.AddScoped<ListarTramitesUseCase>();
+    builder.Services.AddScoped<ListarTramitesPorExpedienteUseCase>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -6,36 +27,16 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+/*if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();*/
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.MapGet("/", () => "funciona");
+SgeContext.Inicializar();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

@@ -1,4 +1,4 @@
-public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository)
+public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUnidadDeTrabajo unidadDeTrabajo)
 {
     public void Ejecutar(string nombre, string correoElectronico, string contrasena, bool esAdministrador, Permiso permisos)
     {
@@ -21,6 +21,7 @@ public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository)
 
         // Guardar el nuevo usuario en el repositorio
         _usuarioRepository.Agregar(nuevoUsuario);
+        unidadDeTrabajo.Guardar();
     }
 
     private string HashContrasena(string contrasena)

@@ -1,4 +1,4 @@
-public class ExpedienteBajaUseCase(IExpedienteRepository repoExpediente, ITramiteRepository repoTramite, IAutorizacionService autorizacion)
+public class ExpedienteBajaUseCase(IExpedienteRepository repoExpediente, ITramiteRepository repoTramite, IAutorizacionService autorizacion, IUnidadDeTrabajo unidadDeTrabajo)
 {
     public void Ejecutar(EliminarExpedienteRequest request, Guid usuarioId)
     {
@@ -8,5 +8,6 @@ public class ExpedienteBajaUseCase(IExpedienteRepository repoExpediente, ITramit
         }
         repoTramite.EliminarTramitesPorExpedienteId(request.Id);
         repoExpediente.EliminarExpediente(request.Id);
+        unidadDeTrabajo.Guardar();
     }
 }

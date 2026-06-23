@@ -1,4 +1,4 @@
-public class CambiarEstadoExpedienteUseCase(IExpedienteRepository repo, IAutorizacionService autorizacon)
+public class CambiarEstadoExpedienteUseCase(IExpedienteRepository repo, IAutorizacionService autorizacon, IUnidadDeTrabajo unidadDeTrabajo)
 {
     public void Ejecutar(CambiarEstadoRequest request)
     {
@@ -8,5 +8,6 @@ public class CambiarEstadoExpedienteUseCase(IExpedienteRepository repo, IAutoriz
         }
         Expediente E= repo.ObtenerPorId(request.Id);
         E.CambiarEstado(request.NuevoEstado, request.UsuarioId);
+        unidadDeTrabajo.Guardar();
     }
 }

@@ -1,6 +1,7 @@
 public class ModificarCaratulaExpedienteUseCase(
     IExpedienteRepository expedienteRepository,
-    IAutorizacionService autorizacionService
+    IAutorizacionService autorizacionService,
+    IUnidadDeTrabajo unidadDeTrabajo
 )
 {
     public void Ejecutar(ModificarCaratulaRequest request)
@@ -11,5 +12,6 @@ public class ModificarCaratulaExpedienteUseCase(
         }
         var expediente = expedienteRepository.ObtenerPorId(request.Id);
         expediente.ModificarCaratula(request.Caratula, request.UsuarioId, request.FechaDeCambio);
+        unidadDeTrabajo.Guardar();
     }
 }

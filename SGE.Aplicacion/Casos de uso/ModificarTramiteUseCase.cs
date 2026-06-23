@@ -1,4 +1,4 @@
-public class ModificarTramiteUseCase(ITramiteRepository repo, IAutorizacionService autorizacion, ActualizacionEstadoExpedienteService servicio)
+public class ModificarTramiteUseCase(ITramiteRepository repo, IAutorizacionService autorizacion, ActualizacionEstadoExpedienteService servicio, IUnidadDeTrabajo unidadDeTrabajo)
 {
     public void Ejecutar(ModificarTramiteRequest request)
     {
@@ -6,7 +6,8 @@ public class ModificarTramiteUseCase(ITramiteRepository repo, IAutorizacionServi
         {
             throw new AutorizacionException("El usuario no tiene permiso para modificar trámites.");
         }
-        repo.ModificarTramite(request.nuevoContenido, request.nuevaEtiqueta, request.nuevoExpedienteId);
+        repo.ModificarTramite(request.id, request.nuevoContenido, request.nuevaEtiqueta, request.nuevoExpedienteId, request.usuarioId);
         servicio.ActualizarEstadoExpediente(request.nuevoExpedienteId, request.usuarioId);
+        unidadDeTrabajo.Guardar();
     }
 }
