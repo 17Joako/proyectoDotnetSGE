@@ -1,4 +1,4 @@
-public class TramiteAltaUseCase(ITramiteRepository repo, IAutorizacionService autorizacion, ActualizacionEstadoExpedienteService servicio)
+public class TramiteAltaUseCase(ITramiteRepository repo, IAutorizacionService autorizacion, ActualizacionEstadoExpedienteService servicio, IUnidadDeTrabajo unidadDeTrabajo)
 {
     public void Ejecutar(AgregarTramiteRequest request)
     {
@@ -9,5 +9,6 @@ public class TramiteAltaUseCase(ITramiteRepository repo, IAutorizacionService au
         Tramite t= new Tramite(request.ExpedienteID, request.Contenido);
         repo.AgregarTramite(t);
         servicio.ActualizarEstadoExpediente(request.ExpedienteID, request.UsuarioID);
+        unidadDeTrabajo.Guardar();
     }
 }

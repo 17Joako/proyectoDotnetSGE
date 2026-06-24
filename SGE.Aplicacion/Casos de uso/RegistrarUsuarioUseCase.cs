@@ -1,4 +1,4 @@
-public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository)
+public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUnidadDeTrabajo unidadDeTrabajo)
 {
     public void Ejecutar(RegistrarUsuarioRequest request)
     {

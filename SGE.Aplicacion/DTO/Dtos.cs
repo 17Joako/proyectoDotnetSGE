@@ -18,7 +18,7 @@ public record class obtenerExpedientePorIdResponse(Expediente Expediente, IEnume
 public record class AgregarTramiteRequest(Guid UsuarioID, Guid ExpedienteID, ContenidoTramite Contenido);
 
 public record class EliminarTramiteRequest(Guid UsuarioID, Guid Id);
-public record class ModificarTramiteRequest(ContenidoTramite nuevoContenido, EtiquetaTramites nuevaEtiqueta, Guid nuevoExpedienteId, Guid usuarioId);
+public record class ModificarTramiteRequest(Guid id, ContenidoTramite nuevoContenido, EtiquetaTramites nuevaEtiqueta, Guid nuevoExpedienteId, Guid usuarioId);
 
 public record class ListarTramitesResponse(IEnumerable<Tramite> Tramites);
 public record class ListarExpedientesResponse(IEnumerable<Expediente> Expedientes);
