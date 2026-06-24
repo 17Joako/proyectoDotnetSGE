@@ -1,9 +1,13 @@
 using System.Security.Cryptography.X509Certificates;
 
-public class AutorizacionProvisionalService: IAutorizacionService
+public class AutorizacionService: IAutorizacionService
 {
-    public bool PoseeElPermiso(Guid idUsuario, Permiso permiso)
+    public bool PoseeElPermiso( string permiso, List<string> permisosUsuario)
     {
-        return true;
+        if (permisosUsuario == null || permisosUsuario.Count == 0)
+        {
+            return false;
+        }
+        return permisosUsuario.Contains(permiso);
     }
 }

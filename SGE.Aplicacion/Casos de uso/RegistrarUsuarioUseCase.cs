@@ -1,32 +1,19 @@
 public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository)
 {
-    public void Ejecutar(string nombre, string correoElectronico, string contrasena, bool esAdministrador, Permiso permisos)
+    public void Ejecutar(RegistrarUsuarioRequest request)
     {
         // Validar que el correo electrónico no esté registrado
-        if (_usuarioRepository.ExisteCorreoElectronico(correoElectronico))
+        var usuario = _usuarioRepository.BuscarPersona(request.CorreoElectronico);
+        if (usuario != null)
         {
-            throw new Exception("El correo electrónico ya está registrado.");
+            throw new NegocioException("El correo electrónico ya está registrado.");
         }
-
-        // Crear un nuevo usuario
-        var nuevoUsuario = new Usuario
-        {
-            Id = Guid.NewGuid(),
-            Nombre = nombre,
-            CorreoElectronico = correoElectronico,
-            ContrasenaHash = HashContrasena(contrasena),
-            EsAdministrador = esAdministrador,
-            ListaPermisos = permisos
-        };
-
+        // Crear un nuevo usuario 
         // Guardar el nuevo usuario en el repositorio
-        _usuarioRepository.Agregar(nuevoUsuario);
-    }
-
-    private string HashContrasena(string contrasena)
-    {
-        // Implementar un método de hashing seguro para la contraseña
-        // Por ejemplo, utilizando BCrypt o PBKDF2
-        return BCrypt.Net.BCrypt.HashPassword(contrasena);
+        _usuarioRepository.Agregar(
+            request.Nombre,
+            request.CorreoElectronico,
+            request.Contrasena//esto lo modifica en el repository o aca
+            );//aca responder que se agrego con exito?preguntar viernes
     }
 }

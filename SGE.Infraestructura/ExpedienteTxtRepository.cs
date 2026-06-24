@@ -1,6 +1,6 @@
 public class ExpedienteTxtRepository: IExpedienteRepository
 {   //debo hacer 4 cosas principalmente escribir el txt, modificar el txt, eliminar el txt y buscar en el txt,  luego debo hacer los metodos correspondientes para cada una de esas acciones 
-    readonly string rutaArchivo = @"Expediente.txt";
+    readonly string rutaArchivo = @"..\SGE.Repositorios\Expediente.txt";//preguntar mañana que onda
     
     /*
     Se podria hacer asi para que el repositorio sea reutilizable y no dependa de una ruta fija, 
@@ -67,7 +67,7 @@ public class ExpedienteTxtRepository: IExpedienteRepository
             foreach (var linea in lineas)
             {
                 var partes = linea.Split(';');
-                if (partes.Length == 7)
+                if (partes.Length == 6)
                 {   
                     expedientes.Add(Expediente.Reconstruir
                     (
@@ -103,6 +103,6 @@ public class ExpedienteTxtRepository: IExpedienteRepository
         {
             expedientes[indice] = expediente;
         }
-        throw new RepositoryException("Expediente no encontrado para modificar.");
+        else{throw new RepositoryException("Expediente no encontrado para modificar.");}
     }
 }
