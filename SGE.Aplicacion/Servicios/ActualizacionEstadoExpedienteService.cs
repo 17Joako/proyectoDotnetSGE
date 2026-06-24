@@ -2,7 +2,7 @@ public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo,ITr
 {
     public void ActualizarEstadoExpediente(Guid ID, Guid IDUsuario)
     {
-        var expediente = repo.ObtenerPorId(ID);
+        var expedientes = repo.ObtenerExpedientePorId(ID);
         var tramites = repo2.ObtenerPorExpedienteId(ID);
         EtiquetaTramites? ultimaEtiqueta = null;
         Tramite? ultimoTramite = tramites.FirstOrDefault();
@@ -14,10 +14,10 @@ public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo,ITr
                     ultimaEtiqueta = tramite.Etiqueta;
                 }
         }
-           bool cambio= expediente.ActualizarEstado(ultimaEtiqueta, IDUsuario);
+           bool cambio= expedientes.ActualizarEstado(ultimaEtiqueta, IDUsuario);
         if (cambio)
         {
-            repo.ModificarExpediente(expediente);
+            repo.ModificarCaratula(ID, expedientes.Caratula, IDUsuario);
         }
     }
-} // me está tirando un erro que nose que es, pero solo me sale a mi, no a mis dos compañeros
+}

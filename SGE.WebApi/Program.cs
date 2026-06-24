@@ -11,10 +11,17 @@ builder.Services.AddDbContext<SgeContext>(options =>
     options.UseSqlite(connectionString));
 
 //repositorios
+    builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
     builder.Services.AddScoped<ITramiteRepository, TramiteRepository>();
     builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajoRepository>();
 
 //casos de uso
+    builder.Services.AddScoped<ExpedienteAltaUseCase>();
+    builder.Services.AddScoped<ExpedienteBajaUseCase>();
+    builder.Services.AddScoped<CambiarEstadoExpedienteUseCase>();
+    builder.Services.AddScoped<ModificarCaratulaExpedienteUseCase>();
+    builder.Services.AddScoped<ListarExpedientesUseCase>();
+    builder.Services.AddScoped<ObtenerExpedientePorIdUseCase>();
     builder.Services.AddScoped<TramiteAltaUseCase>();
     builder.Services.AddScoped<TramiteBajaUseCase>();
     builder.Services.AddScoped<ModificarTramiteUseCase>();

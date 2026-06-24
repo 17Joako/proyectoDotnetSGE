@@ -6,8 +6,8 @@ public class ExpedienteBajaUseCase(IExpedienteRepository repoExpediente, ITramit
         {
             throw new AutorizacionException("El usuario no tiene permiso para eliminar expedientes.");
         }
-        repoTramite.EliminarTramitesPorExpedienteId(request.Id);
-        repoExpediente.EliminarExpediente(request.Id);
+        repoTramite.EliminarTramitesPorExpedienteId(request.IdExpediente);
+        repoExpediente.EliminarExpediente(request.IdExpediente);
         unidadDeTrabajo.Guardar();
     }
 }
