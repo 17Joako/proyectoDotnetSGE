@@ -1,36 +1,31 @@
 public class Expediente
 {
-    public Guid Id { get;private set; }
-    public CaratulaExpedientes Caratula { get; private set; }
-    public DateTime FechaCreacion { get;private set; }
-    public DateTime FechaUltimaModificacion { get;private set; }
-    public Guid UsuarioUltimoCambio { get;private set; }
-    public EstadoExpedientes Estado  { get;private set; }
-    
-    public Expediente(CaratulaExpedientes caratula, DateTime fechaCreacion)
+    public Guid Id { get;private set; } // ID del expediente
+    public CaratulaExpedientes Caratula { get; private set; } // Caratula del expediente
+    public DateTime FechaCreacion { get;private set; } // Fecha de la creación del expediente
+    public DateTime FechaUltimaModificacion { get;private set; } // Fecha de la última modificación del expediente
+    public Guid UsuarioUltimoCambio { get;private set; } // ID del usuario que realizó la última modificación
+    public EstadoExpedientes Estado  { get;private set; } // Estado del expediente (RecienIniciado, ParaResolver, ConResolucion, etc.)
+    // Constructor de un nuevo expediente. Recibe la carátula, la fecha de la creación y el ID del usuario que lo está creando
+    // Se genera el ID del expediente al momento de la creación y se establece en estado "Recien Iniciado"
+    public Expediente(CaratulaExpedientes caratula, DateTime fechaCreacion, Guid IdUsuario)
     {
-        Guid Id = Guid.NewGuid();
-        new Expediente(Id, caratula, fechaCreacion, fechaCreacion, Id, EstadoExpedientes.RecienIniciado);
+        new Expediente(Guid.NewGuid(), caratula, fechaCreacion, fechaCreacion, IdUsuario, EstadoExpedientes.RecienIniciado);
     }
     // Modificar caratula de expediente en caso de error al momento de la creación
-    public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario,DateTime fechaCambio)
+    public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario)
     {
         this.Caratula = nuevaCaratula;
         this.UsuarioUltimoCambio = idUsuario;
-        this.FechaUltimaModificacion = fechaCambio;
+        this.FechaUltimaModificacion = DateTime.Now;
     }
+    // Actualiza el estado del expediente automáticamente en base a la etiqueta del último tramite, que se recibe por parámetro, y el ID del usuario que solicita el cambio
     public bool ActualizarEstado (EtiquetaTramites? ultimaEtiqueta, Guid idUsuario)
     {
-        this.UsuarioUltimoCambio = idUsuario;//Desconozco cuando llamar esto,
-        this.FechaUltimaModificacion = DateTime.Now;
+        this.UsuarioUltimoCambio = idUsuario;
         if (ultimaEtiqueta == null)
         {
             this.Estado = EstadoExpedientes.RecienIniciado;
-            return true;
-        }
-        else if (ultimaEtiqueta == EtiquetaTramites.Resolucion)
-        {
-            this.Estado = EstadoExpedientes.ConResolucion;
             return true;
         }
         else if (ultimaEtiqueta == EtiquetaTramites.PaseAEstudio)
@@ -38,15 +33,20 @@ public class Expediente
             this.Estado = EstadoExpedientes.ParaResolver;
             return true;
         }
+        else if (ultimaEtiqueta == EtiquetaTramites.Resolucion)
+        {
+            this.Estado = EstadoExpedientes.ConResolucion;
+            return true;
+        }
         else if (ultimaEtiqueta == EtiquetaTramites.PaseAlArchivo)
         {
             this.Estado = EstadoExpedientes.Finalizado;
             return true;
         }
-        this.UsuarioUltimoCambio = idUsuario;
         this.FechaUltimaModificacion = DateTime.Now;
         return false;
     }
+    // Cambia manualmente el estado del expediente al estado especificado
     public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
     {
         this.Estado = nuevoEstado;
