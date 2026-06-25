@@ -1,16 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+namespace SGE.Infraestructura;
 public class UsuarioRepository : IUsuarioRepository
 {
-    public UsuarioRepository(SGEContext context)
+    protected readonly SgeContext _context;
+    public UsuarioRepository(SgeContext context)
     {
-        _context = context;//esto hay que cambiarlo por una inyeccion de dependencias, para poder usar el contexto de la base de datos
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
-
-    void Agregar(String nombre, string correoElectronico, string contrasenaHasheada)
+    public void Agregar(String nombre, string correoElectronico,string salt, string contrasenaHasheada)
     {
         var usuario = new Usuario
         (
             nombre,
             correoElectronico,
+            salt,
             contrasenaHasheada,
             false,
             new List<PermisoUsuarios>()
@@ -18,7 +21,7 @@ public class UsuarioRepository : IUsuarioRepository
         _context.Usuarios.Add(usuario);
         _context.SaveChanges();
     }
-    void Eliminar(Guid id)
+    public void Eliminar(Guid id)
     {
         var usuario = _context.Usuarios.Find(id);
         if (usuario != null)
@@ -31,7 +34,7 @@ public class UsuarioRepository : IUsuarioRepository
             throw new Exception("Usuario no encontrado.");
         }
     }
-    void modificar(Usuario usuario)
+    public void Modificar(Usuario usuario)
     {
         var usuarioExistente = _context.Usuarios.Find(usuario.Id);
         if (usuarioExistente == null)
@@ -41,38 +44,59 @@ public class UsuarioRepository : IUsuarioRepository
         _context.Usuarios.Update(usuario);
         _context.SaveChanges();//revisar
     }
-    Usuario ObtenerPorId(Guid id)
+    public Usuario ObtenerPorId(Guid id)
     {
-        return _context.Usuarios.Find(id);
+        var usuario = _context.Usuarios.Find(id);
+        if (usuario == null)
+        {
+            throw new Exception("Usuario no encontrado.");
+        }
+        return usuario;
+    }
+    public Usuario ObtenerPorCorreoElectronico(string correoElectronico)
+    {
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.CorreoElectronico == correoElectronico);
+        if (usuario == null)
+        {
+            throw new Exception("Usuario no encontrado.");
+        }
+        return usuario;
+    }
+    public List<Usuario> ListarTodos()
+    {
+        List<Usuario> usuarios = _context.Usuarios.ToList();
+        return usuarios;
     }
 
-    List<Usuario> listarTodos()
+    public bool TienePermiso(Guid usuarioId)
     {
-        return _context.Usuarios.ToList();
-    }
-    public bool TienePermiso(int usuarioId)
-    {
-        var usuario = _context.Usuarios.where(u => u.Id == usuarioId).FirstOrDefault(null);
-        if(usuario != null && usuario.EsAdmin)
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+        if(usuario != null && usuario.EsAdministrador)
         {
             return true;
         }
         return false;
     }
-
-    public void ModificarPermiso(int usuarioId, List<string> permisosNuevos)
+    public void ModificarUsuario(string nombre, string correoElectronico, string contrasenaHasheada)
     {
-        var usuario = _context.Usuarios.where(u => u.Id == usuarioId).FirstOrDefault(null);
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.CorreoElectronico == correoElectronico);
         if (usuario == null)
         {
             throw new Exception("Usuario no encontrado.");
         }
-        usuario.Permisos = permisosNuevos;
+        usuario.ModificarUsuario(nombre, correoElectronico, contrasenaHasheada);
+
         _context.SaveChanges();
     }
 
-    public IEnumerable<Usuario> listarTodos()
+    public void ModificarPermiso(Guid usuarioId, List<PermisoUsuarios> permisosNuevos)
     {
-        return _context.Usuarios.ToList();
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+        if (usuario == null)
+        {
+            throw new Exception("Usuario no encontrado.");
+        }
+        usuario.ModificarPermisos(permisosNuevos);
+        _context.SaveChanges();
     }
 }

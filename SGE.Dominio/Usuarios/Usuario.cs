@@ -7,8 +7,9 @@ public class Usuario
     public bool EsAdministrador { get; private set;} //Flag para marcar un usuario como admin
     public List<PermisoUsuarios> ListaPermisos { get; private set;} //Lista de todos los permisos que el usuario posee
 
+    public string Salt { get; private set;} //Salt para el hash de la contraseña
     //Constructor para el registro de un nuevo usuario
-    public Usuario (string Nombre, string CorreoElectronico, string ContrasenaHash, bool EsAdministrador, List<PermisoUsuarios> listaPermisos)
+    public Usuario (string Nombre, string CorreoElectronico,String salt, string ContrasenaHash, bool EsAdministrador, List<PermisoUsuarios> listaPermisos)
     {
         if (string.IsNullOrEmpty(Nombre) || string.IsNullOrEmpty(CorreoElectronico) || string.IsNullOrEmpty(ContrasenaHash))
         {
@@ -17,6 +18,7 @@ public class Usuario
         this.Id = Guid.NewGuid();
         this.Nombre = Nombre;
         this.CorreoElectronico = CorreoElectronico;
+        this.Salt = Salt;
         this.ContrasenaHash = ContrasenaHash;
         this.EsAdministrador = EsAdministrador;
         this.ListaPermisos = listaPermisos;
@@ -27,6 +29,7 @@ public class Usuario
         this.Id = id;
         this.Nombre = Nombre;
         this.CorreoElectronico = CorreoElectronico;
+        this.Salt = Salt;
         this.ContrasenaHash = ContrasenaHash;
         this.EsAdministrador = EsAdministrador;
         this.ListaPermisos = listaPermisos;
@@ -38,7 +41,7 @@ public class Usuario
     }
     
 
-    public void Modificar(string nombre, string correoElectronico, string contrasenaHash)
+    public void ModificarUsuario(string nombre, string correoElectronico, string contrasenaHash)
     {
         if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
         {
@@ -47,5 +50,9 @@ public class Usuario
         this.Nombre = nombre;
         this.CorreoElectronico = correoElectronico;
         this.ContrasenaHash = contrasenaHash;
+    }
+    public void ModificarPermisos(List<PermisoUsuarios> permisos)
+    {
+        this.ListaPermisos = permisos;
     }
 }
