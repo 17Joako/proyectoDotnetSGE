@@ -1,8 +1,9 @@
 public interface IExpedienteRepository
 {
     void AgregarExpediente(Expediente expediente);
-    void EliminarExpediente(Guid id);
-    void ModificarExpediente(Expediente expediente);
-    Expediente ObtenerPorId(Guid id);
+    void EliminarExpediente(Guid idExpediente);
+    void CambiarEstado(Guid idExpediente, EstadoExpedientes nuevoEstado, Guid idUsuario);
+    void ModificarCaratula(Guid idExpediente, CaratulaExpedientes nuevaCaratula, Guid idUsuario);
     IEnumerable<Expediente> BuscarTodos();
+    Expediente ObtenerExpedientePorId(Guid idExpediente);
 }
