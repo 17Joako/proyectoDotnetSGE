@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ManejadorDeExceptionsGlobales>();
 
-var connectionString = builder.Configuration.GetConnectionString("SGEDb");
+var connectionString = builder.Configuration.GetConnectionString("SGEDb") ?? "Data Source=sge.db";
 builder.Services.AddDbContext<SgeContext>(options =>
     options.UseSqlite(connectionString));
 
@@ -16,6 +16,8 @@ builder.Services.AddDbContext<SgeContext>(options =>
     builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajoRepository>();
 
 //casos de uso
+    builder.Services.AddScoped<IAutorizacionService, AutorizacionService>();
+    builder.Services.AddScoped<ActualizacionEstadoExpedienteService>();
     builder.Services.AddScoped<ExpedienteAltaUseCase>();
     builder.Services.AddScoped<ExpedienteBajaUseCase>();
     builder.Services.AddScoped<CambiarEstadoExpedienteUseCase>();
@@ -43,7 +45,7 @@ app.UseExceptionHandler();
 
 app.UseHttpsRedirection();*/
 
-app.MapGet("/", () => "funciona");
+app.MapGet("/", () => "ARRRRRANCAAAAAAAAAAA");
 SgeContext.Inicializar();
 
 app.Run();
