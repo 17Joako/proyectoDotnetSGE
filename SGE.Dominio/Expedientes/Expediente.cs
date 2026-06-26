@@ -1,16 +1,26 @@
 public class Expediente
 {
-    public Guid Id { get;private set; } // ID del expediente
+    public Guid Id { get; private set; } // ID del expediente
     public CaratulaExpedientes Caratula { get; private set; } // Caratula del expediente
-    public DateTime FechaCreacion { get;private set; } // Fecha de la creación del expediente
-    public DateTime FechaUltimaModificacion { get;private set; } // Fecha de la última modificación del expediente
-    public Guid UsuarioUltimoCambio { get;private set; } // ID del usuario que realizó la última modificación
-    public EstadoExpedientes Estado  { get;private set; } // Estado del expediente (RecienIniciado, ParaResolver, ConResolucion, etc.)
+    public DateTime FechaCreacion { get; private set; } // Fecha de la creación del expediente
+    public DateTime FechaUltimaModificacion { get; private set; } // Fecha de la última modificación del expediente
+    public Guid UsuarioUltimoCambio { get; private set; } // ID del usuario que realizó la última modificación
+    public EstadoExpedientes Estado { get; private set; } // Estado del expediente (RecienIniciado, ParaResolver, ConResolucion, etc.)
+
+    protected Expediente()
+    {
+    }
+
     // Constructor de un nuevo expediente. Recibe la carátula, la fecha de la creación y el ID del usuario que lo está creando
     // Se genera el ID del expediente al momento de la creación y se establece en estado "Recien Iniciado"
-    public Expediente(CaratulaExpedientes caratula, DateTime fechaCreacion, Guid IdUsuario)
+    public Expediente(CaratulaExpedientes caratula, DateTime fechaCreacion, Guid idUsuario)
     {
-        new Expediente(Guid.NewGuid(), caratula, fechaCreacion, fechaCreacion, IdUsuario, EstadoExpedientes.RecienIniciado);
+        Id = Guid.NewGuid();
+        Caratula = caratula;
+        FechaCreacion = fechaCreacion;
+        FechaUltimaModificacion = fechaCreacion;
+        UsuarioUltimoCambio = idUsuario;
+        Estado = EstadoExpedientes.RecienIniciado;
     }
     // Modificar caratula de expediente en caso de error al momento de la creación
     public void ModificarCaratula(CaratulaExpedientes nuevaCaratula, Guid idUsuario)

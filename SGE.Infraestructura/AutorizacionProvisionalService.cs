@@ -4,14 +4,14 @@ using SGE.Infraestructura;
 public class AutorizacionService: IAutorizacionService
 {
     private readonly SgeContext _context;
-    public bool PoseeElPermiso(Guid id, PermisoUsuarios permiso)
+    public AutorizacionService(SgeContext context)
     {
-        bool ret = false;
-        var usuario = _context. Usuarios.FirstOrDefault(u => u.Id == id);
-        if (usuario != null && usuario.ListaPermisos.Contains(permiso))
-        {
-            ret = true;
-        }
-        return ret;
+        _context = context;
+    }
+
+    public bool PoseeElPermiso(Guid id, Permiso permiso)
+    {
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == id);
+        return usuario != null && usuario.ListaPermisos.Contains((PermisoUsuarios)permiso);
     }
 }

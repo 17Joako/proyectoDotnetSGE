@@ -33,7 +33,7 @@ public record class RegistrarUsuarioRequest(string Nombre, string CorreoElectron
 //Loguear DTO
 public record class LoginRequest(string CorreoElectronico, string Contrasena);
 
-public record class LoginResponse(Usuario Usuario);
+public record class LoginResponse(String token);
 
 public record class ListarUsuariosRequest(Guid UsuarioId);
 

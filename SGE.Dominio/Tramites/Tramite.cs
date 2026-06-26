@@ -1,17 +1,28 @@
 public class Tramite
-{   public Guid Id { get;private set;} //guid del Tramite
-    public Guid ExpedienteId { get; private set;}//recibe guid del Expediente 
-    public EtiquetaTramites Etiqueta { get; private set;}//esto es el tipo enumerativo
-    public ContenidoTramite Contenido { get; private set; }//aca se almacenan los datos de texto o string
-    public DateTime FechaCreacion { get;private set;}//cuando se creo
-    public DateTime FechaUltimaModificacion{ get;private set; }//cuando se modifico la ultima vez la entidad
-    public Guid UsuarioUltimoCambio {get;private set; }//quien fue la ultima persona que lo modifico
+{
+    public Guid Id { get; private set; } //guid del Tramite
+    public Guid ExpedienteId { get; private set; } //recibe guid del Expediente 
+    public EtiquetaTramites Etiqueta { get; private set; } //esto es el tipo enumerativo
+    public ContenidoTramite Contenido { get; private set; } //aca se almacenan los datos de texto o string
+    public DateTime FechaCreacion { get; private set; } //cuando se creo
+    public DateTime FechaUltimaModificacion { get; private set; } //cuando se modifico la ultima vez la entidad
+    public Guid UsuarioUltimoCambio { get; private set; } //quien fue la ultima persona que lo modifico
+
+    protected Tramite()
+    {
+    }
 
     // constructor para altas de tramites
-    public Tramite(Guid expedienteId,ContenidoTramite contenido) 
+    public Tramite(Guid expedienteId, ContenidoTramite contenido)
     {
-        DateTime FechaCreacion = DateTime.Now;
-        new Tramite(Guid.NewGuid(), expedienteId, 0, contenido, FechaCreacion, FechaCreacion, expedienteId);
+        var fechaCreacion = DateTime.Now;
+        Id = Guid.NewGuid();
+        ExpedienteId = expedienteId;
+        Etiqueta = default;
+        Contenido = contenido;
+        FechaCreacion = fechaCreacion;
+        FechaUltimaModificacion = fechaCreacion;
+        UsuarioUltimoCambio = expedienteId;
     }
    // Constructor privado para la reconstrucción desde la base de datos
    private Tramite (Guid id, Guid expedienteId, EtiquetaTramites etiqueta,ContenidoTramite contenido,DateTime fechaCreacion,DateTime fechaUltimaModificacion,Guid usuarioUltimoCambio) 

@@ -16,6 +16,12 @@ builder.Services.AddDbContext<SgeContext>(options =>
     builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajoRepository>();
 
 //casos de uso
+    builder.Services.AddScoped<RegistrarUsuarioUseCase>();
+    builder.Services.AddScoped<ModificarMisDatosUseCase>();
+    builder.Services.AddScoped<LoginUseCase>();
+    builder.Services.AddScoped<EliminarUsuarioUseCase>();
+    builder.Services.AddScoped<ListarUsuariosUseCase>();
+    builder.Services.AddScoped<ModificarPermisosUsuarioUseCase>();
     builder.Services.AddScoped<IAutorizacionService, AutorizacionService>();
     builder.Services.AddScoped<ActualizacionEstadoExpedienteService>();
     builder.Services.AddScoped<ExpedienteAltaUseCase>();

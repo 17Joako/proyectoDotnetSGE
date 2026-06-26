@@ -15,6 +15,7 @@ public class LoginUseCase(IUsuarioRepository _usuarioRepository, IPasswordHasher
             throw new NegocioException("Contraseña incorrecta.");
         }
         
-        return new LoginResponse(usuario);//esto deberia cambiarlo a solo id de la persona
+        var token = Jwt.GenerarJwt(usuario);
+        return new LoginResponse(token);
     }
 }
