@@ -1,35 +1,63 @@
 public class Usuario
 {
-    public Guid Id { get; private set;} //guid de usuario
-    public string Nombre { get; private set;} //Nombvre del usuario
-    public string CorreoElectronico { get; private set;} //Correo electrónico del usuario
-    public string ContrasenaHash { get; private set;} //Contraseña del usuario en formato Hash
-    public bool EsAdministrador { get; private set;} //Flag para marcar un usuario como admin
-    public List<PermisoUsuarios> ListaPermisos { get; private set;} //Lista de todos los permisos que el usuario posee
+    public Guid Id { get; private set; } //guid de usuario
+    public string Nombre { get; private set; } //Nombvre del usuario
+    public string CorreoElectronico { get; private set; } //Correo electrónico del usuario
+    public string ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
+    public bool EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
+    public List<PermisoUsuarios> ListaPermisos { get; private set; } //Lista de todos los permisos que el usuario posee
+
+    public string Salt { get; private set; } //Salt para el hash de la contraseña
+
+    protected Usuario()
+    {
+    }
 
     //Constructor para el registro de un nuevo usuario
-    public Usuario (string Nombre, string CorreoElectronico, string ContrasenaHash, bool EsAdministrador, List<PermisoUsuarios> listaPermisos)
+    public Usuario(string nombre, string correoElectronico, string salt, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
     {
-        this.Id = Guid.NewGuid();
-        this.Nombre = Nombre;
-        this.CorreoElectronico = CorreoElectronico;
-        this.ContrasenaHash = ContrasenaHash;
-        this.EsAdministrador = EsAdministrador;
-        this.ListaPermisos = listaPermisos;
+        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
+        {
+            throw new ArgumentException("Todos los campos son requeridos.");
+        }
+        Id = Guid.NewGuid();
+        Nombre = nombre;
+        CorreoElectronico = correoElectronico;
+        Salt = salt;
+        ContrasenaHash = contrasenaHash;
+        EsAdministrador = esAdministrador;
+        ListaPermisos = listaPermisos ?? new List<PermisoUsuarios>();
     }
     //Constructor privado para la reconstrucción desde la base de datos
-    private Usuario(Guid id, string Nombre, string CorreoElectronico, string ContrasenaHash, bool EsAdministrador, List<PermisoUsuarios> listaPermisos)
+    private Usuario(Guid id, string nombre, string correoElectronico, string salt, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
     {
-        this.Id = id;
-        this.Nombre = Nombre;
-        this.CorreoElectronico = CorreoElectronico;
-        this.ContrasenaHash = ContrasenaHash;
-        this.EsAdministrador = EsAdministrador;
-        this.ListaPermisos = listaPermisos;
+        Id = id;
+        Nombre = nombre;
+        CorreoElectronico = correoElectronico;
+        Salt = salt;
+        ContrasenaHash = contrasenaHash;
+        EsAdministrador = esAdministrador;
+        ListaPermisos = listaPermisos ?? new List<PermisoUsuarios>();
     }
     //Recontructor de Usuario
-    public static Usuario Reconstruir(Guid id, string Nombre, string CorreoElectronico, string ContrasenaHash, bool EsAdministrador, List<PermisoUsuarios> listaPermisos)
+    public static Usuario Reconstruir(Guid id, string nombre, string correoElectronico, string salt, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
     {
-        return new Usuario(id, Nombre, CorreoElectronico, ContrasenaHash, EsAdministrador, listaPermisos);
+        return new Usuario(id, nombre, correoElectronico, salt, contrasenaHash, esAdministrador, listaPermisos);
+    }
+    
+
+    public void ModificarUsuario(string nombre, string correoElectronico, string contrasenaHash)
+    {
+        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
+        {
+            throw new ArgumentException("Todos los campos son requeridos.");
+        }
+        this.Nombre = nombre;
+        this.CorreoElectronico = correoElectronico;
+        this.ContrasenaHash = contrasenaHash;
+    }
+    public void ModificarPermisos(List<PermisoUsuarios> permisos)
+    {
+        this.ListaPermisos = permisos;
     }
 }

@@ -4,7 +4,8 @@ public record class ContenidoTramite {
     {
         if (!string.IsNullOrEmpty(contenido))
         {
-            this.contenido = contenido;
+            throw new DominioException("El contenido no puede estar en blanco.");
         }
-        else throw new DominioException("El contenido no puede estar en blanco.");}
+        this.contenido = contenido;
+    }
 }

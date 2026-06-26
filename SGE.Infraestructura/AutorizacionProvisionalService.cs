@@ -1,9 +1,17 @@
 using System.Security.Cryptography.X509Certificates;
+using SGE.Infraestructura;
 
-public class AutorizacionProvisionalService: IAutorizacionService
+public class AutorizacionService: IAutorizacionService
 {
-    public bool PoseeElPermiso(Guid idUsuario, Permiso permiso)
+    private readonly SgeContext _context;
+    public AutorizacionService(SgeContext context)
     {
-        return true;
+        _context = context;
+    }
+
+    public bool PoseeElPermiso(Guid id, Permiso permiso)
+    {
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == id);
+        return usuario != null && usuario.ListaPermisos.Contains((PermisoUsuarios)permiso);
     }
 }

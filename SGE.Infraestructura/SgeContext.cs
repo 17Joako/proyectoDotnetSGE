@@ -10,9 +10,21 @@ public class SgeContext : DbContext
 
     public DbSet<Usuario> Usuarios { get; set; }
     #nullable restore
+
+    public SgeContext()
+    {
+    }
+
+    public SgeContext(DbContextOptions<SgeContext> options) : base(options)
+    {
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=sge.db");
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlite("Data Source=sge.db");
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
