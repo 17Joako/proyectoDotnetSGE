@@ -6,6 +6,6 @@ public class ListarUsuariosUseCase(IUsuarioRepository repo)
         {
             throw new AutorizacionException("El usuario no tiene permiso para listar usuarios.");
         }
-        repo.ListarTodos();
+        repo.ListarTodos();//preguntar si deveria devolver todos los datos
     }
 }
