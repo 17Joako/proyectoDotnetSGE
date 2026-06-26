@@ -14,18 +14,12 @@ public class ExpedienteRepository : IExpedienteRepository
         _context.Expedientes.Add(expediente);
     }
 
-    // Método para la baja en cascada de un expediente
+    // Método para la baja de un expediente
     public void EliminarExpediente(Guid idExpediente)
     {
         var expediente = _context.Expedientes.Where(e => e.Id == idExpediente).FirstOrDefault();
         if (expediente != null)
         {
-            /*var tramites = _context.Tramites.Where(t => t.ExpedienteId == idExpediente).ToList(); 
-            if (tramites.Any())
-            {
-                _context.Tramites.RemoveRange(tramites);
-            }*/
-            // No estoy seguro si tengo que hacer acá la baja en cascada o eso se hace en el UseCase de baja de expediente y esto solamente borra el expediente
             _context.Expedientes.Remove(expediente);
         }
         else
