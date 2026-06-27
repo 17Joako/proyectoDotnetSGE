@@ -1,50 +1,31 @@
-// URL base de la API
-const API_URL = '/';
-
-// Ejecutar cuando el documento cargue
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', login);
-    }
-});
-
-async function login(event) {
-    event.preventDefault();
-
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
     const usuario = document.getElementById("usuario").value;
     const password = document.getElementById("password").value;
     const errorDiv = document.getElementById("error");
 
+    errorDiv.innerHTML = "";
+
     try {
-        const response = await fetch(`${API_URL}login`, {
-            method: "POST",
+        const response = await fetch('http://localhost:5299/login', { 
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                usuario,
-                password
-            })
+            body: JSON.stringify({ usuario, password })
         });
 
         if (!response.ok) {
-            errorDiv.textContent = "Usuario o contraseña incorrectos";
-            errorDiv.classList.add("show");
+            errorDiv.innerHTML = "Usuario o contraseña incorrectos";
             return;
         }
 
         const data = await response.json();
-        
-        // Guardar token en localStorage
         localStorage.setItem("token", data.token);
-        
-        // Redirigir a página principal
-        window.location.href = "/index.html";
+        window.location.href = "./index.html";
 
-    } catch (error) {
-        console.error("Error en login:", error);
-        errorDiv.textContent = "Error al conectar con el servidor";
-        errorDiv.classList.add("show");
+    } catch (err) {
+        console.error(err);
+        errorDiv.innerHTML = "Error de conexión con el servidor";
     }
-}
+});
