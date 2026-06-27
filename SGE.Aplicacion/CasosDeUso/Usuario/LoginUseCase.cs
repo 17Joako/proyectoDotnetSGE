@@ -20,5 +20,6 @@ public class LoginUseCase(IUsuarioRepository _usuarioRepository, IPasswordHasher
         
         var token = Jwt.GenerarJwt(usuario);
         return new LoginResponse(token);
+     
     }
 }
