@@ -1,8 +1,8 @@
 public class ListarUsuariosUseCase(IUsuarioRepository repo)
 {
-    public void Ejecutar(ListarUsuariosRequest request)
+    public void Ejecutar(Guid usuarioId)
     {
-        if (!repo.TienePermiso(request.UsuarioId))
+        if (!repo.TienePermiso(usuarioId))
         {
             throw new AutorizacionException("El usuario no tiene permiso para listar usuarios.");
         }

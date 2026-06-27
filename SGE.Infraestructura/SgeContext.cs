@@ -18,13 +18,13 @@ public class SgeContext : DbContext
     public SgeContext(DbContextOptions<SgeContext> options) : base(options)
     {
     }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlite("Data Source=sge.db");
-        }
+        optionsBuilder.UseSqlite("Data Source=sge.db");
+    }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
