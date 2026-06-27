@@ -1,4 +1,6 @@
 namespace SGE.WebApi.Endpoints.UsuariosEndpoint;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 public static class ExpedienteEndpoints
 {
@@ -7,46 +9,65 @@ public static class ExpedienteEndpoints
         var group = app.MapGroup("/expedientes")
             .WithTags("Expedientes");
 
-        group.MapPost("/", CambiarEstado);
-        group.MapPost("/", ExpedienteAlta);
-        group.MapGet("/", ExpedienteBaja);
+        // No requiere autorización
         group.MapPut("/ModificarExpediente", ListarExpedientes);
-        group.MapDelete("/EliminarExpediente", ModificarCaratula);
         group.MapPost("/login", ObtenerExpedientePorId);
+        // Requiere autorización
+        group.MapPost("/", CambiarEstado).RequireAuthorization(); // resolver que le pasa a esto
+        group.MapPost("/", ExpedienteAlta).RequireAuthorization();// x2
+        group.MapGet("/", ExpedienteBaja).RequireAuthorization();
+        group.MapDelete("/EliminarExpediente", ModificarCaratula).RequireAuthorization();
     }
     private static IResult CambiarEstado(
         CambiarEstadoRequest request,
-        CambiarEstadoExpedienteUseCase useCase)
+        CambiarEstadoExpedienteUseCase useCase,
+        ClaimsPrincipal user
+    )
     {
-        var dto = new CambiarEstadoRequest(request.IdUsuario, request.IdExpediente, request.NuevoEstado);
-        useCase.Ejecutar(dto);
+        var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Guid.Parse(userIdClaim!);
+        var dto = new CambiarEstadoRequest(request.IdExpediente, request.NuevoEstado);
+        useCase.Ejecutar(dto, userId);
 
         return Results.Ok(new { mensaje = "Estado cambiado" });
     }
     private static IResult ExpedienteAlta(
         AgregarExpedienteRequest request,
-        ExpedienteAltaUseCase useCase)
+        ExpedienteAltaUseCase useCase,
+        ClaimsPrincipal user
+    )
     {
-        var dto = new AgregarExpedienteRequest(request.Caratula, request.FechaCracion, request.IdUsuario);
-        useCase.Ejecutar(dto, request.IdUsuario);//esto se tiene que modificar OBLIGATORIAMENTE
+        var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Guid.Parse(userIdClaim!);
+        var dto = new AgregarExpedienteRequest(request.Caratula, request.FechaCracion);
+        useCase.Ejecutar(dto, userId);
 
         return Results.Ok(new { mensaje = "Expediente agregado" });
     }
     private static IResult ExpedienteBaja(
         EliminarExpedienteRequest request,
-        ExpedienteBajaUseCase useCase)
+        ExpedienteBajaUseCase useCase,
+        ClaimsPrincipal user
+    )
     {
+        var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Guid.Parse(userIdClaim!);
         var dto = new EliminarExpedienteRequest(request.IdExpediente);
-        useCase.Ejecutar(dto, request.IdExpediente);//esto se tiene que modificar OBLIGATORIAMENTE
+        useCase.Ejecutar(dto, userId);
 
         return Results.Ok(new { mensaje = "Expediente eliminado" });
     }
     private static IResult ModificarCaratula(
         ModificarCaratulaRequest request,
-        ModificarCaratulaExpedienteUseCase useCase)
+        ModificarCaratulaExpedienteUseCase useCase,
+        ClaimsPrincipal user
+    )
+        
     {
-        var dto = new ModificarCaratulaRequest(request.IdUsuario, request.IdExpediente, request.Caratula, request.FechaDeCambio);
-        useCase.Ejecutar(dto);
+        var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Guid.Parse(userIdClaim!);
+        var dto = new ModificarCaratulaRequest(request.IdExpediente, request.Caratula, request.FechaDeCambio);
+        useCase.Ejecutar(dto, userId);
 
         return Results.Ok(new { mensaje = "Carátula modificada" });
     }

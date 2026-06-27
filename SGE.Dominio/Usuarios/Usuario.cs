@@ -4,7 +4,7 @@ public class Usuario
     public string? Nombre { get; private set; } //Nombre del usuario
     public string? CorreoElectronico { get; private set; } //Correo electrónico del usuario
     public string? ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
-    public bool? EsAdministrador { get; private set; } = false; //Flag para marcar un usuario como admin
+    public bool EsAdministrador { get; private set; } = false; //Flag para marcar un usuario como admin
     public List<PermisoUsuarios>? ListaPermisos { get; private set; } //Lista de todos los permisos que el usuario posee
 
     protected Usuario()//despues modificar
