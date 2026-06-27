@@ -82,9 +82,13 @@ function mostrarSeccion(seccion) {
 async function cargarDashboard() {
     try {
         // Cargar conteos
-        const expedientes = await hacerPeticion('GET', 'expedientes');
-        const tramites = await hacerPeticion('GET', 'tramites');
-        const usuarios = await hacerPeticion('GET', 'usuarios');
+        const expedientesRes = await hacerPeticion('GET', 'expedientes/ListarExpediente');
+        const tramitesRes = await hacerPeticion('GET', 'tramites/listar');
+        const usuariosRes = await hacerPeticion('GET', 'usuarios/listarUsuario');
+        
+        const expedientes = expedientesRes?.expedientes || [];
+        const tramites = tramitesRes?.tramites || [];
+        const usuarios = usuariosRes?.usuarios || [];
         
         document.getElementById('countExpedientes').textContent = expedientes.length || 0;
         document.getElementById('countTramites').textContent = tramites.length || 0;
@@ -97,7 +101,8 @@ async function cargarDashboard() {
 // ===== EXPEDIENTES =====
 async function cargarExpedientes() {
     try {
-        const expedientes = await hacerPeticion('GET', 'expedientes');
+        const response = await hacerPeticion('GET', 'expedientes/ListarExpediente');
+        const expedientes = response?.expedientes || [];
         const content = document.getElementById('expedientesContent');
         
         if (expedientes.length === 0) {
@@ -105,18 +110,18 @@ async function cargarExpedientes() {
             return;
         }
         
-        let html = '<div class="table-container"><table><thead><tr><th>ID</th><th>Número</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
+        let html = '<div class="table-container"><table><thead><tr><th>ID</th><th>Carátula</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
         
         expedientes.forEach(exp => {
             html += `
                 <tr>
                     <td>${exp.id}</td>
-                    <td>${exp.numero || 'N/A'}</td>
+                    <td>${exp.caratula?.texto || 'N/A'}</td>
                     <td>${exp.estado || 'N/A'}</td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-secondary" onclick="abrirModalExpediente(${exp.id})">Editar</button>
-                            <button class="btn-danger" onclick="eliminarExpediente(${exp.id})">Eliminar</button>
+                            <button class="btn-secondary" onclick="abrirModalExpediente('${exp.id}')">Editar</button>
+                            <button class="btn-danger" onclick="eliminarExpediente('${exp.id}')">Eliminar</button>
                         </div>
                     </td>
                 </tr>
@@ -141,8 +146,8 @@ function abrirModalExpediente(id = null) {
         <h3>${titulo}</h3>
         <form id="formExpediente">
             <div class="form-group">
-                <label for="expNumero">Número:</label>
-                <input type="text" id="expNumero" required>
+                <label for="expCaratula">Carátula:</label>
+                <input type="text" id="expCaratula" placeholder="Descripción del expediente" required>
             </div>
             <div class="form-group">
                 <label for="expEstado">Estado:</label>
@@ -169,14 +174,21 @@ function abrirModalExpediente(id = null) {
 }
 
 async function guardarExpediente(id) {
-    const numero = document.getElementById('expNumero').value;
+    const caratula = document.getElementById('expCaratula').value;
     const estado = document.getElementById('expEstado').value;
     
     try {
         if (id) {
-            await hacerPeticion('PUT', `expedientes/${id}`, { numero, estado });
+            await hacerPeticion('PUT', 'expedientes/ModificarCaratula', { 
+                idExpediente: id, 
+                caratula: { texto: caratula },
+                fechaDeCambio: new Date().toISOString()
+            });
         } else {
-            await hacerPeticion('POST', 'expedientes', { numero, estado });
+            await hacerPeticion('POST', 'expedientes/AltaExpediente', { 
+                caratula: { texto: caratula },
+                fechaCracion: new Date().toISOString()
+            });
         }
         
         cerrarModal();
@@ -191,7 +203,7 @@ async function eliminarExpediente(id) {
     if (!confirm('¿Estás seguro de que deseas eliminar este expediente?')) return;
     
     try {
-        await hacerPeticion('DELETE', `expedientes/${id}`);
+        await hacerPeticion('DELETE', `expedientes/BajaExpediente/${id}`);
         cargarExpedientes();
     } catch (error) {
         console.error('Error al eliminar expediente:', error);
@@ -202,7 +214,8 @@ async function eliminarExpediente(id) {
 // ===== TRÁMITES =====
 async function cargarTramites() {
     try {
-        const tramites = await hacerPeticion('GET', 'tramites');
+        const response = await hacerPeticion('GET', 'tramites/listar');
+        const tramites = response?.tramites || [];
         const content = document.getElementById('tramitesContent');
         
         if (tramites.length === 0) {
@@ -210,18 +223,18 @@ async function cargarTramites() {
             return;
         }
         
-        let html = '<div class="table-container"><table><thead><tr><th>ID</th><th>Descripción</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
+        let html = '<div class="table-container"><table><thead><tr><th>ID</th><th>Contenido</th><th>Etiqueta</th><th>Acciones</th></tr></thead><tbody>';
         
         tramites.forEach(trm => {
             html += `
                 <tr>
                     <td>${trm.id}</td>
-                    <td>${trm.descripcion || 'N/A'}</td>
-                    <td>${trm.estado || 'N/A'}</td>
+                    <td>${trm.contenido?.contenido || 'N/A'}</td>
+                    <td>${trm.etiqueta || 'N/A'}</td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-secondary" onclick="abrirModalTramite(${trm.id})">Editar</button>
-                            <button class="btn-danger" onclick="eliminarTramite(${trm.id})">Eliminar</button>
+                            <button class="btn-secondary" onclick="abrirModalTramite('${trm.id}')">Editar</button>
+                            <button class="btn-danger" onclick="eliminarTramite('${trm.id}')">Eliminar</button>
                         </div>
                     </td>
                 </tr>
@@ -246,16 +259,20 @@ function abrirModalTramite(id = null) {
         <h3>${titulo}</h3>
         <form id="formTramite">
             <div class="form-group">
-                <label for="trmDescripcion">Descripción:</label>
-                <textarea id="trmDescripcion" required></textarea>
+                <label for="trmExpediente">Expediente ID:</label>
+                <input type="text" id="trmExpediente" placeholder="Ingrese ID del expediente" required>
             </div>
             <div class="form-group">
-                <label for="trmEstado">Estado:</label>
-                <select id="trmEstado" required>
-                    <option value="">Seleccionar estado</option>
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="En Proceso">En Proceso</option>
-                    <option value="Completado">Completado</option>
+                <label for="trmContenido">Contenido:</label>
+                <textarea id="trmContenido" placeholder="Descripción del trámite" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="trmEtiqueta">Etiqueta:</label>
+                <select id="trmEtiqueta" required>
+                    <option value="">Seleccionar etiqueta</option>
+                    <option value="0">Pendiente</option>
+                    <option value="1">En Proceso</option>
+                    <option value="2">Completado</option>
                 </select>
             </div>
             <div class="form-actions">
@@ -274,14 +291,23 @@ function abrirModalTramite(id = null) {
 }
 
 async function guardarTramite(id) {
-    const descripcion = document.getElementById('trmDescripcion').value;
-    const estado = document.getElementById('trmEstado').value;
+    const expedienteId = document.getElementById('trmExpediente').value;
+    const contenido = document.getElementById('trmContenido').value;
+    const etiqueta = document.getElementById('trmEtiqueta').value;
     
     try {
         if (id) {
-            await hacerPeticion('PUT', `tramites/${id}`, { descripcion, estado });
+            await hacerPeticion('PUT', 'tramites/ModificarTramite', { 
+                id: id,
+                nuevoContenido: { contenido: contenido },
+                nuevaEtiqueta: etiqueta,
+                nuevoExpedienteId: expedienteId
+            });
         } else {
-            await hacerPeticion('POST', 'tramites', { descripcion, estado });
+            await hacerPeticion('POST', 'tramites/AgregarTramite', { 
+                expedienteID: expedienteId,
+                contenido: { contenido: contenido }
+            });
         }
         
         cerrarModal();
@@ -296,7 +322,7 @@ async function eliminarTramite(id) {
     if (!confirm('¿Estás seguro de que deseas eliminar este trámite?')) return;
     
     try {
-        await hacerPeticion('DELETE', `tramites/${id}`);
+        await hacerPeticion('DELETE', `tramites/EliminarTramite/${id}`);
         cargarTramites();
     } catch (error) {
         console.error('Error al eliminar trámite:', error);
@@ -307,7 +333,8 @@ async function eliminarTramite(id) {
 // ===== USUARIOS =====
 async function cargarUsuarios() {
     try {
-        const usuarios = await hacerPeticion('GET', 'usuarios');
+        const response = await hacerPeticion('GET', 'usuarios/listarUsuario');
+        const usuarios = response?.usuarios || [];
         const content = document.getElementById('usuariosContent');
         
         if (usuarios.length === 0) {
@@ -315,18 +342,18 @@ async function cargarUsuarios() {
             return;
         }
         
-        let html = '<div class="table-container"><table><thead><tr><th>ID</th><th>Usuario</th><th>Email</th><th>Acciones</th></tr></thead><tbody>';
+        let html = '<div class="table-container"><table><thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Acciones</th></tr></thead><tbody>';
         
         usuarios.forEach(usr => {
             html += `
                 <tr>
                     <td>${usr.id}</td>
-                    <td>${usr.usuario || 'N/A'}</td>
-                    <td>${usr.email || 'N/A'}</td>
+                    <td>${usr.nombre || 'N/A'}</td>
+                    <td>${usr.correoElectronico || 'N/A'}</td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-secondary" onclick="abrirModalUsuario(${usr.id})">Editar</button>
-                            <button class="btn-danger" onclick="eliminarUsuario(${usr.id})">Eliminar</button>
+                            <button class="btn-secondary" onclick="abrirModalUsuario('${usr.id}')">Editar</button>
+                            <button class="btn-danger" onclick="eliminarUsuario('${usr.id}')">Eliminar</button>
                         </div>
                     </td>
                 </tr>
