@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 namespace SGE.WebApi.Endpoints.UsuariosEndpoint;
 
 public static class UsuarioEndpoints
@@ -7,28 +9,36 @@ public static class UsuarioEndpoints
         var group = app.MapGroup("/usuarios")
             .WithTags("Usuarios");
 
-        group.MapPost("/", RegistrarUsuario);
-        /*group.MapGet("/", ListarUsuarios);*/
-        group.MapPut("/ModificarUsuario", ModificarUsuario);
-        group.MapDelete("/EliminarUsuario", EliminarUsuario);
+        //No requieren autorizacion
         group.MapPost("/login", Login);
+        group.MapGet("/", ListarUsuarios);
+        //Requieren Autorizacion
+        group.MapPut("/ModificarUsuario", ModificarUsuario).RequireAuthorization();
+        group.MapDelete("/EliminarUsuario", EliminarUsuario).RequireAuthorization();
+        group.MapPost("/", RegistrarUsuario).RequireAuthorization();
     }
 
     private static IResult ModificarPermisosUsuario(
         ModificarPermisoRequest request,
+        ClaimsPrincipal User,
         ModificarPermisosUsuarioUseCase useCase)
     {
-        var dto = new ModificarPermisoRequest(request.UsuarioId, request.IdUsuarioAModificar, request.PermisosNuevos);
-        useCase.Ejecutar(dto);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Guid.Parse(userIdClaim!);
+        var dto = new ModificarPermisoRequest(request.IdUsuarioAModificar, request.PermisosNuevos);
+        useCase.Ejecutar(dto, userId);
 
         return Results.Ok(new { mensaje = "Permisos modificados" });
     }
     private static IResult EliminarUsuario(
         EliminarUsuarioRequest request,
+        ClaimsPrincipal User,
         EliminarUsuarioUseCase useCase)
     {
-        var dto = new EliminarUsuarioRequest(request.UsuarioId, request.IdUsuarioAEliminar);
-        useCase.Ejecutar(dto);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Guid.Parse(userIdClaim!);
+        var dto = new EliminarUsuarioRequest( request.IdUsuarioAEliminar);
+        useCase.Ejecutar(dto, userId);
 
         return Results.Ok(new { mensaje = "Usuario eliminado" });
     }
@@ -43,8 +53,11 @@ public static class UsuarioEndpoints
     }
     private static IResult ModificarUsuario(
         ModificarUsuarioRequest request,
+        ClaimsPrincipal User,
         ModificarMisDatosUseCase useCase)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Guid.Parse(userIdClaim!);
         var dto = new ModificarUsuarioRequest(
             request.Nombre,
             request.CorreoElectronico,
@@ -77,7 +90,6 @@ public static class UsuarioEndpoints
         var usuarios = useCase.Ejecutar(request);
         return Results.Ok(usuarios);
     }
-
 
 }
 
