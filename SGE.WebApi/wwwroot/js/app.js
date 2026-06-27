@@ -7,9 +7,22 @@ let currentUser = null;
 
 // Ejecutar cuando el documento cargue
 document.addEventListener('DOMContentLoaded', () => {
-    verificarToken();
-    configurarEventos();
-    cargarDashboard();
+    try {
+        verificarToken();
+        // Pequeño delay para asegurar que el DOM está completamente listo
+        setTimeout(() => {
+            try {
+                configurarEventos();
+                cargarDashboard();
+            } catch (error) {
+                console.error('Error al configurar eventos:', error);
+                cerrarSesion();
+            }
+        }, 100);
+    } catch (error) {
+        console.error('Error en inicialización:', error);
+        cerrarSesion();
+    }
 });
 
 // Verificar si existe token válido
@@ -17,9 +30,11 @@ function verificarToken() {
     token = localStorage.getItem('token');
     
     if (!token) {
+        console.log('No hay token, redirigiendo a login');
         window.location.href = '/login.html';
-        return;
+        return false;
     }
+    return true;
 }
 
 // Configurar eventos de navegación
