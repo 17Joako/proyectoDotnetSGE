@@ -75,81 +75,87 @@ public class SgeContext : DbContext
     public static void Inicializar()
     {
         using var context = new SgeContext();
-        if (context.Database.EnsureCreated())
+        
+        // Crear la BD si no existe
+        context.Database.EnsureCreated();
+        
+        // Verificar si ya existen usuarios
+        if (context.Usuarios.Any())
         {
-            Console.WriteLine("se creo la base de datos");
-            var connection = context.Database.GetDbConnection();
-            connection.Open();
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "PRAGMA journal_mode=DELETE;";
-                command.ExecuteNonQuery();
-            }
-            
-            // Seed
-            // Admin
-            // nombre Juani, correo juani@gmail.com, contraseña admin987
-            var contrasenaHash = new PasswordHasher().Hash("admin987");
-            List<PermisoUsuarios> permisos = new List<PermisoUsuarios>
-            {
-                PermisoUsuarios.ExpedienteAlta,
-                PermisoUsuarios.ExpedienteBaja,
-                PermisoUsuarios.ExpedienteModificacion,
-                PermisoUsuarios.TramiteAlta,
-                PermisoUsuarios.TramiteBaja,
-                PermisoUsuarios.TramiteModificacion
-            };
-            var usuario = new Usuario("Juani", "juani@gmail.com", contrasenaHash, true, permisos);
-            context.Usuarios.Add(usuario);
-
-            // Usuario 1
-            // nombre Finn, correo finn@gmail.com, contraseña usuario111
-            contrasenaHash = new PasswordHasher().Hash("usuario111");
-            permisos = new List<PermisoUsuarios>
-            {
-                PermisoUsuarios.TramiteAlta,
-                PermisoUsuarios.TramiteBaja,
-                PermisoUsuarios.TramiteModificacion
-            };
-            usuario = new Usuario("Finn", "finn@gmail.com", contrasenaHash, false, permisos);
-            context.Usuarios.Add(usuario);
-            
-            // Usuario 2
-            // nombre Lucho, correo lucho@gmail.com, contraseña usuario222
-            contrasenaHash = new PasswordHasher().Hash("usuario222");
-            permisos = new List<PermisoUsuarios>
-            {
-                PermisoUsuarios.ExpedienteAlta,
-                PermisoUsuarios.ExpedienteModificacion,
-            };
-            usuario = new Usuario("Lucho", "lucho@gmail.com", contrasenaHash, false, permisos);
-            context.Usuarios.Add(usuario);
-            
-            // Usuario 3
-            // nombre Joako, correo joako@gmail.com, contraseña usuario333
-            contrasenaHash = new PasswordHasher().Hash("usuario333");
-            permisos = new List<PermisoUsuarios>
-            {
-                PermisoUsuarios.ExpedienteAlta,
-                PermisoUsuarios.ExpedienteBaja,
-                PermisoUsuarios.ExpedienteModificacion,
-                PermisoUsuarios.TramiteAlta,
-                PermisoUsuarios.TramiteBaja,
-                PermisoUsuarios.TramiteModificacion
-            };
-            usuario = new Usuario("Joako", "joako@gmail.com", contrasenaHash, false, permisos);
-            context.Usuarios.Add(usuario);
-            
-            // Usuario 4
-            // nombre Bauti, correo bauti@gmail.com, contraseña usuario444
-            contrasenaHash = new PasswordHasher().Hash("usuario444");
-            permisos = new List<PermisoUsuarios>{};
-            usuario = new Usuario("Bauti", "bauti@gmail.com", contrasenaHash, false, permisos);
-            context.Usuarios.Add(usuario);
-            // Fin de la seed
-            
-            UnidadDeTrabajoRepository udt = new UnidadDeTrabajoRepository(context);
-            udt.Guardar();
+            Console.WriteLine("✓ La base de datos ya tiene datos");
+            return;
         }
+
+        Console.WriteLine("📝 Creando datos iniciales...");
+        
+        var connection = context.Database.GetDbConnection();
+        connection.Open();
+        using (var command = connection.CreateCommand())
+        {
+            command.CommandText = "PRAGMA journal_mode=DELETE;";
+            command.ExecuteNonQuery();
+        }
+        
+        // Seed - Crear usuarios
+        var passwordHasher = new PasswordHasher();
+        
+        // Admin: Juani
+        var contrasenaHash = passwordHasher.Hash("admin987");
+        var permisos = new List<PermisoUsuarios>
+        {
+            PermisoUsuarios.ExpedienteAlta,
+            PermisoUsuarios.ExpedienteBaja,
+            PermisoUsuarios.ExpedienteModificacion,
+            PermisoUsuarios.TramiteAlta,
+            PermisoUsuarios.TramiteBaja,
+            PermisoUsuarios.TramiteModificacion
+        };
+        var usuario = new Usuario("Juani", "juani@gmail.com", contrasenaHash, true, permisos);
+        context.Usuarios.Add(usuario);
+
+        // Usuario 1: Finn
+        contrasenaHash = passwordHasher.Hash("usuario111");
+        permisos = new List<PermisoUsuarios>
+        {
+            PermisoUsuarios.TramiteAlta,
+            PermisoUsuarios.TramiteBaja,
+            PermisoUsuarios.TramiteModificacion
+        };
+        usuario = new Usuario("Finn", "finn@gmail.com", contrasenaHash, false, permisos);
+        context.Usuarios.Add(usuario);
+        
+        // Usuario 2: Lucho
+        contrasenaHash = passwordHasher.Hash("usuario222");
+        permisos = new List<PermisoUsuarios>
+        {
+            PermisoUsuarios.ExpedienteAlta,
+            PermisoUsuarios.ExpedienteModificacion,
+        };
+        usuario = new Usuario("Lucho", "lucho@gmail.com", contrasenaHash, false, permisos);
+        context.Usuarios.Add(usuario);
+        
+        // Usuario 3: Joako
+        contrasenaHash = passwordHasher.Hash("usuario333");
+        permisos = new List<PermisoUsuarios>
+        {
+            PermisoUsuarios.ExpedienteAlta,
+            PermisoUsuarios.ExpedienteBaja,
+            PermisoUsuarios.ExpedienteModificacion,
+            PermisoUsuarios.TramiteAlta,
+            PermisoUsuarios.TramiteBaja,
+            PermisoUsuarios.TramiteModificacion
+        };
+        usuario = new Usuario("Joako", "joako@gmail.com", contrasenaHash, false, permisos);
+        context.Usuarios.Add(usuario);
+        
+        // Usuario 4: Bauti
+        contrasenaHash = passwordHasher.Hash("usuario444");
+        permisos = new List<PermisoUsuarios>{};
+        usuario = new Usuario("Bauti", "bauti@gmail.com", contrasenaHash, false, permisos);
+        context.Usuarios.Add(usuario);
+        
+        // Guardar todos los cambios
+        context.SaveChanges();
+        Console.WriteLine("✓ Datos iniciales creados correctamente");
     }
 }

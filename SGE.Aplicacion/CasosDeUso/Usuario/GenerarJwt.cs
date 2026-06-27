@@ -24,7 +24,7 @@ public static class Jwt{//no estoy seguro de donde va esto
             issuer: "mi-api",
             audience: "profesor",
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2),//esto tengo que preguntar
+            expires: DateTime.UtcNow.AddMinutes(10),
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
