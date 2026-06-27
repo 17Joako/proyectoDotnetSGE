@@ -8,7 +8,7 @@ public static class UsuarioEndpoints
             .WithTags("Usuarios");
 
         group.MapPost("/", RegistrarUsuario);
-        group.MapGet("/", ListarUsuarios);
+        /*group.MapGet("/", ListarUsuarios);*/
         group.MapPut("/ModificarUsuario", ModificarUsuario);
         group.MapDelete("/EliminarUsuario", EliminarUsuario);
         group.MapPost("/login", Login);

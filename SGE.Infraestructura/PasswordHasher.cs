@@ -10,11 +10,9 @@ public static class PasswordHasher
         byte[] saltBytes = RandomNumberGenerator.GetBytes(16); 
         return Convert.ToBase64String(saltBytes);
     }
-    public static string ComputeHash(string constrasenia, string salt)
+    public static string ComputeHash(string contrasena)
     {
-        // Combinamos la contraseña con el salt
-        string combinedInput = constrasenia + salt;
-        byte[] inputBytes = Encoding.UTF8.GetBytes(combinedInput);
+        byte[] inputBytes = Encoding.UTF8.GetBytes(contrasena);
 
         // llamamos a el hash SHA-256
         byte[] hashBytes = SHA256.HashData(inputBytes);
@@ -24,9 +22,9 @@ public static class PasswordHasher
     }
 
     // Verificar si la contraseña ingresada coincide con la guardada
-    public static bool VerifyPassword(string constraseniaIngresada, string HashGuardado, string Salt)
+    public static bool VerifyPassword(string contrasenaIngresada, string HashGuardado)
     {
-        string newHash = ComputeHash(constraseniaIngresada, Salt);
+        string newHash = ComputeHash(contrasenaIngresada);
         return CryptographicOperations.FixedTimeEquals(
             Encoding.UTF8.GetBytes(newHash), 
             Encoding.UTF8.GetBytes(HashGuardado)

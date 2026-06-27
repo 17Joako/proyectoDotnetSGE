@@ -7,7 +7,7 @@ public class EliminarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUnid
         var usuario = _usuarioRepository.ObtenerPorId(IdUsuario);
         if (usuario == null)
         {
-            throw new NegocioException("El administrdor no existe.");
+            throw new NegocioException("El administrador no existe.");
         }
         // Validar que el usuario tenga permiso para eliminar usuarios
         if (!usuario.EsAdministrador)

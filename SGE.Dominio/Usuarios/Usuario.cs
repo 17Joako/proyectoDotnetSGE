@@ -1,7 +1,7 @@
 public class Usuario
 {
     public Guid? Id { get; private set; } //guid de usuario
-    public string? Nombre { get; private set; } //Nombvre del usuario
+    public string? Nombre { get; private set; } //Nombre del usuario
     public string? CorreoElectronico { get; private set; } //Correo electrónico del usuario
     public string? ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
     public bool EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
@@ -22,11 +22,11 @@ public class Usuario
         Nombre = nombre;
         CorreoElectronico = correoElectronico;
         ContrasenaHash = contrasenaHash;
-        EsAdministrador = false; // Por defecto, un nuevo usuario no es administrador
+        EsAdministrador = esAdministrador; // Por defecto, un nuevo usuario no es administrador
         ListaPermisos = new List<PermisoUsuarios>() ?? new List<PermisoUsuarios>();
     }
     //Constructor privado para la reconstrucción desde la base de datos
-    private Usuario(Guid id, string nombre, string correoElectronico, string salt, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
+    private Usuario(Guid id, string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
     {
         Id = id;
         Nombre = nombre;
@@ -36,9 +36,9 @@ public class Usuario
         ListaPermisos = listaPermisos ?? new List<PermisoUsuarios>();
     }
     //Recontructor de Usuario
-    public static Usuario Reconstruir(Guid id, string nombre, string correoElectronico, string salt, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
+    public static Usuario Reconstruir(Guid id, string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
     {
-        return new Usuario(id, nombre, correoElectronico, salt, contrasenaHash, esAdministrador, listaPermisos);
+        return new Usuario(id, nombre, correoElectronico, contrasenaHash, esAdministrador, listaPermisos);
     }
     
 

@@ -3,7 +3,7 @@ public class Tramite
     public Guid Id { get; private set; } //guid del Tramite
     public Guid ExpedienteId { get; private set; } //recibe guid del Expediente 
     public EtiquetaTramites Etiqueta { get; private set; } //esto es el tipo enumerativo
-    public ContenidoTramite Contenido { get; private set; } //aca se almacenan los datos de texto o string
+    public ContenidoTramite? Contenido { get; private set; } //aca se almacenan los datos de texto o string
     public DateTime FechaCreacion { get; private set; } //cuando se creo
     public DateTime FechaUltimaModificacion { get; private set; } //cuando se modifico la ultima vez la entidad
     public Guid UsuarioUltimoCambio { get; private set; } //quien fue la ultima persona que lo modifico
