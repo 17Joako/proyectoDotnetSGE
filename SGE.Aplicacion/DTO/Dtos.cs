@@ -37,6 +37,7 @@ public record class LoginResponse(String token);
 
 public record class ListarUsuariosRequest(Guid UsuarioId);
 
+public record class ListarUsuarioResponse(IEnumerable<Usuario>? Usuarios);
 public record class ModificarUsuarioRequest(string Nombre, string CorreoElectronico, string Contrasena);
 //luego analizar 
 public record class EliminarUsuarioRequest(Guid UsuarioId, Guid IdUsuarioAEliminar);

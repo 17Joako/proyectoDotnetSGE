@@ -1,20 +1,18 @@
 public class Usuario
 {
-    public Guid Id { get; private set; } //guid de usuario
-    public string Nombre { get; private set; } //Nombvre del usuario
-    public string CorreoElectronico { get; private set; } //Correo electrónico del usuario
-    public string ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
-    public bool EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
-    public List<PermisoUsuarios> ListaPermisos { get; private set; } //Lista de todos los permisos que el usuario posee
+    public Guid? Id { get; private set; } //guid de usuario
+    public string? Nombre { get; private set; } //Nombvre del usuario
+    public string? CorreoElectronico { get; private set; } //Correo electrónico del usuario
+    public string? ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
+    public bool? EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
+    public List<PermisoUsuarios>? ListaPermisos { get; private set; } //Lista de todos los permisos que el usuario posee
 
-    public string Salt { get; private set; } //Salt para el hash de la contraseña
-
-    protected Usuario()
+    protected Usuario()//despues modificar
     {
     }
 
     //Constructor para el registro de un nuevo usuario
-    public Usuario(string nombre, string correoElectronico, string salt, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
+    public Usuario(string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador)
     {
         if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
         {
@@ -23,10 +21,9 @@ public class Usuario
         Id = Guid.NewGuid();
         Nombre = nombre;
         CorreoElectronico = correoElectronico;
-        Salt = salt;
         ContrasenaHash = contrasenaHash;
-        EsAdministrador = esAdministrador;
-        ListaPermisos = listaPermisos ?? new List<PermisoUsuarios>();
+        EsAdministrador = false; // Por defecto, un nuevo usuario no es administrador
+        ListaPermisos = new List<PermisoUsuarios>() ?? new List<PermisoUsuarios>();
     }
     //Constructor privado para la reconstrucción desde la base de datos
     private Usuario(Guid id, string nombre, string correoElectronico, string salt, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
@@ -34,7 +31,6 @@ public class Usuario
         Id = id;
         Nombre = nombre;
         CorreoElectronico = correoElectronico;
-        Salt = salt;
         ContrasenaHash = contrasenaHash;
         EsAdministrador = esAdministrador;
         ListaPermisos = listaPermisos ?? new List<PermisoUsuarios>();
