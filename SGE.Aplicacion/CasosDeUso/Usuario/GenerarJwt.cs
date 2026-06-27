@@ -7,16 +7,17 @@ public static class Jwt{//no estoy seguro de donde va esto
 
     public static string GenerarJwt(Usuario usuario)
     {
-      var claims = new List<Claim>
-        {
-            new Claim("idUsuario", usuario.Id?.ToString() ?? ""),
-            new Claim("nombre", usuario.Nombre ?? ""),
-            new Claim("correo", usuario.CorreoElectronico ?? ""),
-            new Claim("esAdmin", usuario.EsAdministrador.ToString())
-        };
+        
+    var claims = new List<Claim>
+{
+    new Claim(ClaimTypes.NameIdentifier, usuario.Id?.ToString() ?? ""),
+    new Claim(ClaimTypes.Name, usuario.Nombre ?? ""),
+    new Claim(ClaimTypes.Email, usuario.CorreoElectronico ?? ""),
+    new Claim(ClaimTypes.Role, usuario.EsAdministrador ? "Administrador" : "Usuario")
+};
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes("Esta-es-La-Clave-mas-secreta-123456"));
+            Encoding.UTF8.GetBytes("EstaEsUnaClaveSuperSecretaParaJwtConMasDe32Caracteres123456"));
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -28,5 +29,6 @@ public static class Jwt{//no estoy seguro de donde va esto
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-}
+    
+     
+}}

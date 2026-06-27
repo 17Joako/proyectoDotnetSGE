@@ -471,11 +471,13 @@ async function hacerPeticion(metodo, endpoint, datos = null) {
     
     const response = await fetch(`${API_URL}${endpoint}`, opciones);
     
-    if (response.status === 401) {
-        // Token expirado
-        cerrarSesion();
-        return;
-    }
+   if (response.status === 401) {
+    console.error("401 en endpoint:", endpoint);
+
+    alert("401 en " + endpoint);
+
+    return;
+}
     
     if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);

@@ -1,5 +1,6 @@
 // URL base de la API
 const API_URL = '/';
+console.log("ESTOY USANDO EL LOGIN.JS DE WWWROOT");
 
 // Ejecutar cuando el documento cargue
 document.addEventListener('DOMContentLoaded', () => {
@@ -55,23 +56,28 @@ async function login(event) {
         });
 
         if (!response.ok) {
-            errorDiv.textContent = "Usuario o contraseña incorrectos";
-            errorDiv.classList.add("show");
-            return;
-        }
+    console.log("Status:", response.status);
+
+    const texto = await response.text();
+    console.log("Respuesta:", texto);
+
+    errorDiv.textContent = "Error " + response.status;
+    return;
+}
 
         const data = await response.json();
-        
-        // Guardar token en localStorage
-        localStorage.setItem("token", data.token);
-        
-        // Limpiar error
-        errorDiv.classList.remove("show");
-        
-        // Esperar un poco antes de redirigir
-        setTimeout(() => {
-            window.location.href = "/index.html";
-        }, 100);
+
+console.log("Respuesta:", data);
+
+const token = data.token ?? data.jwt ?? data.accessToken;
+
+console.log("Token:", token);
+
+localStorage.setItem("token", token);
+
+alert("Token guardado: " + localStorage.getItem("token"));
+
+window.location.href = "/index.html";
 
     } catch (error) {
         console.error("Error en login:", error);
