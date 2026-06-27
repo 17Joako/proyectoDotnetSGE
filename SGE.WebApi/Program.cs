@@ -1,6 +1,9 @@
 using SGE.Infraestructura;
 using SGE.WebApi;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProblemDetails();
@@ -9,6 +12,22 @@ builder.Services.AddExceptionHandler<ManejadorDeExceptionsGlobales>();
 var connectionString = builder.Configuration.GetConnectionString("SGEDb") ?? "Data Source=sge.db";
 builder.Services.AddDbContext<SgeContext>(options =>
     options.UseSqlite(connectionString));
+
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+    builder.Services.AddAuthorization();
 
 //repositorios
     builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
@@ -43,6 +62,8 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.UseExceptionHandler();
+app.UseAuthentication();
+app.UseAuthorization();
 // Configure the HTTP request pipeline.
 /*if (app.Environment.IsDevelopment())
 {

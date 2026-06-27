@@ -8,7 +8,7 @@ public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo,ITr
         Tramite? ultimoTramite = tramites.FirstOrDefault();
         foreach (var tramite in tramites)
         {
-            if(tramite.FechaUltimaModificacion > ultimoTramite.FechaUltimaModificacion)
+            if(tramite.FechaCreacion > ultimoTramite.FechaCreacion)
                 {
                     ultimoTramite = tramite;
                     ultimaEtiqueta = tramite.Etiqueta;
