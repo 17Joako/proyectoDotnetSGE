@@ -1,6 +1,6 @@
 public class ListarUsuariosUseCase(IUsuarioRepository repo)
 {
-    public ListarUsuarioResponse? Ejecutar(ListarUsuariosRequest request)
+    public ListarUsuarioResponse? Ejecutar(Guid usuarioId)
     {
         if (!repo.TienePermiso(usuarioId))
         {

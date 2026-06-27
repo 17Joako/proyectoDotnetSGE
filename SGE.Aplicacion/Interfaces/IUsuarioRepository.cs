@@ -1,6 +1,6 @@
 public interface IUsuarioRepository
 {
-    void Agregar(String nombre, string correoElectronico, string salt ,string contrasena);
+    void Agregar(String nombre, string correoElectronico,string contrasena,bool esAdministrador,List<PermisoUsuarios> permisoUsuarios );
     void Eliminar(Guid id);
     void Modificar(Usuario usuario);
 

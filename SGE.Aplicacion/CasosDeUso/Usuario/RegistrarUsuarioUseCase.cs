@@ -9,16 +9,15 @@ public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUni
         {
             throw new NegocioException("El correo electrónico ya está registrado.");
         }
-        // Generar un salt
-        var salt = passwordHasher.GenerateSalt();
         // Crear un nuevo usuario 
         // Guardar el nuevo usuario en el repositorio
 
         _usuarioRepository.Agregar(
             request.Nombre,
             request.CorreoElectronico,
-            salt,
-            passwordHasher.Hash(request.Contrasena)//preguntar el viernes
+            passwordHasher.Hash(request.Contrasena),
+            request.esAdministrador,
+            request.permisosUsuario
             );
         unidadDeTrabajo.Guardar();
     }

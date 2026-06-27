@@ -12,9 +12,9 @@ public class Usuario
     }
 
     //Constructor para el registro de un nuevo usuario
-    public Usuario(string nombre, string correoElectronico, string contrasenaHash)
+    public Usuario(string nombre, string correoElectronico, string contrasenaHash,bool esAdministrador,List<PermisoUsuarios> listaPermisosUsuario)
     {
-        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
+        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))//el esAdmin no lo chequeamos, porque no deberia existir
         {
             throw new ArgumentException("Todos los campos son requeridos.");
         }
@@ -23,7 +23,7 @@ public class Usuario
         CorreoElectronico = correoElectronico;
         ContrasenaHash = contrasenaHash;
         EsAdministrador = esAdministrador; // Por defecto, un nuevo usuario no es administrador
-        ListaPermisos = new List<PermisoUsuarios>() ?? new List<PermisoUsuarios>();
+        ListaPermisos = listaPermisosUsuario;
     }
     //Constructor privado para la reconstrucción desde la base de datos
     private Usuario(Guid id, string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)

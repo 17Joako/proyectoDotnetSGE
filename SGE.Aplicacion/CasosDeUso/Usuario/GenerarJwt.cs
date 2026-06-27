@@ -9,9 +9,9 @@ public static class Jwt{//no estoy seguro de donde va esto
     {
       var claims = new List<Claim>
         {
-            new Claim("idUsuario", usuario.Id.ToString()),
-            new Claim("nombre", usuario.Nombre),
-            new Claim("correo", usuario.CorreoElectronico),
+            new Claim("idUsuario", usuario.Id?.ToString() ?? ""),
+            new Claim("nombre", usuario.Nombre ?? ""),
+            new Claim("correo", usuario.CorreoElectronico ?? ""),
             new Claim("esAdmin", usuario.EsAdministrador.ToString())
         };
 

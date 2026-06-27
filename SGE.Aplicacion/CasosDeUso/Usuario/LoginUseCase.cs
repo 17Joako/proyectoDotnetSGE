@@ -8,7 +8,10 @@ public class LoginUseCase(IUsuarioRepository _usuarioRepository, IPasswordHasher
         {
             throw new NegocioException("El correo electrónico no está registrado.");
         }
-
+        if (request.Contrasena == null)
+        {
+            throw new NegocioException("La contraseña no puede ser nula");
+        }
         // Verificar la contraseña
         if (!passwordHasher.Verify(request.Contrasena, usuario.ContrasenaHash))
         {

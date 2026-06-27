@@ -89,7 +89,7 @@ public class SgeContext : DbContext
             // Seed
             // Admin
             // nombre Juani, correo juani@gmail.com, contraseña admin987
-            var contrasenaHash = PasswordHasher.ComputeHash("admin987");
+            var contrasenaHash = new PasswordHasher().Hash("admin987");
             List<PermisoUsuarios> permisos = new List<PermisoUsuarios>
             {
                 PermisoUsuarios.ExpedienteAlta,
@@ -104,7 +104,7 @@ public class SgeContext : DbContext
 
             // Usuario 1
             // nombre Finn, correo finn@gmail.com, contraseña usuario111
-            contrasenaHash = PasswordHasher.ComputeHash("usuario111");
+            contrasenaHash = new PasswordHasher().Hash("usuario111");
             permisos = new List<PermisoUsuarios>
             {
                 PermisoUsuarios.TramiteAlta,
@@ -116,7 +116,7 @@ public class SgeContext : DbContext
             
             // Usuario 2
             // nombre Lucho, correo lucho@gmail.com, contraseña usuario222
-            contrasenaHash = PasswordHasher.ComputeHash("usuario222");
+            contrasenaHash = new PasswordHasher().Hash("usuario222");
             permisos = new List<PermisoUsuarios>
             {
                 PermisoUsuarios.ExpedienteAlta,
@@ -127,7 +127,7 @@ public class SgeContext : DbContext
             
             // Usuario 3
             // nombre Joako, correo joako@gmail.com, contraseña usuario333
-            contrasenaHash = PasswordHasher.ComputeHash("usuario333");
+            contrasenaHash = new PasswordHasher().Hash("usuario333");
             permisos = new List<PermisoUsuarios>
             {
                 PermisoUsuarios.ExpedienteAlta,
@@ -142,7 +142,7 @@ public class SgeContext : DbContext
             
             // Usuario 4
             // nombre Bauti, correo bauti@gmail.com, contraseña usuario444
-            contrasenaHash = PasswordHasher.ComputeHash("usuario444");
+            contrasenaHash = new PasswordHasher().Hash("usuario444");
             permisos = new List<PermisoUsuarios>{};
             usuario = new Usuario("Bauti", "bauti@gmail.com", contrasenaHash, false, permisos);
             context.Usuarios.Add(usuario);
