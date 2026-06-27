@@ -67,17 +67,24 @@ async function login(event) {
 
         const data = await response.json();
 
-console.log("Respuesta:", data);
+        console.log("Respuesta:", data);
 
-const token = data.token ?? data.jwt ?? data.accessToken;
+        const token =
+            typeof data.token === 'object' && data.token !== null
+                ? data.token.token ?? data.token
+                : data.token ?? data.jwt ?? data.accessToken;
 
-console.log("Token:", token);
+        console.log("Token:", token);
 
-localStorage.setItem("token", token);
+        if (!token || typeof token !== 'string') {
+            throw new Error('Token inválido recibido del servidor');
+        }
 
-alert("Token guardado: " + localStorage.getItem("token"));
+        localStorage.setItem("token", token);
 
-window.location.href = "/index.html";
+        alert("Token guardado: " + localStorage.getItem("token"));
+
+        window.location.href = "/index.html";
 
     } catch (error) {
         console.error("Error en login:", error);
