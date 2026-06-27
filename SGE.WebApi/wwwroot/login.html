@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Gestión de Expedientes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-button:hover {
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Sistema de Gestión de Expedientes</h1>
+            
+            <!-- Tabs para cambiar entre Login y Registro -->
+            <div class="tabs">
+                <button class="tab-button active" id="loginTab" onclick="cambiarTab('login')">Iniciar Sesión</button>
+                <button class="tab-button" id="registerTab" onclick="cambiarTab('register')">Registrarse</button>
+            </div>
+            
+            <!-- Formulario de Login -->
+            <div id="loginContent" class="tab-content active">
+                <h2>Iniciar Sesión</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="usuario">Correo Electrónico:</label>
+                        <input 
+                            type="email" 
+                            id="usuario" 
+                            placeholder="Ingrese su correo" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="Ingrese su contraseña" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-login">Entrar</button>
+                </form>
+
+                <div id="error" class="error-message"></div>
+            </div>
+            
+            <!-- Formulario de Registro -->
+            <div id="registerContent" class="tab-content">
+                <h2>Crear Cuenta</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regNombre">Nombre:</label>
+                        <input 
+                            type="text" 
+                            id="regNombre" 
+                            placeholder="Ingrese su nombre" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail">Correo Electrónico:</label>
+                        <input 
+                            type="email" 
+                            id="regEmail" 
+                            placeholder="Ingrese su correo" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Contraseña:</label>
+                        <input 
+                            type="password" 
+                            id="regPassword" 
+                            placeholder="Ingrese su contraseña" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirmar Contraseña:</label>
+                        <input 
+                            type="password" 
+                            id="regConfirmPassword" 
+                            placeholder="Confirme su contraseña" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-login">Registrarse</button>
+                </form>
+
+                <div id="registerError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>
