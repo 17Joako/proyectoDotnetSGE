@@ -4,15 +4,15 @@ public class Usuario
     public string? Nombre { get; private set; } //Nombre del usuario
     public string? CorreoElectronico { get; private set; } //Correo electrónico del usuario
     public string? ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
-    public bool? EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
+    public bool? EsAdministrador { get; private set; } = false; //Flag para marcar un usuario como admin
     public List<PermisoUsuarios>? ListaPermisos { get; private set; } //Lista de todos los permisos que el usuario posee
 
-    protected Usuario()
+    protected Usuario()//despues modificar
     {
     }
 
     //Constructor para el registro de un nuevo usuario
-    public Usuario(string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
+    public Usuario(string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador)
     {
         if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
         {
@@ -22,8 +22,8 @@ public class Usuario
         Nombre = nombre;
         CorreoElectronico = correoElectronico;
         ContrasenaHash = contrasenaHash;
-        EsAdministrador = esAdministrador;
-        ListaPermisos = listaPermisos ?? new List<PermisoUsuarios>();
+        EsAdministrador = esAdministrador; // Por defecto, un nuevo usuario no es administrador
+        ListaPermisos = new List<PermisoUsuarios>() ?? new List<PermisoUsuarios>();
     }
     //Constructor privado para la reconstrucción desde la base de datos
     private Usuario(Guid id, string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)

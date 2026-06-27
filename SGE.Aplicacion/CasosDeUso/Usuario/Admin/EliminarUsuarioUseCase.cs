@@ -1,10 +1,10 @@
-public class EliminarUsuarioUseCase(IUsuarioRepository _usuarioRepository)
+public class EliminarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUnidadDeTrabajo unidadDeTrabajo)
 {
-    public void Ejecutar(EliminarUsuarioRequest request)
+    public void Ejecutar(EliminarUsuarioRequest request, Guid IdUsuario)
     {
         // Obtener el usuario que se desea eliminar
        
-        var usuario = _usuarioRepository.ObtenerPorId(request.UsuarioId);
+        var usuario = _usuarioRepository.ObtenerPorId(IdUsuario);
         if (usuario == null)
         {
             throw new NegocioException("El administrador no existe.");
@@ -17,5 +17,6 @@ public class EliminarUsuarioUseCase(IUsuarioRepository _usuarioRepository)
         var usuarioId = request.IdUsuarioAEliminar;
         // Eliminar el usuario del repositorio
         _usuarioRepository.Eliminar(usuarioId);
+        unidadDeTrabajo.Guardar();
     }
 }

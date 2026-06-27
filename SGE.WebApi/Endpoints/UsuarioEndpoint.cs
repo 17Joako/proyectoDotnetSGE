@@ -70,11 +70,13 @@ public static class UsuarioEndpoints
         return Results.Ok(new { mensaje = "Usuario registrado" });
     }
 
-    /*private static IResult ListarUsuarios(ListarUsuariosUseCase useCase)
+    private static IResult ListarUsuarios(
+        ListarUsuariosRequest request,
+        ListarUsuariosUseCase useCase)
     {
-        var usuarios = useCase.Ejecutar();//esto no lo tengo del todo claro
+        var usuarios = useCase.Ejecutar(request);
         return Results.Ok(usuarios);
-    }*/
+    }
 
 
 }
