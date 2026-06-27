@@ -12,7 +12,7 @@ public class ModificarMisDatosUseCase(IUsuarioRepository _usuarioRepository, IUn
         // Crear un nuevo usuario 
         // Guardar el nuevo usuario en el repositorio
         var salt = passwordHasher.GenerateSalt();
-        _usuarioRepository.ModificarUsuario(request.Nombre, request.CorreoElectronico, passwordHasher.Hash(request.Contrasena, salt));
+        _usuarioRepository.ModificarUsuario(request.Nombre, request.CorreoElectronico, passwordHasher.Hash(request.Contrasena));
         //aca responder que se agrego con exito?preguntar viernes
         unidadDeTrabajo.Guardar();
     }

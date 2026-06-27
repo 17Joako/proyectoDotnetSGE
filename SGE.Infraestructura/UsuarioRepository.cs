@@ -7,16 +7,13 @@ public class UsuarioRepository : IUsuarioRepository
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
-    public void Agregar(String nombre, string correoElectronico,string salt, string contrasenaHasheada)
+    public void Agregar(String nombre, string correoElectronico, string contrasenaHasheada)
     {
         var usuario = new Usuario
         (
             nombre,
             correoElectronico,
-            salt,
-            contrasenaHasheada,
-            false,
-            new List<PermisoUsuarios>()
+            contrasenaHasheada
         );
         _context.Usuarios.Add(usuario);
         _context.SaveChanges();

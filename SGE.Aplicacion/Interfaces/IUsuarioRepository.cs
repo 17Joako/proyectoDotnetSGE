@@ -13,5 +13,5 @@ public interface IUsuarioRepository
 
     void ModificarUsuario(string nombre, string correoElectronico, string contrasena);
 
-    void ModificarPermiso(Guid usuarioId, List<PermisoUsuarios> permisos);
+    void ModificarPermiso(Guid usuarioId, List<PermisoUsuarios> permisos, bool esAdministrador);
 }

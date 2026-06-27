@@ -4,7 +4,7 @@ public class Usuario
     public string? Nombre { get; private set; } //Nombvre del usuario
     public string? CorreoElectronico { get; private set; } //Correo electrónico del usuario
     public string? ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
-    public bool? EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
+    public bool EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
     public List<PermisoUsuarios>? ListaPermisos { get; private set; } //Lista de todos los permisos que el usuario posee
 
     protected Usuario()//despues modificar
@@ -12,7 +12,7 @@ public class Usuario
     }
 
     //Constructor para el registro de un nuevo usuario
-    public Usuario(string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador)
+    public Usuario(string nombre, string correoElectronico, string contrasenaHash)
     {
         if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
         {

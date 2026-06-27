@@ -7,12 +7,12 @@ public static class ExpedienteEndpoints
         var group = app.MapGroup("/expedientes")
             .WithTags("Expedientes");
 
-        group.MapPost("/", CambiarEstado);
-        group.MapPost("/", ExpedienteAlta);
-        group.MapGet("/", ExpedienteBaja);
-        group.MapPut("/ModificarExpediente", ListarExpedientes);
-        group.MapDelete("/EliminarExpediente", ModificarCaratula);
-        group.MapPost("/login", ObtenerExpedientePorId);
+        group.MapPut("/ModificarExpediente", CambiarEstado);
+        group.MapGet("/AltaExpediente", ExpedienteAlta);
+        group.MapDelete("/BajaExpediente", ExpedienteBaja);
+        group.MapPost("/ListarExpediente", ListarExpedientes);
+        group.MapPut("/ModificarCaratula", ModificarCaratula);
+        group.MapPost("/ObtenerExpedientePorId", ObtenerExpedientePorId);
     }
     private static IResult CambiarEstado(
         CambiarEstadoRequest request,

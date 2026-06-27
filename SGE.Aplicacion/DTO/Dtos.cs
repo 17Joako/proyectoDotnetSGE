@@ -42,4 +42,4 @@ public record class ModificarUsuarioRequest(string Nombre, string CorreoElectron
 //luego analizar 
 public record class EliminarUsuarioRequest(Guid UsuarioId, Guid IdUsuarioAEliminar);
 
-public record class ModificarPermisoRequest(Guid UsuarioId, Guid IdUsuarioAModificar, List<PermisoUsuarios> PermisosNuevos);
+public record class ModificarPermisoRequest(Guid UsuarioId, Guid IdUsuarioAModificar, List<PermisoUsuarios> PermisosNuevos, bool EsAdministrador);

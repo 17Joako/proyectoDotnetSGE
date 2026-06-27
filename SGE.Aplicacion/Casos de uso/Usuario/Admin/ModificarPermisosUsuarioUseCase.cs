@@ -6,6 +6,6 @@ public class ModificarPermisosUsuarioUseCase(IUsuarioRepository repo)
         {
             throw new AutorizacionException("El usuario no tiene permiso para modificar permisos.");
         }
-        repo.ModificarPermiso(request.UsuarioId, request.PermisosNuevos);
+        repo.ModificarPermiso(request.UsuarioId, request.PermisosNuevos,request.EsAdministrador);
     }
 }

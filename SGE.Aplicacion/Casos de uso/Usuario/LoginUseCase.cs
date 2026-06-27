@@ -3,14 +3,14 @@ public class LoginUseCase(IUsuarioRepository _usuarioRepository, IPasswordHasher
     public LoginResponse Ejecutar(LoginRequest request)
     {
         // Validar que el correo electrónico esté registrado
-            var usuario = _usuarioRepository.ObtenerPorCorreoElectronico(request.CorreoElectronico);
-            if (usuario == null)
+        var usuario = _usuarioRepository.ObtenerPorCorreoElectronico(request.CorreoElectronico);
+        if (usuario == null)
         {
             throw new NegocioException("El correo electrónico no está registrado.");
         }
 
         // Verificar la contraseña
-        if (!passwordHasher.Verify(request.Contrasena, usuario.Salt, usuario.ContrasenaHash))
+        if (!passwordHasher.Verify(request.Contrasena, usuario.ContrasenaHash))
         {
             throw new NegocioException("Contraseña incorrecta.");
         }

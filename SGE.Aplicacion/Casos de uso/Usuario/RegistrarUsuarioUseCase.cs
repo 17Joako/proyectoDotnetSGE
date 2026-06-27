@@ -18,7 +18,7 @@ public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUni
             request.Nombre,
             request.CorreoElectronico,
             salt,
-            passwordHasher.Hash(request.Contrasena, salt)//preguntar el viernes
+            passwordHasher.Hash(request.Contrasena)//preguntar el viernes
             );
         unidadDeTrabajo.Guardar();
     }
