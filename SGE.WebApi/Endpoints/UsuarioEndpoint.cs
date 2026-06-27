@@ -8,7 +8,7 @@ public static class UsuarioEndpoints
             .WithTags("Usuarios");
 
         group.MapPost("/", RegistrarUsuario);
-        group.MapGet("/", ListarUsuarios);
+        /*group.MapGet("/", ListarUsuarios);*/
         group.MapPut("/ModificarUsuario", ModificarUsuario);
         group.MapDelete("/EliminarUsuario", EliminarUsuario);
         group.MapPost("/login", Login);
@@ -70,11 +70,11 @@ public static class UsuarioEndpoints
         return Results.Ok(new { mensaje = "Usuario registrado" });
     }
 
-    private static IResult ListarUsuarios(ListarUsuariosUseCase useCase)
+    /*private static IResult ListarUsuarios(ListarUsuariosUseCase useCase)
     {
         var usuarios = useCase.Ejecutar();//esto no lo tengo del todo claro
         return Results.Ok(usuarios);
-    }
+    }*/
 
 
 }

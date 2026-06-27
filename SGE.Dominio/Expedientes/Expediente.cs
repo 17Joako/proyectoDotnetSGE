@@ -1,7 +1,7 @@
 public class Expediente
 {
     public Guid Id { get; private set; } // ID del expediente
-    public CaratulaExpedientes Caratula { get; private set; } // Caratula del expediente
+    public CaratulaExpedientes? Caratula { get; private set; } // Caratula del expediente
     public DateTime FechaCreacion { get; private set; } // Fecha de la creación del expediente
     public DateTime FechaUltimaModificacion { get; private set; } // Fecha de la última modificación del expediente
     public Guid UsuarioUltimoCambio { get; private set; } // ID del usuario que realizó la última modificación
