@@ -67,31 +67,24 @@ async function login(event) {
 
         // Leemos la respuesta del servidor
         const data = await response.json();
-        console.log("Respuesta completa del servidor:", data);
 
-        // EXTRAER EL TOKEN DE MANERA SEGURA (Evita el [object Object])
-        let token = null;
+        console.log("Respuesta:", data);
 
-        if (typeof data === 'string') {
-            // Si la API devuelve directamente el texto del token
-            token = data;
-        } else if (data && typeof data === 'object') {
-            // Si la API devuelve un objeto, buscamos todas las variantes posibles de nombres
-            token = data.token ?? data.Token ?? data.jwt ?? data.Jwt ?? data.accessToken ?? data.tokenTexto;
+        const token =
+            typeof data.token === 'object' && data.token !== null
+                ? data.token.token ?? data.token
+                : data.token ?? data.jwt ?? data.accessToken;
+
+        console.log("Token:", token);
+
+        if (!token || typeof token !== 'string') {
+            throw new Error('Token inválido recibido del servidor');
         }
 
-        console.log("Token extraído:", token);
-
-        if (!token) {
-            errorDiv.textContent = "Error: El servidor no devolvió un formato de token reconocido.";
-            console.error("No se pudo mapear el token desde:", data);
-            return;
-        }
-
-        // Guardamos el string limpio del token en el almacenamiento local
         localStorage.setItem("token", token);
-        
-        alert("¡Sesión iniciada con éxito!");
+
+        alert("Token guardado: " + localStorage.getItem("token"));
+
         window.location.href = "/index.html";
 
     } catch (err) {

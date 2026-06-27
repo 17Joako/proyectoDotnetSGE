@@ -47,8 +47,8 @@ public static class UsuarioEndpoints
         LoginUseCase useCase)
     {
         var dto = new LoginRequest(request.CorreoElectronico, request.Contrasena);
-        var token = useCase.Ejecutar(dto);
-        return Results.Ok(new { token });
+        var loginResponse = useCase.Ejecutar(dto);
+        return Results.Ok(new { token = loginResponse.token });
     }
 
     private static IResult ModificarUsuario(
