@@ -7,7 +7,6 @@ public static class Jwt{//no estoy seguro de donde va esto
 
     public static string GenerarJwt(Usuario usuario)
     {
-        
     var claims = new List<Claim>
 {
     new Claim(ClaimTypes.NameIdentifier, usuario.Id?.ToString() ?? ""),
@@ -29,6 +28,5 @@ public static class Jwt{//no estoy seguro de donde va esto
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
-    
-     
-}}
+    }
+}
