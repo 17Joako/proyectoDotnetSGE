@@ -58,28 +58,41 @@ async function login(event) {
         });
 
         if (!response.ok) {
-    console.log("Status:", response.status);
+            console.log("Status:", response.status);
+            const texto = await response.text();
+            console.log("Respuesta de error:", texto);
+            errorDiv.textContent = "Error " + response.status + ": Usuario o contraseña incorrectos";
+            return;
+        }
 
-    const texto = await response.text();
-    console.log("Respuesta:", texto);
-
-    errorDiv.textContent = "Error " + response.status;
-    return;
-}
-
+        // Leemos la respuesta del servidor
         const data = await response.json();
+        console.log("Respuesta completa del servidor:", data);
 
-console.log("Respuesta:", data);
+        // EXTRAER EL TOKEN DE MANERA SEGURA (Evita el [object Object])
+        let token = null;
 
-const token = data.token ?? data.jwt ?? data.accessToken;
+        if (typeof data === 'string') {
+            // Si la API devuelve directamente el texto del token
+            token = data;
+        } else if (data && typeof data === 'object') {
+            // Si la API devuelve un objeto, buscamos todas las variantes posibles de nombres
+            token = data.token ?? data.Token ?? data.jwt ?? data.Jwt ?? data.accessToken ?? data.tokenTexto;
+        }
 
-console.log("Token:", token);
+        console.log("Token extraído:", token);
 
-localStorage.setItem("token", token);
+        if (!token) {
+            errorDiv.textContent = "Error: El servidor no devolvió un formato de token reconocido.";
+            console.error("No se pudo mapear el token desde:", data);
+            return;
+        }
 
-alert("Token guardado: " + localStorage.getItem("token"));
-
-window.location.href = "/index.html";
+        // Guardamos el string limpio del token en el almacenamiento local
+        localStorage.setItem("token", token);
+        
+        alert("¡Sesión iniciada con éxito!");
+        window.location.href = "/index.html";
 
     } catch (err) {
         console.error(err);

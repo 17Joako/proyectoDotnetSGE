@@ -91,7 +91,7 @@ var app = builder.Build();
 
 // Configurar middleware
 app.UseExceptionHandler();
-
+app.UseRouting();
 // Usar CORS
 app.UseCors("AllowAll");
 
