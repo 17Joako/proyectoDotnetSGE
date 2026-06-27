@@ -85,6 +85,76 @@ public class SgeContext : DbContext
                 command.CommandText = "PRAGMA journal_mode=DELETE;";
                 command.ExecuteNonQuery();
             }
+            
+            // Seed
+            // Admin
+            // nombre Juani, correo juani@gmail.com, contraseña admin987
+            var salt = PasswordHasher.GenerateSalt();
+            var contrasenaHash = PasswordHasher.ComputeHash("admin987", salt);
+            List<PermisoUsuarios> permisos = new List<PermisoUsuarios>
+            {
+                PermisoUsuarios.ExpedienteAlta,
+                PermisoUsuarios.ExpedienteBaja,
+                PermisoUsuarios.ExpedienteModificacion,
+                PermisoUsuarios.TramiteAlta,
+                PermisoUsuarios.TramiteBaja,
+                PermisoUsuarios.TramiteModificacion
+            };
+            var usuario = new Usuario("Juani", "juani@gmail.com", salt, contrasenaHash, true, permisos);
+            context.Usuarios.Add(usuario);
+
+            // Usuario 1
+            // nombre Finn, correo finn@gmail.com, contraseña usuario111
+            salt = PasswordHasher.GenerateSalt();
+            contrasenaHash = PasswordHasher.ComputeHash("usuario111", salt);
+            permisos = new List<PermisoUsuarios>
+            {
+                PermisoUsuarios.TramiteAlta,
+                PermisoUsuarios.TramiteBaja,
+                PermisoUsuarios.TramiteModificacion
+            };
+            usuario = new Usuario("Finn", "finn@gmail.com", salt, contrasenaHash, false, permisos);
+            context.Usuarios.Add(usuario);
+            
+            // Usuario 2
+            // nombre Lucho, correo lucho@gmail.com, contraseña usuario222
+            salt = PasswordHasher.GenerateSalt();
+            contrasenaHash = PasswordHasher.ComputeHash("usuario222", salt);
+            permisos = new List<PermisoUsuarios>
+            {
+                PermisoUsuarios.ExpedienteAlta,
+                PermisoUsuarios.ExpedienteModificacion,
+            };
+            usuario = new Usuario("Lucho", "lucho@gmail.com", salt, contrasenaHash, false, permisos);
+            context.Usuarios.Add(usuario);
+            
+            // Usuario 3
+            // nombre Joako, correo joako@gmail.com, contraseña usuario333
+            salt = PasswordHasher.GenerateSalt();
+            contrasenaHash = PasswordHasher.ComputeHash("usuario333", salt);
+            permisos = new List<PermisoUsuarios>
+            {
+                PermisoUsuarios.ExpedienteAlta,
+                PermisoUsuarios.ExpedienteBaja,
+                PermisoUsuarios.ExpedienteModificacion,
+                PermisoUsuarios.TramiteAlta,
+                PermisoUsuarios.TramiteBaja,
+                PermisoUsuarios.TramiteModificacion
+            };
+            usuario = new Usuario("Joako", "joako@gmail.com", salt, contrasenaHash, false, permisos);
+            context.Usuarios.Add(usuario);
+            
+            // Usuario 4
+            // nombre Bauti, correo bauti@gmail.com, contraseña usuario444
+            salt = PasswordHasher.GenerateSalt();
+            contrasenaHash = PasswordHasher.ComputeHash("usuario444", salt);
+            permisos = new List<PermisoUsuarios>{};
+            usuario = new Usuario("Bauti", "bauti@gmail.com", salt, contrasenaHash, false, permisos);
+            context.Usuarios.Add(usuario);
+            // Fin de la seed
+            
+            UnidadDeTrabajoRepository udt = new UnidadDeTrabajoRepository(context);
+            udt.Guardar();
         }
     }
 }

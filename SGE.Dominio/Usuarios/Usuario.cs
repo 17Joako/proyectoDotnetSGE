@@ -1,7 +1,7 @@
 public class Usuario
 {
     public Guid Id { get; private set; } //guid de usuario
-    public string Nombre { get; private set; } //Nombvre del usuario
+    public string Nombre { get; private set; } //Nombre del usuario
     public string CorreoElectronico { get; private set; } //Correo electrónico del usuario
     public string ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
     public bool EsAdministrador { get; private set; } //Flag para marcar un usuario como admin

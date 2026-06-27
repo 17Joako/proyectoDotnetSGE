@@ -18,7 +18,7 @@ public static class UsuarioEndpoints
         ModificarPermisoRequest request,
         ModificarPermisosUsuarioUseCase useCase)
     {
-        var dto = new ModificarPermisoRequest(request.UsuarioId, request.IdUsuarioAModificar, request.ListaPermisos);
+        var dto = new ModificarPermisoRequest(request.UsuarioId, request.IdUsuarioAModificar, request.PermisosNuevos);
         useCase.Ejecutar(dto);
 
         return Results.Ok(new { mensaje = "Permisos modificados" });
