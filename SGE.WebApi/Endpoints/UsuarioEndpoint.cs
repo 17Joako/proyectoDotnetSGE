@@ -11,11 +11,11 @@ public static class UsuarioEndpoints
             .WithTags("Usuarios");
 
         group.MapPost("/login", Login);
-        group.MapPost("/", RegistrarUsuario);
         group.MapGet("/listarUsuario", ListarUsuarios).RequireAuthorization();
         group.MapPost("/ModificarPermiso", ModificarPermisosUsuario).RequireAuthorization();
         group.MapPut("/ModificarUsuario", ModificarUsuario).RequireAuthorization();
         group.MapDelete("/EliminarUsuario/{idUsuarioAEliminar}", EliminarUsuario).RequireAuthorization();
+        group.MapPost("/", RegistrarUsuario).RequireAuthorization();
     }
 
     private static IResult ModificarPermisosUsuario(

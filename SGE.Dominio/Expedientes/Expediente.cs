@@ -59,6 +59,7 @@ public class Expediente
     // Cambia manualmente el estado del expediente al estado especificado
     public void CambiarEstado(EstadoExpedientes nuevoEstado, Guid idUsuario)
     {
+        Console.WriteLine("Entró");
         this.Estado = nuevoEstado;
         this.FechaUltimaModificacion = DateTime.Now;
         this.UsuarioUltimoCambio = idUsuario;

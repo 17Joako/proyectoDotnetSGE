@@ -56,7 +56,7 @@ builder.Services.AddCors(options =>
 // Swagger/OpenAPI
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 // Repositorios
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -103,11 +103,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Swagger
-app.UseSwagger();
+/*app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "SGE API V1");
-});
+});*/
 
 app.MapOpenApi();
 app.MapScalarApiReference();

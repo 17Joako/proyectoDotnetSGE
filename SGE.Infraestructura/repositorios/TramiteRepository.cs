@@ -73,7 +73,7 @@ public class TramiteRepository : ITramiteRepository
         }
         else
         {
-            throw new entidadNoEncontradaException("no existen tramites para el expediente especificado");
+            return null;
         }
     }
     public IEnumerable<Tramite> BuscarTodos()

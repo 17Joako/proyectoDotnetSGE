@@ -5,14 +5,9 @@ public class ActualizacionEstadoExpedienteService(IExpedienteRepository repo,ITr
         var expedientes = repo.ObtenerExpedientePorId(ID);
         var tramites = repo2.ObtenerPorExpedienteId(ID);
         EtiquetaTramites? ultimaEtiqueta = null;
-        Tramite? ultimoTramite = tramites.FirstOrDefault();
-        foreach (var tramite in tramites)
-        {
-            if(tramite.FechaCreacion > ultimoTramite.FechaCreacion)
-                {
-                    ultimoTramite = tramite;
-                    ultimaEtiqueta = tramite.Etiqueta;
-                }
+        if (tramites!= null){
+        Tramite? ultimoTramite = tramites.OrderByDescending(t => t.FechaCreacion).FirstOrDefault();
+        ultimaEtiqueta = ultimoTramite?.Etiqueta;
         }
            bool cambio= expedientes.ActualizarEstado(ultimaEtiqueta, IDUsuario);
         if (cambio)
