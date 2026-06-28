@@ -52,8 +52,9 @@ public class Usuario
         this.CorreoElectronico = correoElectronico;
         this.ContrasenaHash = contrasenaHash;
     }
-    public void ModificarPermisos(List<PermisoUsuarios> permisos)
+    public void ModificarPermisos(List<PermisoUsuarios> permisos,bool esAdmin)
     {
         this.ListaPermisos = permisos;
+        this.EsAdministrador=esAdmin;
     }
 }

@@ -6,7 +6,7 @@ public class LoginUseCase(IUsuarioRepository _usuarioRepository, IPasswordHasher
         var usuario = _usuarioRepository.ObtenerPorCorreoElectronico(request.CorreoElectronico);
         if (usuario == null)
         {
-            throw new NegocioException("El correo electrónico no está registrado.");
+            throw new entidadNoEncontradaException("El correo electrónico no está registrado.");
         }
         if (request.Contrasena == null)
         {

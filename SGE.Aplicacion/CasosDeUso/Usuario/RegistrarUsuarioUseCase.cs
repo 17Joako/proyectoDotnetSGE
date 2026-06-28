@@ -1,30 +1,13 @@
 using System.Security.Cryptography;
-public class RegistrarUsuarioUseCase
+public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUnidadDeTrabajo unidadDeTrabajo, IPasswordHasher passwordHasher)
 {
-    private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly IUnidadDeTrabajo _unidadDeTrabajo;
-
-    // Inyectamos todas las dependencias mediante el constructor
-    public RegistrarUsuarioUseCase(
-        IUsuarioRepository usuarioRepository,
-        IPasswordHasher passwordHasher,
-        IUnidadDeTrabajo unidadDeTrabajo)
-    {
-        _usuarioRepository = usuarioRepository;
-        _passwordHasher = passwordHasher;
-        _unidadDeTrabajo = unidadDeTrabajo;
-    }
-
     public void Ejecutar(RegistrarUsuarioRequest request)
     {
-        // 1. Validar que el correo electrónico no esté registrado
-        var usuarioExistente = _usuarioRepository.ObtenerPorCorreoElectronico(request.CorreoElectronico);
-        if (usuarioExistente != null)
+        // Validar que el correo electrónico no esté registrado
+        var usuario = _usuarioRepository.ObtenerPorCorreoElectronico(request.CorreoElectronico);
+        if (usuario != null)
         {
-            // NOTA: Asegurate de que NegocioException herede de DominioException 
-            // para que tu Manejador Global lo transforme en un 400 Bad Request.
-            throw new DominioException("El correo electrónico ya está registrado.");
+            throw new NegocioException("El correo electrónico ya está registrado.");
         }
         else
         {

@@ -23,14 +23,10 @@ public class UsuarioRepository : IUsuarioRepository
 
     public void Eliminar(Guid id)
     {
-        var usuario = _context.Usuarios.Find(id);
+        Usuario? usuario = _context.Usuarios.Find(id);
         if (usuario != null)
         {
             _context.Usuarios.Remove(usuario);
-        }
-        else
-        {
-            throw new Exception("Usuario no encontrado.");
         }
     }
 
@@ -93,6 +89,6 @@ public class UsuarioRepository : IUsuarioRepository
         {
             throw new Exception("Usuario no encontrado.");
         }
-        usuario.ModificarPermisos(permisosNuevos);
+        usuario.ModificarPermisos(permisosNuevos,esAdministrador);
     }
 }

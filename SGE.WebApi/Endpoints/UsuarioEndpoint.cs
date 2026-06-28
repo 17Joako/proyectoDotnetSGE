@@ -11,7 +11,7 @@ public static class UsuarioEndpoints
             .WithTags("Usuarios");
 
         group.MapPost("/login", Login);
-        group.MapPost("/", RegistrarUsuario);
+        group.MapPost("/registrar", RegistrarUsuario);
         group.MapGet("/listarUsuario", ListarUsuarios).RequireAuthorization();
         group.MapPost("/ModificarPermiso", ModificarPermisosUsuario).RequireAuthorization();
         group.MapPut("/ModificarUsuario", ModificarUsuario).RequireAuthorization();
@@ -47,8 +47,8 @@ public static class UsuarioEndpoints
         LoginUseCase useCase)
     {
         var dto = new LoginRequest(request.CorreoElectronico, request.Contrasena);
-        var loginResponse = useCase.Ejecutar(dto);
-        return Results.Ok(new { token = loginResponse.token });
+        var token = useCase.Ejecutar(dto);
+        return Results.Ok(new { token });
     }
 
     private static IResult ModificarUsuario(
