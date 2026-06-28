@@ -22,7 +22,7 @@ public class Usuario
         Nombre = nombre;
         CorreoElectronico = correoElectronico;
         ContrasenaHash = contrasenaHash;
-        EsAdministrador = esAdministrador; // Por defecto, un nuevo usuario no es administrador
+        EsAdministrador = esAdministrador;
         ListaPermisos = listaPermisosUsuario;
     }
     //Constructor privado para la reconstrucción desde la base de datos

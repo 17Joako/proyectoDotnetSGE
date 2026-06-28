@@ -72,7 +72,8 @@ public static class UsuarioEndpoints
             request.Nombre,
             request.CorreoElectronico,
             request.Contrasena,
-            request.esAdministrador,
+            //false, //request.esAdministrador,
+            // estoy intentando que al registrarse un usuario no pueda decidir hacerse admin por sí mismo
             request.permisosUsuario
         );
         useCase.Ejecutar(dto);
