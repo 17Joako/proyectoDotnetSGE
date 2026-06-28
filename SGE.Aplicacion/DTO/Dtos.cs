@@ -28,8 +28,8 @@ public record class TramitesPorExpedienteRequest(Guid IdExpediente);
 
 //Empiezo los DTOS de usuario
 //registrar usuario DTO
-public record class RegistrarUsuarioRequest(string Nombre, string CorreoElectronico, string Contrasena,bool esAdministrador,List<PermisoUsuarios> permisosUsuario);
-
+public record class RegistrarUsuarioRequest(string Nombre, string CorreoElectronico, string Contrasena,/*bool esAdministrador,*/List<PermisoUsuarios> permisosUsuario);
+                                                        // saqué esto para que no aparezca en el scalar la posibilidad de un usuario que se registra pueda hacerse admin
 //Loguear DTO
 public record class LoginRequest(string CorreoElectronico, string Contrasena);
 
