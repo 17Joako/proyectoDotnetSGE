@@ -48,10 +48,7 @@ public class TramiteRepository : ITramiteRepository
         {
             _context.Tramites.RemoveRange(tramites);
         }
-        else
-        {
-            throw new entidadNoEncontradaException("no existen tramites para el expediente especificado");
-        }
+        // No hay trámites asociados; no es un error al eliminar el expediente.
     }
 
     public Tramite ObtenerPorId(Guid id)
@@ -67,7 +64,7 @@ public class TramiteRepository : ITramiteRepository
         }
     }
 
-    public IEnumerable<Tramite> ObtenerPorExpedienteId(Guid idExpediente)
+    public IEnumerable<Tramite>? ObtenerPorExpedienteId(Guid idExpediente)
     {
         var tramites = _context.Tramites.Where(t => t.ExpedienteId == idExpediente).ToList();
         if (tramites.Any())
@@ -76,7 +73,7 @@ public class TramiteRepository : ITramiteRepository
         }
         else
         {
-            throw new entidadNoEncontradaException("no existen tramites para el expediente especificado");
+            return null; //("no existen tramites para el expediente especificado");
         }
     }
     public IEnumerable<Tramite> BuscarTodos()

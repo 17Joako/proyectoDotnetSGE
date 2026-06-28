@@ -13,12 +13,12 @@ public class Expediente
 
     // Constructor de un nuevo expediente. Recibe la carátula, la fecha de la creación y el ID del usuario que lo está creando
     // Se genera el ID del expediente al momento de la creación y se establece en estado "Recien Iniciado"
-    public Expediente(CaratulaExpedientes caratula, DateTime fechaCreacion, Guid idUsuario)
+    public Expediente(CaratulaExpedientes caratula, Guid idUsuario)
     {
         Id = Guid.NewGuid();
         Caratula = caratula;
-        FechaCreacion = fechaCreacion;
-        FechaUltimaModificacion = fechaCreacion;
+        FechaCreacion = DateTime.Now;
+        FechaUltimaModificacion = FechaCreacion;
         UsuarioUltimoCambio = idUsuario;
         Estado = EstadoExpedientes.RecienIniciado;
     }

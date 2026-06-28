@@ -4,7 +4,7 @@ public class Usuario
     public string? Nombre { get; private set; } //Nombre del usuario
     public string? CorreoElectronico { get; private set; } //Correo electrónico del usuario
     public string? ContrasenaHash { get; private set; } //Contraseña del usuario en formato Hash
-    public bool? EsAdministrador { get; private set; } = false; //Flag para marcar un usuario como admin
+    public bool EsAdministrador { get; private set; } //Flag para marcar un usuario como admin
     public List<PermisoUsuarios>? ListaPermisos { get; private set; } //Lista de todos los permisos que el usuario posee
 
     protected Usuario()//despues modificar
@@ -12,9 +12,9 @@ public class Usuario
     }
 
     //Constructor para el registro de un nuevo usuario
-    public Usuario(string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador)
+    public Usuario(string nombre, string correoElectronico, string contrasenaHash,bool esAdministrador,List<PermisoUsuarios> listaPermisosUsuario)
     {
-        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))
+        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(correoElectronico) || string.IsNullOrEmpty(contrasenaHash))//el esAdmin no lo chequeamos, porque no deberia existir
         {
             throw new ArgumentException("Todos los campos son requeridos.");
         }
@@ -23,7 +23,7 @@ public class Usuario
         CorreoElectronico = correoElectronico;
         ContrasenaHash = contrasenaHash;
         EsAdministrador = esAdministrador; // Por defecto, un nuevo usuario no es administrador
-        ListaPermisos = new List<PermisoUsuarios>() ?? new List<PermisoUsuarios>();
+        ListaPermisos = listaPermisosUsuario;
     }
     //Constructor privado para la reconstrucción desde la base de datos
     private Usuario(Guid id, string nombre, string correoElectronico, string contrasenaHash, bool esAdministrador, List<PermisoUsuarios> listaPermisos)
@@ -52,8 +52,9 @@ public class Usuario
         this.CorreoElectronico = correoElectronico;
         this.ContrasenaHash = contrasenaHash;
     }
-    public void ModificarPermisos(List<PermisoUsuarios> permisos)
+    public void ModificarPermisos(List<PermisoUsuarios> permisos,bool esAdmin)
     {
         this.ListaPermisos = permisos;
+        this.EsAdministrador=esAdmin;
     }
 }

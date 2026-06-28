@@ -1,5 +1,5 @@
 public record class AgregarExpedienteRequest(
-    CaratulaExpedientes Caratula, DateTime FechaCracion
+    CaratulaExpedientes Caratula
 );
 public record class EliminarExpedienteRequest(
     Guid IdExpediente
@@ -8,7 +8,7 @@ public record class CambiarEstadoRequest(
     Guid IdExpediente, EstadoExpedientes NuevoEstado
 );
 public record class ModificarCaratulaRequest(
-   Guid IdExpediente, CaratulaExpedientes Caratula, DateTime FechaDeCambio
+   Guid IdExpediente, CaratulaExpedientes Caratula
 );
 public record class ObtenerExpedientePorIdRequest(Guid IdExpediente);
 
@@ -28,18 +28,18 @@ public record class TramitesPorExpedienteRequest(Guid IdExpediente);
 
 //Empiezo los DTOS de usuario
 //registrar usuario DTO
-public record class RegistrarUsuarioRequest(string Nombre, string CorreoElectronico, string Contrasena, List<PermisoUsuarios> Permisos);
+public record class RegistrarUsuarioRequest(string Nombre, string CorreoElectronico, string Contrasena,bool esAdministrador,List<PermisoUsuarios> permisosUsuario);
 
 //Loguear DTO
 public record class LoginRequest(string CorreoElectronico, string Contrasena);
 
 public record class LoginResponse(String token);
 
-public record class ListarUsuariosRequest(Guid UsuarioId);
+public record class ListarUsuariosRequest();
 
 public record class ListarUsuarioResponse(IEnumerable<Usuario>? Usuarios);
 public record class ModificarUsuarioRequest(string Nombre, string CorreoElectronico, string Contrasena);
 //luego analizar 
 public record class EliminarUsuarioRequest(Guid IdUsuarioAEliminar);
 
-public record class ModificarPermisoRequest(Guid IdUsuarioAModificar, List<PermisoUsuarios> PermisosNuevos);
+public record class ModificarPermisoRequest(Guid IdUsuarioAModificar, List<PermisoUsuarios> PermisosNuevos,bool esAdmin);

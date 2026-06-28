@@ -6,7 +6,7 @@ public class ExpedienteAltaUseCase(IExpedienteRepository repositorio, IAutorizac
         {
             throw new AutorizacionException("El usuario no tiene permiso para crear expedientes.");
         }
-        var expediente = new Expediente(request.Caratula, request.FechaCracion, IdUsuario);
+        var expediente = new Expediente(request.Caratula, IdUsuario);
         repositorio.AgregarExpediente(expediente);
         unidadDeTrabajo.Guardar();
     }

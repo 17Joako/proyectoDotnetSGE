@@ -6,7 +6,7 @@ public class TramiteAltaUseCase(ITramiteRepository repo, IAutorizacionService au
         {
             throw new AutorizacionException("El usuario no tiene permiso para agregar trámites.");
         }
-        Tramite t= new Tramite(request.ExpedienteID, request.Contenido);
+        Tramite t= new Tramite(request.ExpedienteID, request.Contenido, usuarioId);
         repo.AgregarTramite(t);
         servicio.ActualizarEstadoExpediente(request.ExpedienteID, usuarioId);
         unidadDeTrabajo.Guardar();

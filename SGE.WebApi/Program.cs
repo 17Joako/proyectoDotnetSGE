@@ -4,16 +4,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Scalar.AspNetCore; // Correcto
+using SGE.WebApi.Endpoints.ExpedienteEndpoints;
+using SGE.WebApi.Endpoints.TramiteEndpoints;
+using SGE.WebApi.Endpoints.UsuariosEndpoint;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Servicios
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ManejadorDeExceptionsGlobales>();
 
+// Base de datos
 var connectionString = builder.Configuration.GetConnectionString("SGEDb") ?? "Data Source=sge.db";
 builder.Services.AddDbContext<SgeContext>(options =>
     options.UseSqlite(connectionString));
 
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+// Autenticación JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -24,55 +33,80 @@ builder.Services.AddDbContext<SgeContext>(options =>
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Configuration 'Jwt:Key' is missing")
+                )
+            )
         };
     });
-    builder.Services.AddAuthorization();
 
-//repositorios
-    builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
-    builder.Services.AddScoped<ITramiteRepository, TramiteRepository>();
-    builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajoRepository>();
+builder.Services.AddAuthorization();
 
-//casos de uso
-    builder.Services.AddScoped<RegistrarUsuarioUseCase>();
-    builder.Services.AddScoped<ModificarMisDatosUseCase>();
-    builder.Services.AddScoped<LoginUseCase>();
-    builder.Services.AddScoped<EliminarUsuarioUseCase>();
-    builder.Services.AddScoped<ListarUsuariosUseCase>();
-    builder.Services.AddScoped<ModificarPermisosUsuarioUseCase>();
-    builder.Services.AddScoped<IAutorizacionService, AutorizacionService>();
-    builder.Services.AddScoped<ActualizacionEstadoExpedienteService>();
-    builder.Services.AddScoped<ExpedienteAltaUseCase>();
-    builder.Services.AddScoped<ExpedienteBajaUseCase>();
-    builder.Services.AddScoped<CambiarEstadoExpedienteUseCase>();
-    builder.Services.AddScoped<ModificarCaratulaExpedienteUseCase>();
-    builder.Services.AddScoped<ListarExpedientesUseCase>();
-    builder.Services.AddScoped<ObtenerExpedientePorIdUseCase>();
-    builder.Services.AddScoped<TramiteAltaUseCase>();
-    builder.Services.AddScoped<TramiteBajaUseCase>();
-    builder.Services.AddScoped<ModificarTramiteUseCase>();
-    builder.Services.AddScoped<ListarTramitesUseCase>();
-    builder.Services.AddScoped<ListarTramitesPorExpedienteUseCase>();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info.Title = "SGE API - Sistema de Gestión de Expedientes";
+        document.Info.Version = "v1";
+        return Task.CompletedTask;
+    });
+});
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Repositorios y Casos de Uso
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
+builder.Services.AddScoped<ITramiteRepository, TramiteRepository>();
+builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajoRepository>();
 
+builder.Services.AddScoped<RegistrarUsuarioUseCase>();
+builder.Services.AddScoped<ModificarMisDatosUseCase>();
+builder.Services.AddScoped<LoginUseCase>();
+builder.Services.AddScoped<EliminarUsuarioUseCase>();
+builder.Services.AddScoped<ListarUsuariosUseCase>();
+builder.Services.AddScoped<ModificarPermisosUsuarioUseCase>();
+builder.Services.AddScoped<IAutorizacionService, AutorizacionService>();
+builder.Services.AddScoped<ActualizacionEstadoExpedienteService>();
+builder.Services.AddScoped<ExpedienteAltaUseCase>();
+builder.Services.AddScoped<ExpedienteBajaUseCase>();
+builder.Services.AddScoped<CambiarEstadoExpedienteUseCase>();
+builder.Services.AddScoped<ModificarCaratulaExpedienteUseCase>();
+builder.Services.AddScoped<ListarExpedientesUseCase>();
+builder.Services.AddScoped<ObtenerExpedientePorIdUseCase>();
+builder.Services.AddScoped<TramiteAltaUseCase>();
+builder.Services.AddScoped<TramiteBajaUseCase>();
+builder.Services.AddScoped<ModificarTramiteUseCase>();
+builder.Services.AddScoped<ListarTramitesUseCase>();
+builder.Services.AddScoped<ListarTramitesPorExpedienteUseCase>();
+// Construir la aplicación
 var app = builder.Build();
 
 app.UseExceptionHandler();
-app.UseAuthentication();
-app.UseAuthorization();
-// Configure the HTTP request pipeline.
-/*if (app.Environment.IsDevelopment())
+
+if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi(); 
+    app.MapScalarApiReference(options => 
+    {
+        options.WithTitle("SGE - Documentación de API")
+               .WithTheme(ScalarTheme.Moon);
+    });
 }
 
-app.UseHttpsRedirection();*/
+// Seguridad
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapGet("/", () => "ARRRRRANCAAAAAAAAAAA");
-SgeContext.Inicializar();
+// Mapear endpoints de negocio
+app.MapUsuarioEndpoints();
+app.MapExpedienteEndpoints();
+app.MapTramiteEndpoints();
+
+// Inicializar base de datos
+using (var scope = app.Services.CreateScope())
+{
+    SgeContext.Inicializar(); 
+}
 
 app.Run();
