@@ -9,10 +9,10 @@ public static class ExpedienteEndpoints
         var group = app.MapGroup("/expedientes")
             .WithTags("Expedientes");
 
-        group.MapPut("/ModificarExpediente", CambiarEstado).RequireAuthorization();
+        group.MapPut("/ModificarEstado", CambiarEstado).RequireAuthorization();
         group.MapPost("/AltaExpediente", ExpedienteAlta).RequireAuthorization();
         group.MapDelete("/BajaExpediente/{idExpediente}", ExpedienteBaja).RequireAuthorization();
-        group.MapGet("/ListarExpediente", ListarExpedientes).RequireAuthorization();
+        group.MapGet("/ListarExpedientes", ListarExpedientes).RequireAuthorization();
         group.MapPost("/ObtenerExpedientePorId", ObtenerExpedientePorId).RequireAuthorization();
         group.MapPut("/ModificarCaratula", ModificarCaratula).RequireAuthorization();
     }

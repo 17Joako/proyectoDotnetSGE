@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- 1. CONFIGURACIÓN DE SERVICIOS ---
+// Servicios
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ManejadorDeExceptionsGlobales>();
 
@@ -43,7 +43,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// OpenAPI con configuración de Seguridad para Scalar
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -83,10 +82,8 @@ builder.Services.AddScoped<ListarTramitesPorExpedienteUseCase>();
 // Construir la aplicación
 var app = builder.Build();
 
-// 1. Manejo de errores primero
 app.UseExceptionHandler();
 
-// 2. Configuración de Scalar y OpenAPI (Solo en desarrollo)
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi(); 
@@ -97,19 +94,18 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// 3. Seguridad (Orden crítico)
+// Seguridad
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 4. Mapear tus endpoints de negocio
+// Mapear endpoints de negocio
 app.MapUsuarioEndpoints();
 app.MapExpedienteEndpoints();
 app.MapTramiteEndpoints();
 
-// 5. Inicializar base de datos
+// Inicializar base de datos
 using (var scope = app.Services.CreateScope())
 {
-    // Esto asegura que la DB se cree al arrancar
     SgeContext.Inicializar(); 
 }
 

@@ -10,8 +10,8 @@ public static class TramiteEndpoints
         var group = app.MapGroup("/tramites")
             .WithTags("Trámites");
 
-        group.MapGet("/listarExpediente/{idExpediente}", ListarTramitesPorExpediente).RequireAuthorization();
-        group.MapGet("/listar", ListarTramites).RequireAuthorization();
+        group.MapGet("/ListarExpediente/{idExpediente}", ListarTramitesPorExpediente).RequireAuthorization();
+        group.MapGet("/ListarTramites", ListarTramites).RequireAuthorization();
         group.MapPut("/ModificarTramite", ModificarTramite).RequireAuthorization();
         group.MapDelete("/EliminarTramite/{id}", TramiteBaja).RequireAuthorization();
         group.MapPost("/AgregarTramite", TramiteAlta).RequireAuthorization();

@@ -12,10 +12,10 @@ public static class UsuarioEndpoints
 
         group.MapPost("/login", Login);
         group.MapPost("/registrar", RegistrarUsuario);
-        group.MapGet("/listarUsuario", ListarUsuarios).RequireAuthorization();
-        group.MapPost("/ModificarPermiso", ModificarPermisosUsuario).RequireAuthorization();
+        group.MapGet("/admin/ListarUsuario", ListarUsuarios).RequireAuthorization();
+        group.MapPost("/admin/ModificarPermiso", ModificarPermisosUsuario).RequireAuthorization();
         group.MapPut("/ModificarUsuario", ModificarUsuario).RequireAuthorization();
-        group.MapDelete("/EliminarUsuario/{idUsuarioAEliminar}", EliminarUsuario).RequireAuthorization();
+        group.MapDelete("/admin/EliminarUsuario/{idUsuarioAEliminar}", EliminarUsuario).RequireAuthorization();
     }
 
     private static IResult ModificarPermisosUsuario(
