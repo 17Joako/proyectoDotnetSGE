@@ -57,20 +57,28 @@ public class SgeContext : DbContext
             });
         });
 
-        modelBuilder.Entity<Usuario>(entity =>
-        {
-            entity.ToTable("Usuarios");
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Nombre);
-            entity.Property(e => e.ContrasenaHash);
-            entity.Property(e => e.CorreoElectronico);
-            entity.Property(e => e.EsAdministrador);
-            entity.Property(e => e.ListaPermisos)
-            .HasConversion(
-                v => string.Join(',', v),
-                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(p => Enum.Parse<PermisoUsuarios>(p)).ToList()
-            );
-        });
+modelBuilder.Entity<Usuario>(entity =>
+{
+    entity.ToTable("Usuarios");
+    entity.HasKey(e => e.Id);
+    entity.Property(e => e.Nombre);
+    entity.Property(e => e.ContrasenaHash);
+    entity.Property(e => e.CorreoElectronico);
+    entity.Property(e => e.EsAdministrador);
+    
+    entity.Property(e => e.ListaPermisos)
+    .HasConversion(
+        v => string.Join(',', v),
+        v => string.IsNullOrEmpty(v) 
+            ? new List<PermisoUsuarios>() // Si está vacío en la BD, devolvemos una lista vacía
+            : v.Split(',', StringSplitOptions.RemoveEmptyEntries)
+               // Filtramos dejando solo los strings que coincidan con un valor real del Enum
+               .Where(p => Enum.IsDefined(typeof(PermisoUsuarios), p))
+               // Ahora que es seguro, los parseamos sin miedo a que explote
+               .Select(p => (PermisoUsuarios)Enum.Parse(typeof(PermisoUsuarios), p))
+               .ToList()
+    );
+});
     }
     public static void Inicializar()
     {

@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Scalar.AspNetCore;
+using Scalar.AspNetCore; // Correcto
 using SGE.WebApi.Endpoints.ExpedienteEndpoints;
 using SGE.WebApi.Endpoints.TramiteEndpoints;
 using SGE.WebApi.Endpoints.UsuariosEndpoint;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios
+// --- 1. CONFIGURACIÓN DE SERVICIOS ---
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ManejadorDeExceptionsGlobales>();
 
@@ -42,30 +42,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// CORS - Permitir solicitudes desde el frontend
-builder.Services.AddCors(options =>
+// OpenAPI con configuración de Seguridad para Scalar
+builder.Services.AddOpenApi(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        document.Info.Title = "SGE API - Sistema de Gestión de Expedientes";
+        document.Info.Version = "v1";
+        return Task.CompletedTask;
     });
 });
 
-// Swagger/OpenAPI
-builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Repositorios
+// Repositorios y Casos de Uso
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
 builder.Services.AddScoped<ITramiteRepository, TramiteRepository>();
 builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajoRepository>();
 
-// Casos de uso
 builder.Services.AddScoped<RegistrarUsuarioUseCase>();
 builder.Services.AddScoped<ModificarMisDatosUseCase>();
 builder.Services.AddScoped<LoginUseCase>();
@@ -85,39 +79,37 @@ builder.Services.AddScoped<TramiteBajaUseCase>();
 builder.Services.AddScoped<ModificarTramiteUseCase>();
 builder.Services.AddScoped<ListarTramitesUseCase>();
 builder.Services.AddScoped<ListarTramitesPorExpedienteUseCase>();
-
 // Construir la aplicación
 var app = builder.Build();
 
-// Configurar middleware
+// 1. Manejo de errores primero
 app.UseExceptionHandler();
-app.UseRouting();
-// Usar CORS
-app.UseCors("AllowAll");
 
-// Servir archivos estáticos (CSS, JS, imágenes, etc.)
-app.UseDefaultFiles();
-app.UseStaticFiles();
+// 2. Configuración de Scalar y OpenAPI (Solo en desarrollo)
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi(); 
+    app.MapScalarApiReference(options => 
+    {
+        options.WithTitle("SGE - Documentación de API")
+               .WithTheme(ScalarTheme.Moon);
+    });
+}
 
+// 3. Seguridad (Orden crítico)
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Swagger
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SGE API V1");
-});
-
-app.MapOpenApi();
-app.MapScalarApiReference();
-
-// Mapear endpoints
+// 4. Mapear tus endpoints de negocio
 app.MapUsuarioEndpoints();
 app.MapExpedienteEndpoints();
 app.MapTramiteEndpoints();
 
-// Inicializar base de datos
-SgeContext.Inicializar();
+// 5. Inicializar base de datos
+using (var scope = app.Services.CreateScope())
+{
+    // Esto asegura que la DB se cree al arrancar
+    SgeContext.Inicializar(); 
+}
 
 app.Run();
