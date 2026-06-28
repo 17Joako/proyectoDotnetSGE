@@ -36,7 +36,7 @@ public static class ExpedienteEndpoints
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = Guid.Parse(userIdClaim!);
-        var dto = new AgregarExpedienteRequest(request.Caratula, request.FechaCracion);
+        var dto = new AgregarExpedienteRequest(request.Caratula);
         useCase.Ejecutar(dto, userId);
         return Results.Ok(new { mensaje = "Expediente agregado" });
     }
@@ -60,7 +60,7 @@ public static class ExpedienteEndpoints
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = Guid.Parse(userIdClaim!);
-        var dto = new ModificarCaratulaRequest(request.IdExpediente, request.Caratula, request.FechaDeCambio);
+        var dto = new ModificarCaratulaRequest(request.IdExpediente, request.Caratula);
         useCase.Ejecutar(dto, userId);
         return Results.Ok(new { mensaje = "Carátula modificada" });
     }

@@ -1,5 +1,5 @@
 public record class AgregarExpedienteRequest(
-    CaratulaExpedientes Caratula, DateTime FechaCracion
+    CaratulaExpedientes Caratula
 );
 public record class EliminarExpedienteRequest(
     Guid IdExpediente
@@ -8,7 +8,7 @@ public record class CambiarEstadoRequest(
     Guid IdExpediente, EstadoExpedientes NuevoEstado
 );
 public record class ModificarCaratulaRequest(
-   Guid IdExpediente, CaratulaExpedientes Caratula, DateTime FechaDeCambio
+   Guid IdExpediente, CaratulaExpedientes Caratula
 );
 public record class ObtenerExpedientePorIdRequest(Guid IdExpediente);
 

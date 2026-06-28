@@ -6,7 +6,7 @@ public interface IUsuarioRepository
 
     Usuario ObtenerPorId(Guid id);
         
-    Usuario ObtenerPorCorreoElectronico(string correoElectronico);
+    Usuario? ObtenerPorCorreoElectronico(string correoElectronico);
     
     List<Usuario>? ListarTodos();
     bool TienePermiso(Guid usuarioId);
