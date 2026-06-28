@@ -82,8 +82,6 @@ async function login(event) {
 
         localStorage.setItem("token", token);
 
-        alert("Token guardado: " + localStorage.getItem("token"));
-
         window.location.href = "/index.html";
 
     } catch (error) {
