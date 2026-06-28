@@ -8,6 +8,7 @@ using Scalar.AspNetCore;
 using SGE.WebApi.Endpoints.ExpedienteEndpoints;
 using SGE.WebApi.Endpoints.TramiteEndpoints;
 using SGE.WebApi.Endpoints.UsuariosEndpoint;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,13 +102,13 @@ app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+/*
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "SGE API V1");
-});
+});*/
 
 app.MapOpenApi();
 app.MapScalarApiReference();
@@ -116,6 +117,72 @@ app.MapScalarApiReference();
 app.MapUsuarioEndpoints();
 app.MapExpedienteEndpoints();
 app.MapTramiteEndpoints();
+
+// Mapear Casos de Uso
+// Expedientes UseCase
+app.MapPost("/", ( // Alta
+    AgregarExpedienteRequest request,
+    [FromHeader(Name= "Authorization")] Guid IdUsuario,
+    ExpedienteAltaUseCase useCase) => 
+    {
+        var response = useCase.Ejecutar(request, IdUsuario);
+
+        return Results.Created($"/expedientes/AltaExpediente{response.Id}", response);
+    }
+);
+app.MapDelete("/", ( // Baja
+    EliminarExpedienteRequest request,
+    [FromHeader(Name= "Authorization")] Guid IdUsuario,
+    ExpedienteBajaUseCase useCase) => 
+    {
+        var response = useCase.Ejecutar(request, IdUsuario);
+
+        return Results.Created($"/expedientes/BajaExpediente{response.Id}", response);
+    }
+);
+app.MapPut("/", ( // Cambiar Estado
+    CambiarEstadoRequest request,
+    [FromHeader(Name= "Authorization")] Guid IdUsuario,
+    CambiarEstadoExpedienteUseCase useCase) => 
+    {
+        var response = useCase.Ejecutar(request, IdUsuario);
+
+        return Results.Created($"/expedientes/ModificarExpediente{response.Id}", response);
+    }
+);
+app.MapPut("/", ( // Modificar Caratula
+    ModificarCaratulaRequest request,
+    [FromHeader(Name= "Authorization")] Guid IdUsuario,
+    ModificarCaratulaExpedienteUseCase useCase) => 
+    {
+        var response = useCase.Ejecutar(request, IdUsuario);
+
+        return Results.Created($"/expedientes/ModificarCaratula{response.Id}", response);
+    }
+);
+app.MapPost("/", ( // Obtener por ID
+    ObtenerExpedientePorIdRequest request,
+    [FromHeader(Name= "Authorization")] Guid IdUsuario,
+    ObtenerExpedientePorIdUseCase useCase) => 
+    {
+        var response = useCase.Ejecutar(request);
+
+        return Results.Created($"/expedientes/ObtenerExpedientePorId{response.Id}", response);
+    }
+);
+app.MapGet("/", ( // Listar
+    ListarExpedientesResponse request,
+    [FromHeader(Name= "Authorization")] Guid IdUsuario,
+    ListarExpedientesUseCase useCase) => 
+    {
+        var response = useCase.Ejecutar();
+
+        return Results.Created($"/expedientes/ListarExpediente{response.Id}", response);
+    }
+);
+// Tramites UseCase
+
+// Usuarios UseCase
 
 // Inicializar base de datos
 SgeContext.Inicializar();

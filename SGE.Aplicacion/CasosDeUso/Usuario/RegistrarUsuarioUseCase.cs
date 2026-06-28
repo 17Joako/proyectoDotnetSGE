@@ -9,16 +9,18 @@ public class RegistrarUsuarioUseCase(IUsuarioRepository _usuarioRepository, IUni
         {
             throw new NegocioException("El correo electrónico ya está registrado.");
         }
-        // Crear un nuevo usuario 
-        // Guardar el nuevo usuario en el repositorio
-
-        _usuarioRepository.Agregar(
-            request.Nombre,
-            request.CorreoElectronico,
-            passwordHasher.Hash(request.Contrasena),
-            request.esAdministrador,
-            request.permisosUsuario
-            );
-        unidadDeTrabajo.Guardar();
+        else
+        {
+            // Crear un nuevo usuario 
+            // Guardar el nuevo usuario en el repositorio
+            _usuarioRepository.Agregar(
+                request.Nombre,
+                request.CorreoElectronico,
+                passwordHasher.Hash(request.Contrasena),
+                request.esAdministrador,
+                request.permisosUsuario
+                );
+            unidadDeTrabajo.Guardar();
+        }
     }
 }

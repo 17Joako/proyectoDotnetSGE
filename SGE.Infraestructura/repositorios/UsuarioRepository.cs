@@ -54,13 +54,14 @@ public class UsuarioRepository : IUsuarioRepository
         return usuario;
     }
 
-    public Usuario ObtenerPorCorreoElectronico(string correoElectronico)
+    public Usuario? ObtenerPorCorreoElectronico(string correoElectronico)
     {
         var usuario = _context.Usuarios.FirstOrDefault(u => u.CorreoElectronico == correoElectronico);
-        if (usuario == null)
+        /*if (usuario != null)
         {
-            throw new Exception("Usuario no encontrado.");
+            return usuario;
         }
+        throw new Exception("Usuario no encontrado.");*/
         return usuario;
     }
 
