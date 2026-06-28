@@ -8,6 +8,7 @@ using Scalar.AspNetCore; // Correcto
 using SGE.WebApi.Endpoints.ExpedienteEndpoints;
 using SGE.WebApi.Endpoints.TramiteEndpoints;
 using SGE.WebApi.Endpoints.UsuariosEndpoint;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 

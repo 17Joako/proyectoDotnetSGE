@@ -26,17 +26,18 @@ public class RegistrarUsuarioUseCase
             // para que tu Manejador Global lo transforme en un 400 Bad Request.
             throw new DominioException("El correo electrónico ya está registrado.");
         }
-
-        // 2. Encriptar la contraseña y guardar en el repositorio utilizando los campos privados
-        _usuarioRepository.Agregar(
-            request.Nombre,
-            request.CorreoElectronico,
-            _passwordHasher.Hash(request.Contrasena),
-            request.esAdministrador,
-            request.permisosUsuario
-        );
-
-        // 3. Confirmar los cambios en la Base de Datos
-        _unidadDeTrabajo.Guardar();
+        else
+        {
+            // Crear un nuevo usuario 
+            // Guardar el nuevo usuario en el repositorio
+            _usuarioRepository.Agregar(
+                request.Nombre,
+                request.CorreoElectronico,
+                passwordHasher.Hash(request.Contrasena),
+                request.esAdministrador,
+                request.permisosUsuario
+                );
+            unidadDeTrabajo.Guardar();
+        }
     }
 }

@@ -48,10 +48,7 @@ public class TramiteRepository : ITramiteRepository
         {
             _context.Tramites.RemoveRange(tramites);
         }
-        else
-        {
-            throw new entidadNoEncontradaException("no existen tramites para el expediente especificado");
-        }
+        // No hay trámites asociados; no es un error al eliminar el expediente.
     }
 
     public Tramite ObtenerPorId(Guid id)
